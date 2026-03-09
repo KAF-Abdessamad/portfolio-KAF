@@ -1,0 +1,17 @@
+MON SITE INSPIRANT
+==================
+
+Site Web : https://bipsync.com et portfolio 3D 
+Repository GitHub : https://github.com/adrianhajdin/3d-portfolio
+
+Ce que j'aime dans ces sites :
+- Design professionnel et épuré de Bipsync
+- Modèles 3D animés du portfolio
+- Animations GSAP fluides
+- Micro-interactions partout
+
+Ce que je veux pour MON portfolio :
+- Design professionnel comme Bipsync
+- Éléments 3D interactifs
+- Dark theme avec bleu foncé
+- Structure de code propre comme sur le GitHub
