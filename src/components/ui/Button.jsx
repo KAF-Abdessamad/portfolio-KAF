@@ -1,11 +1,5 @@
 import { motion } from 'framer-motion';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-// Utility for tailwind classes
-function cn(...inputs) {
-    return twMerge(clsx(inputs));
-}
+import { cn } from '../../lib/utils';
 
 export default function Button({
     children,

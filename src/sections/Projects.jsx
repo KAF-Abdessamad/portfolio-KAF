@@ -5,23 +5,27 @@ import Section from '../components/layout/Section';
 import Container from '../components/layout/Container';
 import ProjectCard from '../components/ui/ProjectCard';
 import ProjectModal from '../components/ui/ProjectModal';
-import { projects } from '../constants/projects';
+import { useProjects } from '../hooks/useProjects';
 
 const CATEGORIES = ["Tous", "Web", "Mobile", "3D", "Design"];
 const PROJECTS_PER_PAGE = 6;
 
 export default function Projects() {
+    const { projects, loading, error } = useProjects();
     const [activeCategory, setActiveCategory] = useState("Tous");
     const [selectedProject, setSelectedProject] = useState(null);
     const [visibleCount, setVisibleCount] = useState(PROJECTS_PER_PAGE);
 
     const filteredProjects = useMemo(() => {
+        if (!projects) return [];
         if (activeCategory === "Tous") return projects;
         return projects.filter(p => p.category === activeCategory);
-    }, [activeCategory]);
+    }, [activeCategory, projects]);
 
     const displayedProjects = filteredProjects.slice(0, visibleCount);
     const hasMore = visibleCount < filteredProjects.length;
+
+    if (error) return null;
 
     return (
         <Section id="projects" className="bg-primary pt-24">
@@ -54,12 +58,12 @@ export default function Projects() {
                                     setVisibleCount(PROJECTS_PER_PAGE);
                                 }}
                                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${activeCategory === cat
-                                        ? "bg-secondary text-primary border-secondary shadow-accent"
-                                        : "bg-primary-light text-slate-400 border-slate-800 hover:border-slate-600"
+                                    ? "bg-secondary text-primary border-secondary shadow-accent"
+                                    : "bg-primary-light text-slate-400 border-slate-800 hover:border-slate-600"
                                     }`}
                             >
                                 {cat}
-                                {activeCategory === cat && (
+                                {activeCategory === cat && projects && (
                                     <span className="ml-2 bg-primary/20 px-2 py-0.5 rounded-full text-[10px]">
                                         {filteredProjects.length}
                                     </span>
@@ -70,30 +74,38 @@ export default function Projects() {
                 </div>
 
                 {/* Projects Grid */}
-                <motion.div
-                    layout
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                >
-                    <AnimatePresence mode="popLayout">
-                        {displayedProjects.map((project) => (
-                            <ProjectCard
-                                key={project.id}
-                                project={project}
-                                onClick={setSelectedProject}
-                            />
-                        ))}
-                    </AnimatePresence>
-                </motion.div>
+                <div className="relative min-h-[400px]">
+                    {loading ? (
+                        <div className="flex items-center justify-center py-20">
+                            <div className="w-10 h-10 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
+                        </div>
+                    ) : (
+                        <motion.div
+                            layout
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                        >
+                            <AnimatePresence mode="popLayout">
+                                {displayedProjects.map((project) => (
+                                    <ProjectCard
+                                        key={project.id}
+                                        project={project}
+                                        onClick={setSelectedProject}
+                                    />
+                                ))}
+                            </AnimatePresence>
+                        </motion.div>
+                    )}
 
-                {/* Empty State */}
-                {displayedProjects.length === 0 && (
-                    <div className="py-20 text-center">
-                        <p className="text-slate-500 font-mono italic">Aucun projet trouvé dans cette catégorie.</p>
-                    </div>
-                )}
+                    {/* Empty State */}
+                    {!loading && displayedProjects.length === 0 && (
+                        <div className="py-20 text-center">
+                            <p className="text-slate-500 font-mono italic">Aucun projet trouvé dans cette catégorie.</p>
+                        </div>
+                    )}
+                </div>
 
                 {/* Load More Button */}
-                {hasMore && (
+                {hasMore && !loading && (
                     <div className="flex justify-center mt-16">
                         <button
                             onClick={() => setVisibleCount(prev => prev + PROJECTS_PER_PAGE)}
@@ -121,3 +133,4 @@ export default function Projects() {
         </Section>
     );
 }
+

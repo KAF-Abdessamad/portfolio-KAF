@@ -1,10 +1,5 @@
 import { motion } from 'framer-motion';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-function cn(...inputs) {
-    return twMerge(clsx(inputs));
-}
+import { cn } from '../../lib/utils';
 
 export default function Card({
     children,

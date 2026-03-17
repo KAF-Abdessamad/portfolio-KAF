@@ -5,12 +5,14 @@ import Container from './Container';
 import { SOCIAL_LINKS } from '../../lib/constants/contact';
 
 const NAV_LINKS = [
-    { name: 'Accueil', href: '#' },
-    { name: 'Projets', href: '#projects' },
-    { name: 'Compétences', href: '#skills' },
-    { name: 'À Propos', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Accueil', href: '/' },
+    { name: 'Projets', href: '/#projects' },
+    { name: 'Compétences', href: '/#skills' },
+    { name: 'Certificats', href: '/certificates' },
+    { name: 'CV', href: '/cv' },
+    { name: 'Contact', href: '/#contact' },
 ];
+
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
