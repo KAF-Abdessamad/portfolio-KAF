@@ -67,7 +67,7 @@ export default function CVPage() {
         <div className="space-y-8 pb-12">
             <div>
                 <h1 className="text-3xl font-bold text-white">Gestion du CV</h1>
-                <p className="text-slate-400 mt-1">Mettez à jour vos résumés PDF pour chaque langue.</p>
+                <p className="text-text-secondary mt-1">Mettez à jour vos résumés PDF pour chaque langue.</p>
             </div>
 
             {uploadError && (
@@ -106,18 +106,18 @@ function CVCard({ title, lang, currentUrl, onUpload, loading, isBusy }) {
     return (
         <motion.div
             whileHover={{ y: -5 }}
-            className="bg-secondary/30 backdrop-blur-xl border border-slate-800 p-8 rounded-2xl flex flex-col space-y-6"
+            className="bg-bg-card backdrop-blur-xl border border p-8 rounded-2xl flex flex-col space-y-6"
         >
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
+                    <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center text-text-accent">
                         <FileText size={24} />
                     </div>
                     <div>
                         <h3 className="text-xl font-bold text-white">{title}</h3>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                            <Languages size={14} className="text-slate-500" />
-                            <span className="text-xs text-slate-500 font-medium uppercase">{lang}</span>
+                            <Languages size={14} className="text-text-muted" />
+                            <span className="text-xs text-text-muted font-medium uppercase">{lang}</span>
                         </div>
                     </div>
                 </div>
@@ -130,9 +130,9 @@ function CVCard({ title, lang, currentUrl, onUpload, loading, isBusy }) {
             </div>
 
             {/* Preview Section */}
-            <div className="flex-1 min-h-[160px] bg-primary/40 rounded-xl border border-slate-800 flex flex-col items-center justify-center p-6 text-center">
+            <div className="flex-1 min-h-[160px] bg-bg-surface/40 rounded-xl border border flex flex-col items-center justify-center p-6 text-center">
                 {loading ? (
-                    <Loader2 className="animate-spin text-slate-600" size={32} />
+                    <Loader2 className="animate-spin text-text-muted" size={32} />
                 ) : currentUrl ? (
                     <>
                         <CheckCircle2 size={40} className="text-emerald-500 mb-3" />
@@ -141,13 +141,13 @@ function CVCard({ title, lang, currentUrl, onUpload, loading, isBusy }) {
                             href={currentUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-accent text-sm hover:underline flex items-center gap-1.5"
+                            className="text-text-accent text-sm hover:underline flex items-center gap-1.5"
                         >
                             <Eye size={14} /> Voir le document
                         </a>
                     </>
                 ) : (
-                    <p className="text-slate-500 italic">Aucun CV configuré pour cette langue.</p>
+                    <p className="text-text-muted italic">Aucun CV configuré pour cette langue.</p>
                 )}
             </div>
 
@@ -162,3 +162,5 @@ function CVCard({ title, lang, currentUrl, onUpload, loading, isBusy }) {
         </motion.div>
     );
 }
+
+

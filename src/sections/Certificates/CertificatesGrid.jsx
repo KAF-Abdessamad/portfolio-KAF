@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CertificateCard from './CertificateCard';
-import { AlertCircle, RefreshCw } from 'lucide-react';
+import { AlertCircle, RefreshCw, Award } from 'lucide-react';
 import Button from '../../components/ui/Button';
 
 export default function CertificatesGrid({ certificates, loading, onCardClick }) {
@@ -9,11 +9,11 @@ export default function CertificatesGrid({ certificates, loading, onCardClick })
         return (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <div key={i} className="bg-slate-900/50 rounded-2xl p-5 border border-slate-800 animate-pulse h-[400px]">
-                        <div className="aspect-[4/3] bg-slate-800 rounded-xl mb-6" />
-                        <div className="h-4 w-20 bg-slate-800 rounded mb-4" />
-                        <div className="h-6 w-full bg-slate-800 rounded mb-4" />
-                        <div className="h-4 w-2/3 bg-slate-800 rounded" />
+                    <div key={i} className="bg-bg-card rounded-2xl p-5 border border animate-pulse h-[400px]">
+                        <div className="aspect-[4/3] bg-bg-surface rounded-xl mb-6" />
+                        <div className="h-4 w-20 bg-bg-surface rounded mb-4" />
+                        <div className="h-6 w-full bg-bg-surface rounded mb-4" />
+                        <div className="h-4 w-2/3 bg-bg-surface rounded" />
                     </div>
                 ))}
             </div>
@@ -27,12 +27,12 @@ export default function CertificatesGrid({ certificates, loading, onCardClick })
                 animate={{ opacity: 1, y: 0 }}
                 className="flex flex-col items-center justify-center py-20 text-center"
             >
-                <div className="w-20 h-20 bg-slate-900 rounded-3xl flex items-center justify-center text-slate-700 mb-6 border border-slate-800">
-                    <AlertCircle size={40} />
+                <div className="w-20 h-20 bg-bg-surface rounded-3xl flex items-center justify-center text-text-mut mb-6 border border-border-def">
+                    <Award size={40} className="opacity-50" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Aucun certificat trouvé</h3>
-                <p className="text-slate-400 max-w-xs mx-auto">
-                    Il semble que mon "Achievements Vault" soit vide dans cette catégorie. Revenez bientôt !
+                <h3 className="text-xl font-bold text-text-pri mb-2">Aucun certificat trouvé</h3>
+                <p className="text-text-sec max-w-xs mx-auto">
+                    Désolé, nous n'avons trouvé aucun certificat correspondant à votre sélection.
                 </p>
             </motion.div>
         );
@@ -67,3 +67,5 @@ export default function CertificatesGrid({ certificates, loading, onCardClick })
         </motion.div>
     );
 }
+
+

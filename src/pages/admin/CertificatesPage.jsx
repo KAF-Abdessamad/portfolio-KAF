@@ -70,12 +70,12 @@ export default function CertificatesPage() {
             header: 'Aperçu',
             accessor: 'image_url',
             render: (row) => (
-                <div className="w-10 h-10 rounded border border-slate-700 bg-slate-800 overflow-hidden">
+                <div className="w-10 h-10 rounded border border bg-bg-surface overflow-hidden">
                     {row.image_url ? (
                         <img src={row.image_url} alt="" className="w-full h-full object-cover" />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-600">
-                            <Award size={16} />
+                        <div className="w-full h-full flex items-center justify-center text-text-muted">
+                            <Plus size={16} />
                         </div>
                     )}
                 </div>
@@ -87,7 +87,7 @@ export default function CertificatesPage() {
             header: 'Catégorie',
             accessor: 'category',
             render: (row) => (
-                <span className="px-2 py-1 rounded bg-purple-500/10 text-purple-400 text-[10px] font-bold uppercase border border-purple-500/20">
+                <span className="px-2 py-1 rounded bg-text-text-accent/10 text-text-accent text-[10px] font-bold uppercase border border-text-text-accent/20">
                     {row.category}
                 </span>
             )
@@ -99,8 +99,8 @@ export default function CertificatesPage() {
         <div className="space-y-8 pb-12">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Certifications</h1>
-                    <p className="text-slate-400 mt-1">Gérez vos diplômes et accréditations techniques.</p>
+                    <h1 className="text-3xl font-bold text-text-primary">Certifications</h1>
+                    <p className="text-text-secondary mt-1">Gérez vos diplômes et accréditations techniques.</p>
                 </div>
 
                 <Button
@@ -114,13 +114,13 @@ export default function CertificatesPage() {
             </div>
 
             <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
                 <input
                     type="text"
                     placeholder="Rechercher un certificat..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full max-w-md bg-secondary/30 border border-slate-800 focus:border-accent rounded-xl py-2.5 pl-10 pr-4 text-white outline-none"
+                    className="w-full max-w-md bg-bg-card border border focus:border-text-text-accent rounded-xl py-2.5 pl-10 pr-4 text-text-primary outline-none"
                 />
             </div>
 
@@ -142,3 +142,5 @@ export default function CertificatesPage() {
         </div>
     );
 }
+
+

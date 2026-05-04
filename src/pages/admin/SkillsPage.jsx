@@ -79,7 +79,7 @@ export default function SkillsPage() {
                 const Icon = getIcon(row.icon_key);
                 const color = getBrandColor(row.icon_key, row.color);
                 return (
-                    <div className="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700" style={{ color }}>
+                    <div className="w-10 h-10 rounded-lg bg-bg-surface flex items-center justify-center border border" style={{ color }}>
                         {Icon ? <Icon size={24} /> : <Zap size={20} />}
                     </div>
                 );
@@ -90,7 +90,7 @@ export default function SkillsPage() {
             header: 'Catégorie',
             accessor: 'category',
             render: (row) => (
-                <span className="px-2 py-1 rounded bg-slate-800 text-slate-300 text-xs border border-slate-700">
+                <span className="px-2 py-1 rounded bg-bg-surface text-text-primary text-xs border border">
                     {row.category}
                 </span>
             )
@@ -100,9 +100,9 @@ export default function SkillsPage() {
             header: 'Featured',
             accessor: 'featured',
             render: (row) => row.featured ? (
-                <span className="text-accent text-xs font-bold uppercase tracking-widest">Oui</span>
+                <span className="text-text-accent text-xs font-bold uppercase tracking-widest">Oui</span>
             ) : (
-                <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">Non</span>
+                <span className="text-text-muted text-xs font-bold uppercase tracking-widest">Non</span>
             )
         },
         { header: 'Ordre', accessor: 'order_index' },
@@ -112,8 +112,8 @@ export default function SkillsPage() {
         <div className="space-y-8 pb-12">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white">Gestion des Compétences</h1>
-                    <p className="text-slate-400 mt-1">Gérez les technologies et outils affichés sur votre portfolio.</p>
+                    <h1 className="text-3xl font-bold text-text-primary">Gestion des Compétences</h1>
+                    <p className="text-text-secondary mt-1">Gérez les technologies et outils affichés sur votre portfolio.</p>
                 </div>
 
                 <Button
@@ -129,13 +129,13 @@ export default function SkillsPage() {
             {/* Filters Bar */}
             <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
                     <input
                         type="text"
                         placeholder="Rechercher une compétence..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-secondary/30 border border-slate-800 focus:border-accent rounded-xl py-2.5 pl-10 pr-4 text-white outline-none"
+                        className="w-full bg-bg-card border border focus:border-text-text-accent rounded-xl py-2.5 pl-10 pr-4 text-text-primary outline-none"
                     />
                 </div>
             </div>
@@ -158,3 +158,5 @@ export default function SkillsPage() {
         </div>
     );
 }
+
+

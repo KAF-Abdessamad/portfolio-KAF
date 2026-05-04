@@ -14,7 +14,7 @@ export default function AdminRoute({ children }) {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-primary flex items-center justify-center">
+            <div className="min-h-screen bg-bg-primary flex items-center justify-center">
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -31,3 +31,5 @@ export default function AdminRoute({ children }) {
 
     return children;
 }
+
+

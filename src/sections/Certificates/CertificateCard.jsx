@@ -52,7 +52,7 @@ export default function CertificateCard({ certificate, onClick }) {
         Dev: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
         Cloud: 'text-purple-400 bg-purple-400/10 border-purple-400/20',
         Design: 'text-pink-400 bg-pink-400/10 border-pink-400/20',
-        Other: 'text-slate-400 bg-slate-400/10 border-slate-400/20'
+        Other: 'text-text-mut bg-text-text-mut/10 border-text-mut/20'
     };
 
     const colorClass = categoryColors[category] || categoryColors.Other;
@@ -70,9 +70,9 @@ export default function CertificateCard({ certificate, onClick }) {
             className="relative group cursor-pointer"
         >
             {/* Neon Glow Background */}
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-secondary/50 to-purple-500/50 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500" />
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-accent/50 to-purple-500/50 rounded-2xl blur opacity-0 group-hover:opacity-30 transition duration-500" />
 
-            <div className="relative h-full bg-primary-light/40 backdrop-blur-xl border border-slate-800 rounded-2xl p-5 flex flex-col transition-all duration-300 group-hover:border-slate-700 overflow-hidden">
+            <div className="relative h-full bg-bg-card backdrop-blur-xl border border rounded-2xl p-5 flex flex-col transition-all duration-300 group-hover:border-text-text-accent/50 overflow-hidden">
 
                 {/* Featured Badge */}
                 {featured && (
@@ -82,7 +82,7 @@ export default function CertificateCard({ certificate, onClick }) {
                 )}
 
                 {/* Image / Badge Container */}
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-5 bg-slate-900/50 flex items-center justify-center group-hover:scale-[1.02] transition-transform duration-500">
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-5 bg-bg-surface flex items-center justify-center group-hover:scale-[1.02] transition-transform duration-500">
                     {image_url ? (
                         <img
                             src={image_url}
@@ -90,15 +90,15 @@ export default function CertificateCard({ certificate, onClick }) {
                             className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                         />
                     ) : (
-                        <Award size={48} className="text-slate-700" />
+                        <Award size={48} className="text-text-mut/30" />
                     )}
 
                     {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-primary/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="absolute inset-0 bg-bg-primary/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <motion.div
                             initial={{ y: 20, opacity: 0 }}
                             whileHover={{ y: 0, opacity: 1 }}
-                            className="flex items-center gap-2 px-4 py-2 bg-secondary text-primary font-bold rounded-full text-sm shadow-xl"
+                            className="flex items-center gap-2 px-4 py-2 bg-accent text-text-inv font-bold rounded-full text-sm shadow-xl"
                         >
                             Voir Détails
                             <ExternalLink size={14} />
@@ -114,16 +114,16 @@ export default function CertificateCard({ certificate, onClick }) {
                         </span>
                     </div>
 
-                    <h3 className="text-lg font-bold text-white group-hover:text-secondary transition-colors line-clamp-2 leading-tight">
+                    <h3 className="text-lg font-bold text-text-pri group-hover:text-text-acc transition-colors line-clamp-2 leading-tight">
                         {title}
                     </h3>
 
                     <div className="space-y-2 mt-auto pt-2">
-                        <div className="flex items-center gap-2 text-slate-400 text-sm">
-                            <ShieldCheck size={14} className="text-secondary" />
+                        <div className="flex items-center gap-2 text-text-secondary text-sm">
+                            <ShieldCheck size={14} className="text-text-accent" />
                             <span className="truncate">{issuer}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-slate-500 text-xs">
+                        <div className="flex items-center gap-2 text-text-muted text-xs">
                             <Calendar size={14} />
                             <span>Obtenu en {formattedDate}</span>
                         </div>
@@ -136,3 +136,5 @@ export default function CertificateCard({ certificate, onClick }) {
         </motion.div>
     );
 }
+
+

@@ -1,15 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import Container from '../../components/layout/Container';
 import ContactInfo from './ContactInfo';
 import ContactForm from './ContactForm';
 
 export default function Contact() {
+    const { t } = useTranslation();
     return (
-        <section id="contact" className="relative py-24 bg-primary overflow-hidden">
+        <section id="contact" className="relative py-24 bg-bg-primary overflow-hidden">
             {/* Background decorations */}
             <div className="absolute top-1/2 left-0 w-1/3 h-[500px] bg-accent/5 blur-[120px] -translate-y-1/2 rounded-full pointer-events-none" />
-            <div className="absolute top-0 right-0 w-1/4 h-[400px] bg-[#00f0ff]/5 blur-[100px] rounded-full pointer-events-none" />
+            <div className="absolute -top-20 -left-20 w-64 h-64 bg-accent/20 rounded-full blur-[80px] pointer-events-none" />
 
             <Container>
                 <div className="text-center max-w-3xl mx-auto mb-16">
@@ -17,23 +19,23 @@ export default function Contact() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="inline-flex items-center space-x-2 px-3 py-1.5 mb-6 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-mono uppercase tracking-[0.2em]"
+                        className="inline-flex items-center space-x-2 px-3 py-1.5 mb-6 rounded-full bg-accent/10 border border-accent/20 text-text-acc text-xs font-mono uppercase tracking-[0.2em]"
                     >
-                        Contact
+                        {t('contact.badge')}
                     </motion.div>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-                        Générer un <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#00f0ff]">Impact.</span>
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-pri mb-6 tracking-tight">
+                        {t('contact.title')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-acc to-indigo-400">{t('contact.accent')}</span>
                     </h2>
-                    <p className="text-slate-400 text-lg leading-relaxed">
-                        Un projet innovant en tête ? Collaborons pour créer une expérience numérique d'exception.
+                    <p className="text-text-sec text-lg leading-relaxed">
+                        {t('contact.description')}
                     </p>
                 </div>
 
-                <div className="glass-card relative max-w-6xl mx-auto">
+                <div className="relative max-w-6xl mx-auto lg:glass-card">
                     {/* Subtle neon border glow ring framing the entire contact box */}
                     <div className="absolute inset-0 border border-white/10 rounded-2xl pointer-events-none shadow-[0_0_30px_rgba(59,130,246,0.05)]" />
 
-                    <div className="grid grid-cols-1 lg:grid-cols-5 min-h-[600px] rounded-2xl overflow-hidden">
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-0 min-h-[600px] rounded-2xl overflow-hidden">
                         {/* Left side: Info */}
                         <motion.div
                             initial={{ x: -50, opacity: 0 }}
@@ -51,7 +53,7 @@ export default function Contact() {
                             whileInView={{ x: 0, opacity: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-                            className="lg:col-span-3 bg-[#050B14]"
+                            className="lg:col-span-3 bg-bg-surface"
                         >
                             <ContactForm />
                         </motion.div>
@@ -61,3 +63,5 @@ export default function Contact() {
         </section>
     );
 }
+
+

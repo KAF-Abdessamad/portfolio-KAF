@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 
 export default function Badge({ children, variant = 'primary', className }) {
     const variants = {
-        primary: "bg-secondary/10 text-secondary border-secondary/20",
-        accent: "bg-accent-blue/10 text-accent-blue border-accent-blue/20",
-        outline: "bg-transparent text-slate-400 border-slate-700",
+        primary: "bg-text-acc/10 text-text-acc border-text-acc/20",
+        accent: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20",
+        outline: "bg-transparent text-text-mut border-border-def",
     };
 
     return (
@@ -21,3 +21,5 @@ export default function Badge({ children, variant = 'primary', className }) {
         </motion.span>
     );
 }
+
+

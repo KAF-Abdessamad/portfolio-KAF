@@ -1,1 +1,1 @@
-export { default } from './Skills';
+export { default as SkillsMarquee } from './SkillsMarquee';

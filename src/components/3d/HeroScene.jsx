@@ -92,7 +92,7 @@ const StarField = () => {
 
 export default function HeroScene() {
     return (
-        <div className="absolute inset-0 z-0 bg-primary">
+        <div className="absolute inset-0 z-0 bg-bg-primary">
             <Canvas shadows dpr={[1, 2]}>
                 <PerspectiveCamera makeDefault position={[0, 0, 6]} fov={50} />
 
@@ -115,3 +115,5 @@ export default function HeroScene() {
         </div>
     );
 }
+
+

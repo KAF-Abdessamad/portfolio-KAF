@@ -12,8 +12,8 @@ export default function Section({
             id={id}
             className={`
         py-20 md:py-32 relative overflow-hidden
-        ${dark ? 'bg-primary text-white' : 'bg-slate-50 text-primary'}
-        ${alternate ? 'bg-primary-light/50' : ''}
+        ${dark ? 'bg-bg-primary text-white' : 'bg-slate-50 text-text-primary'}
+        ${alternate ? 'bg-bg-card/50' : ''}
         ${className}
       `}
         >
@@ -37,3 +37,5 @@ export default function Section({
         </section>
     );
 }
+
+

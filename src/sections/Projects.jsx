@@ -6,19 +6,23 @@ import Container from '../components/layout/Container';
 import ProjectCard from '../components/ui/ProjectCard';
 import ProjectModal from '../components/ui/ProjectModal';
 import { useProjects } from '../hooks/useProjects';
+import { useTranslation } from 'react-i18next';
 
 const CATEGORIES = ["Tous", "Web", "Mobile", "3D", "Design"];
 const PROJECTS_PER_PAGE = 6;
 
 export default function Projects() {
+    const { t } = useTranslation();
     const { projects, loading, error } = useProjects();
-    const [activeCategory, setActiveCategory] = useState("Tous");
+    const [activeCategory, setActiveCategory] = useState("All");
     const [selectedProject, setSelectedProject] = useState(null);
     const [visibleCount, setVisibleCount] = useState(PROJECTS_PER_PAGE);
 
+    const categories = ["All", "Web", "Mobile", "3D", "Design"];
+
     const filteredProjects = useMemo(() => {
         if (!projects) return [];
-        if (activeCategory === "Tous") return projects;
+        if (activeCategory === "All") return projects;
         return projects.filter(p => p.category === activeCategory);
     }, [activeCategory, projects]);
 
@@ -28,7 +32,7 @@ export default function Projects() {
     if (error) return null;
 
     return (
-        <Section id="projects" className="bg-primary pt-24">
+        <Section id="projects" className="bg-bg-primary pt-24">
             <Container>
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
@@ -37,34 +41,34 @@ export default function Projects() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-4xl md:text-5xl font-bold text-white mb-6"
+                            className="text-4xl md:text-5xl font-bold text-text-pri mb-6"
                         >
-                            Mes <span className="text-secondary relative">Projets
-                                <span className="absolute bottom-0 left-0 w-full h-[4px] bg-accent-blue/50 -rotate-1 rounded-full"></span>
+                            {t('projects.title').split(' ')[0]} <span className="text-text-acc relative">{t('projects.title').split(' ').slice(1).join(' ')}
+                                <span className="absolute bottom-0 left-0 w-full h-[4px] bg-accent/30 -rotate-1 rounded-full"></span>
                             </span>
                         </motion.h2>
-                        <p className="text-slate-400 text-lg">
-                            Une sélection de mes travaux récents mêlant excellence technique et design soigné.
+                        <p className="text-text-sec text-lg">
+                            {t('projects.description')}
                         </p>
                     </div>
 
                     {/* Filtering System */}
-                    <div className="flex flex-wrap gap-3">
-                        {CATEGORIES.map((cat) => (
+                     <div className="flex flex-wrap gap-3">
+                        {categories.map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => {
                                     setActiveCategory(cat);
                                     setVisibleCount(PROJECTS_PER_PAGE);
                                 }}
-                                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${activeCategory === cat
-                                    ? "bg-secondary text-primary border-secondary shadow-accent"
-                                    : "bg-primary-light text-slate-400 border-slate-800 hover:border-slate-600"
+                                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-border-def ${activeCategory === cat
+                                    ? "bg-accent text-text-inv border-accent shadow-accent"
+                                    : "bg-bg-surface text-text-mut border-border-def hover:border-text-sec"
                                     }`}
                             >
-                                {cat}
+                                {cat === "All" ? t('projects.all') : cat}
                                 {activeCategory === cat && projects && (
-                                    <span className="ml-2 bg-primary/20 px-2 py-0.5 rounded-full text-[10px]">
+                                    <span className="ml-2 bg-text-inv/20 px-2 py-0.5 rounded-full text-[10px]">
                                         {filteredProjects.length}
                                     </span>
                                 )}
@@ -77,7 +81,7 @@ export default function Projects() {
                 <div className="relative min-h-[400px]">
                     {loading ? (
                         <div className="flex items-center justify-center py-20">
-                            <div className="w-10 h-10 border-4 border-secondary border-t-transparent rounded-full animate-spin" />
+                            <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" />
                         </div>
                     ) : (
                         <motion.div
@@ -99,7 +103,7 @@ export default function Projects() {
                     {/* Empty State */}
                     {!loading && displayedProjects.length === 0 && (
                         <div className="py-20 text-center">
-                            <p className="text-slate-500 font-mono italic">Aucun projet trouvé dans cette catégorie.</p>
+                            <p className="text-text-mut font-mono italic">{t('projects.no_projects')}</p>
                         </div>
                     )}
                 </div>
@@ -109,9 +113,9 @@ export default function Projects() {
                     <div className="flex justify-center mt-16">
                         <button
                             onClick={() => setVisibleCount(prev => prev + PROJECTS_PER_PAGE)}
-                            className="group px-8 py-4 bg-transparent border-2 border-slate-800 text-white rounded-xl font-bold hover:border-secondary hover:text-secondary transition-all duration-300"
+                            className="group px-8 py-4 bg-transparent border-2 border-border-def text-text-pri rounded-xl font-bold hover:border-accent hover:text-text-acc transition-all duration-300"
                         >
-                            Voir plus de projets
+                            {t('projects.load_more')}
                             <motion.span
                                 animate={{ y: [0, 5, 0] }}
                                 transition={{ repeat: Infinity, duration: 2 }}
@@ -133,4 +137,6 @@ export default function Projects() {
         </Section>
     );
 }
+
+
 

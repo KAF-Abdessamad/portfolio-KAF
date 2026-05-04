@@ -12,10 +12,10 @@ export default function Button({
     const baseStyles = "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary/50 disabled:opacity-50 disabled:cursor-not-allowed";
 
     const variants = {
-        primary: "bg-secondary text-primary hover:bg-secondary/80 shadow-accent",
-        secondary: "bg-primary-light text-white hover:bg-primary-lighter border border-slate-700",
-        outline: "border-2 border-secondary text-secondary hover:bg-secondary hover:text-primary",
-        ghost: "text-slate-400 hover:text-white hover:bg-white/10",
+        primary: "bg-accent text-text-inv hover:bg-accent-h shadow-accent font-semibold",
+        secondary: "bg-bg-surface text-text-pri hover:bg-bg-elevated border border-border-def font-medium",
+        outline: "bg-transparent border-2 border-accent text-text-acc hover:bg-theme-accent hover:text-text-inv",
+        ghost: "bg-transparent text-text-mut hover:text-text-pri hover:bg-bg-elevated",
     };
 
     const sizes = {
@@ -38,3 +38,5 @@ export default function Button({
         </motion.button>
     );
 }
+
+

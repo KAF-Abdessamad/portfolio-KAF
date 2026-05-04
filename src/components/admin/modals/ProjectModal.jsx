@@ -4,12 +4,16 @@ import { X, Save, Loader2, Plus } from 'lucide-react';
 import Button from '../../ui/Button';
 import UploadZone from '../UploadZone';
 import { uploadFile, getPublicUrl } from '../../../lib/storage';
+import { translateText } from '../../../utils/translate';
 
 export default function ProjectModal({ isOpen, onClose, onSave, project = null }) {
     const initialForm = {
         title: '',
+        title_en: '',
         description: '',
+        description_en: '',
         long_description: '',
+        long_description_en: '',
         tech_stack: '',
         category: 'Web',
         github_url: '',
@@ -23,6 +27,29 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
     const [imageFile, setImageFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState('');
     const [isSaving, setIsSaving] = useState(false);
+    const [isTranslating, setIsTranslating] = useState(false);
+
+    const handleAutoTranslate = async () => {
+        setIsTranslating(true);
+        try {
+            const [enTitle, enDesc, enLongDesc] = await Promise.all([
+                translateText(formData.title, 'fr', 'en'),
+                translateText(formData.description, 'fr', 'en'),
+                translateText(formData.long_description, 'fr', 'en')
+            ]);
+
+            setFormData(prev => ({
+                ...prev,
+                title_en: enTitle,
+                description_en: enDesc,
+                long_description_en: enLongDesc
+            }));
+        } catch (error) {
+            console.error("Translation failed:", error);
+        } finally {
+            setIsTranslating(false);
+        }
+    };
 
     useEffect(() => {
         if (project) {
@@ -99,32 +126,56 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-4xl max-h-[90vh] bg-secondary border border-slate-800 rounded-3xl overflow-hidden flex flex-col shadow-2xl"
+                        className="relative w-full max-w-4xl max-h-[90vh] bg-bg-surface border border rounded-3xl overflow-hidden flex flex-col shadow-2xl"
                     >
                         {/* Header */}
-                        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-primary/20">
+                        <div className="p-6 border-b border flex items-center justify-between bg-bg-card/20">
                             <h2 className="text-xl font-bold text-white">
                                 {project ? 'Modifier le projet' : 'Nouveau projet'}
                             </h2>
-                            <button onClick={onClose} className="p-2 text-slate-400 hover:text-white transition-colors">
-                                <X size={24} />
-                            </button>
+                            <div className="flex items-center gap-4">
+                                <button 
+                                    type="button"
+                                    onClick={handleAutoTranslate}
+                                    disabled={isTranslating}
+                                    className="text-xs font-bold text-accent hover:text-accent-h flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 border border-accent/20 transition-all"
+                                >
+                                    {isTranslating ? <Loader2 size={14} className="animate-spin" /> : '✨'}
+                                    {isTranslating ? 'Traduction...' : 'Auto-Translate (FR ➔ EN)'}
+                                </button>
+                                <button onClick={onClose} className="p-2 text-slate-400 hover:text-white transition-colors">
+                                    <X size={24} />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Form Body */}
                         <div className="flex-1 overflow-y-auto p-8">
                             <form id="project-form" onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-400 mb-2">Titre du projet</label>
-                                        <input
-                                            name="title"
-                                            required
-                                            value={formData.title}
-                                            onChange={handleChange}
-                                            className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
-                                            placeholder="ex: Portfolio 3D"
-                                        />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-slate-400 mb-2">Titre (FR)</label>
+                                            <input
+                                                name="title"
+                                                required
+                                                value={formData.title}
+                                                onChange={handleChange}
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                placeholder="ex: Portfolio 3D"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-slate-400 mb-2">Titre (EN)</label>
+                                            <input
+                                                name="title_en"
+                                                required
+                                                value={formData.title_en}
+                                                onChange={handleChange}
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                placeholder="ex: 3D Portfolio"
+                                            />
+                                        </div>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
@@ -134,7 +185,7 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                                 name="category"
                                                 value={formData.category}
                                                 onChange={handleChange}
-                                                className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             >
                                                 <option value="Web">Web</option>
                                                 <option value="Mobile">Mobile</option>
@@ -149,7 +200,7 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                                 name="order_index"
                                                 value={formData.order_index}
                                                 onChange={handleChange}
-                                                className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             />
                                         </div>
                                     </div>
@@ -160,7 +211,7 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                             name="tech_stack"
                                             value={formData.tech_stack}
                                             onChange={handleChange}
-                                            className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             placeholder="React, Three.js, Tailwind..."
                                         />
                                     </div>
@@ -172,7 +223,7 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                             name="featured"
                                             checked={formData.featured}
                                             onChange={handleChange}
-                                            className="w-5 h-5 rounded border-slate-800 bg-primary text-accent focus:ring-accent"
+                                            className="w-5 h-5 rounded border-slate-800 bg-bg-primary text-text-accent focus:ring-accent"
                                         />
                                         <label htmlFor="featured" className="text-sm text-white">Mettre en avant (Featured)</label>
                                     </div>
@@ -199,7 +250,7 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                                 name="github_url"
                                                 value={formData.github_url}
                                                 onChange={handleChange}
-                                                className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                                 placeholder="https://github.com/..."
                                             />
                                         </div>
@@ -209,42 +260,67 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                                 name="live_url"
                                                 value={formData.live_url}
                                                 onChange={handleChange}
-                                                className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                                 placeholder="https://..."
                                             />
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-slate-400 mb-2">Description courte</label>
-                                    <textarea
-                                        name="description"
-                                        required
-                                        rows={2}
-                                        value={formData.description}
-                                        onChange={handleChange}
-                                        className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors resize-none"
-                                        placeholder="Une brève description pour la grille de projets..."
-                                    />
+                                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-2">Description courte (FR)</label>
+                                        <textarea
+                                            name="description"
+                                            required
+                                            rows={2}
+                                            value={formData.description}
+                                            onChange={handleChange}
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors resize-none"
+                                            placeholder="Une brève description..."
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-2">Description courte (EN)</label>
+                                        <textarea
+                                            name="description_en"
+                                            required
+                                            rows={2}
+                                            value={formData.description_en}
+                                            onChange={handleChange}
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors resize-none"
+                                            placeholder="A brief description..."
+                                        />
+                                    </div>
                                 </div>
 
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-slate-400 mb-2">Description détaillée (Markdown supporté)</label>
-                                    <textarea
-                                        name="long_description"
-                                        rows={5}
-                                        value={formData.long_description}
-                                        onChange={handleChange}
-                                        className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors resize-none"
-                                        placeholder="Détails du projet, défis, solutions..."
-                                    />
+                                <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-2">Détails (FR)</label>
+                                        <textarea
+                                            name="long_description"
+                                            rows={4}
+                                            value={formData.long_description}
+                                            onChange={handleChange}
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors resize-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-2">Détails (EN)</label>
+                                        <textarea
+                                            name="long_description_en"
+                                            rows={4}
+                                            value={formData.long_description_en}
+                                            onChange={handleChange}
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors resize-none"
+                                        />
+                                    </div>
                                 </div>
                             </form>
                         </div>
 
                         {/* Footer */}
-                        <div className="p-6 border-t border-slate-800 flex items-center justify-end gap-4 bg-primary/20">
+                        <div className="p-6 border-t border flex items-center justify-end gap-4 bg-bg-card/20">
                             <button
                                 onClick={onClose}
                                 className="px-6 py-2.5 text-slate-400 hover:text-white transition-colors"
@@ -268,3 +344,5 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
         </AnimatePresence>
     );
 }
+
+

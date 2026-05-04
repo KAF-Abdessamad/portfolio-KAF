@@ -9,17 +9,17 @@ export default function Input({
     ...props
 }) {
     const inputClasses = `
-    w-full px-4 py-3 rounded-lg bg-primary-lighter border 
-    ${error ? 'border-accent-pink' : 'border-slate-700'} 
-    text-white placeholder:text-slate-500 
-    focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary 
+    w-full px-4 py-3 rounded-lg bg-bg-surface border 
+    ${error ? 'border-accent' : 'border-border-def'} 
+    text-text-pri placeholder:text-text-mut 
+    focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent 
     transition-all duration-300
   `;
 
     return (
         <div className="mb-4">
             {label && (
-                <label className="block text-sm font-medium text-slate-300 mb-2">
+                <label className="block text-sm font-medium text-text-sec mb-2">
                     {label}
                 </label>
             )}
@@ -48,7 +48,7 @@ export default function Input({
                 <motion.p
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-accent-pink text-xs mt-1"
+                    className="text-text-accent text-xs mt-1"
                 >
                     {error}
                 </motion.p>
@@ -56,3 +56,5 @@ export default function Input({
         </div>
     );
 }
+
+

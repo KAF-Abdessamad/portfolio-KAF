@@ -83,9 +83,9 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-full max-w-3xl bg-secondary border border-slate-800 rounded-3xl overflow-hidden flex flex-col shadow-2xl"
+                        className="relative w-full max-w-3xl bg-bg-surface border border rounded-3xl overflow-hidden flex flex-col shadow-2xl"
                     >
-                        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-primary/20">
+                        <div className="p-6 border-b border flex items-center justify-between bg-bg-card/20">
                             <h2 className="text-xl font-bold text-white">
                                 {certificate ? 'Modifier le certificat' : 'Nouveau certificat'}
                             </h2>
@@ -104,7 +104,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                                             required
                                             value={formData.title}
                                             onChange={handleChange}
-                                            className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             placeholder="ex: AWS Solutions Architect"
                                         />
                                     </div>
@@ -116,7 +116,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                                             required
                                             value={formData.issuer}
                                             onChange={handleChange}
-                                            className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             placeholder="ex: Amazon Web Services"
                                         />
                                     </div>
@@ -130,7 +130,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                                                 required
                                                 value={formData.issue_date}
                                                 onChange={handleChange}
-                                                className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             />
                                         </div>
                                         <div>
@@ -140,7 +140,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                                                 name="expiry_date"
                                                 value={formData.expiry_date}
                                                 onChange={handleChange}
-                                                className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             />
                                         </div>
                                     </div>
@@ -151,7 +151,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                                             name="category"
                                             value={formData.category}
                                             onChange={handleChange}
-                                            className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                         >
                                             <option value="Dev">Développement</option>
                                             <option value="Cloud">Cloud</option>
@@ -181,7 +181,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                                             name="credential_id"
                                             value={formData.credential_id}
                                             onChange={handleChange}
-                                            className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                         />
                                     </div>
 
@@ -191,7 +191,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                                             name="credential_url"
                                             value={formData.credential_url}
                                             onChange={handleChange}
-                                            className="w-full bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                            className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
                                             placeholder="https://..."
                                         />
                                     </div>
@@ -199,7 +199,7 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
                             </form>
                         </div>
 
-                        <div className="p-6 border-t border-slate-800 flex items-center justify-end gap-4 bg-primary/20">
+                        <div className="p-6 border-t border flex items-center justify-end gap-4 bg-bg-card/20">
                             <button onClick={onClose} className="px-6 py-2.5 text-slate-400 hover:text-white transition-colors">
                                 Annuler
                             </button>
@@ -220,3 +220,5 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
         </AnimatePresence>
     );
 }
+
+

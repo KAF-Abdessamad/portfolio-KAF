@@ -51,7 +51,7 @@ export default function CertificatesPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-primary flex items-center justify-center p-6 text-center">
+            <div className="min-h-screen bg-bg-primary flex items-center justify-center p-6 text-center">
                 <div className="space-y-4">
                     <h2 className="text-2xl font-bold text-white">Oups ! Une erreur est survenue</h2>
                     <p className="text-slate-400">Impossible de charger les certificats pour le moment.</p>
@@ -62,7 +62,7 @@ export default function CertificatesPage() {
                     </div>
                     <button
                         onClick={() => window.location.reload()}
-                        className="px-6 py-2 bg-secondary text-primary font-bold rounded-lg"
+                        className="px-6 py-2 bg-secondary text-text-primary font-bold rounded-lg"
                     >
                         Réessayer
                     </button>
@@ -72,7 +72,7 @@ export default function CertificatesPage() {
     }
 
     return (
-        <div className="bg-primary min-h-screen">
+        <div className="bg-bg-primary min-h-screen">
             <Helmet>
                 <title>Certifications | Abdessamad KAF</title>
                 <meta name="description" content="Découvrez mes certifications professionnelles et mes accomplissements académiques." />
@@ -110,3 +110,5 @@ export default function CertificatesPage() {
         </div>
     );
 }
+
+

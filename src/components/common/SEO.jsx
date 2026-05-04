@@ -50,13 +50,6 @@ export default function SEO({
             <meta property="og:site_name" content={defaultSEO.name} />
             <meta property="og:locale" content={defaultSEO.locale} />
 
-            {/* Twitter Card */}
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:url" content={seo.url} />
-            <meta name="twitter:title" content={seo.title} />
-            <meta name="twitter:description" content={seo.description} />
-            <meta name="twitter:image" content={seo.image} />
-
             {/* JSON-LD Structured Data */}
             <script type="application/ld+json">
                 {JSON.stringify(structuredData)}
@@ -64,3 +57,5 @@ export default function SEO({
         </Helmet>
     );
 }
+
+

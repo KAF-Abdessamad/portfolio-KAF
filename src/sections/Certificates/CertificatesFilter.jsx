@@ -24,15 +24,15 @@ export default function CertificatesFilter({ activeCategory, setCategory, counts
                         className={cn(
                             "relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 border",
                             isActive
-                                ? "text-primary border-secondary shadow-[0_0_20px_rgba(var(--secondary-rgb),0.3)]"
-                                : "text-slate-400 border-slate-800 hover:border-slate-700 hover:text-white"
+                                ? "text-text-inv border-accent shadow-accent"
+                                : "text-text-sec border-border-def hover:border-accent/50 hover:text-text-pri"
                         )}
                     >
                         {/* Animated Active Background */}
                         {isActive && (
                             <motion.div
                                 layoutId="activeFilterPill"
-                                className="absolute inset-0 bg-secondary rounded-full z-[-1]"
+                                className="absolute inset-0 bg-accent rounded-full z-[-1]"
                                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
                             />
                         )}
@@ -43,8 +43,8 @@ export default function CertificatesFilter({ activeCategory, setCategory, counts
                         <span className={cn(
                             "px-1.5 py-0.5 rounded-md text-[10px] font-bold border",
                             isActive
-                                ? "bg-primary/20 border-primary/20 text-primary"
-                                : "bg-slate-900 border-slate-700 text-slate-500"
+                                ? "bg-text-inv/20 border-accent/20 text-text-inv"
+                                : "bg-bg-surface border-border-def text-text-mut"
                         )}>
                             {count}
                         </span>

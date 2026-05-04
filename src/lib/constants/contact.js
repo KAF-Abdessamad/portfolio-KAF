@@ -14,11 +14,6 @@ export const SOCIAL_LINKS = [
         name: "LinkedIn",
         url: "https://www.linkedin.com/in/kaf-abdessamad-311a38246/",
         icon: "linkedin"
-    },
-    {
-        name: "Twitter",
-        url: "#",
-        icon: "twitter"
     }
 ];
 

@@ -12,38 +12,38 @@ export default function DataTable({
 }) {
     if (isLoading) {
         return (
-            <div className="w-full bg-secondary/20 border border-slate-800 rounded-2xl p-12 flex flex-col items-center justify-center space-y-4">
-                <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-                <p className="text-slate-400 font-mono text-sm">Chargement des données...</p>
+            <div className="w-full bg-bg-card/20 border border rounded-2xl p-12 flex flex-col items-center justify-center space-y-4">
+                <div className="w-10 h-10 border-4 border-text-text-accent border-t-transparent rounded-full animate-spin" />
+                <p className="text-text-secondary font-mono text-sm">Chargement des données...</p>
             </div>
         );
     }
 
     if (!data || data.length === 0) {
         return (
-            <div className="w-full bg-secondary/20 border border-slate-800 rounded-2xl p-12 text-center">
-                <p className="text-slate-500 italic">Aucune donnée trouvée.</p>
+            <div className="w-full bg-bg-card/20 border border rounded-2xl p-12 text-center">
+                <p className="text-text-muted italic">Aucune donnée trouvée.</p>
             </div>
         );
     }
 
     return (
-        <div className="w-full overflow-hidden bg-secondary/30 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-xl">
+        <div className="w-full overflow-hidden bg-bg-card backdrop-blur-xl border border rounded-2xl shadow-xl">
             <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     <thead>
-                        <tr className="border-b border-slate-800 bg-primary/40">
+                        <tr className="border-b border bg-bg-surface/40">
                             {columns.map((col, i) => (
-                                <th key={i} className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                <th key={i} className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-widest">
                                     {col.header}
                                 </th>
                             ))}
-                            <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest text-right">
+                            <th className="px-6 py-4 text-xs font-bold text-text-muted uppercase tracking-widest text-right">
                                 Actions
                             </th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800">
+                    <tbody className="divide-y divide-border">
                         {data.map((row, rowIndex) => (
                             <motion.tr
                                 initial={{ opacity: 0 }}
@@ -53,7 +53,7 @@ export default function DataTable({
                                 className="group hover:bg-white/[0.02] transition-colors"
                             >
                                 {columns.map((col, i) => (
-                                    <td key={i} className="px-6 py-4 text-white">
+                                    <td key={i} className="px-6 py-4 text-text-primary">
                                         {col.render ? col.render(row) : row[col.accessor]}
                                     </td>
                                 ))}
@@ -62,7 +62,7 @@ export default function DataTable({
                                         {onView && (
                                             <button
                                                 onClick={() => onView(row)}
-                                                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
+                                                className="p-2 text-text-secondary hover:text-text-primary hover:bg-bg-surface rounded-lg transition-all"
                                                 title="Voir"
                                             >
                                                 <ExternalLink size={18} />
@@ -71,7 +71,7 @@ export default function DataTable({
                                         {onEdit && (
                                             <button
                                                 onClick={() => onEdit(row)}
-                                                className="p-2 text-slate-400 hover:text-accent hover:bg-accent/10 rounded-lg transition-all"
+                                                className="p-2 text-text-secondary hover:text-text-accent hover:bg-text-text-accent/10 rounded-lg transition-all"
                                                 title="Modifier"
                                             >
                                                 <Edit2 size={18} />
@@ -80,7 +80,7 @@ export default function DataTable({
                                         {onDelete && (
                                             <button
                                                 onClick={() => onDelete(row)}
-                                                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+                                                className="p-2 text-text-secondary hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
                                                 title="Supprimer"
                                             >
                                                 <Trash2 size={18} />
@@ -96,3 +96,5 @@ export default function DataTable({
         </div>
     );
 }
+
+

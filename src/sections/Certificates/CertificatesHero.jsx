@@ -21,19 +21,19 @@ export default function CertificatesHero({ totalCount }) {
     return (
         <section className="relative pt-32 pb-16 overflow-hidden">
             {/* Background Grid & Glows */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(var(--secondary-rgb),0.15),transparent_50%)]" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(124,58,237,0.1),transparent_50%)]" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-accent/50 to-transparent" />
 
             <div className="container mx-auto px-6 relative z-10">
                 {/* Breadcrumb */}
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-slate-500 mb-8"
+                    className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-text-mut mb-8"
                 >
-                    <Link to="/" className="hover:text-secondary transition-colors">Accueil</Link>
+                    <Link to="/" className="hover:text-text-sec transition-colors">Accueil</Link>
                     <ChevronRight size={12} />
-                    <span className="text-slate-300">Certificats</span>
+                    <span className="text-text-pri">Certificats</span>
                 </motion.div>
 
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -41,7 +41,7 @@ export default function CertificatesHero({ totalCount }) {
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-xs font-bold uppercase tracking-widest mb-4"
+                            className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-border-def rounded-full text-text-sec text-xs font-bold uppercase tracking-widest mb-4"
                         >
                             <Award size={14} />
                             Success & Recognition
@@ -51,10 +51,10 @@ export default function CertificatesHero({ totalCount }) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
-                            className="text-5xl md:text-7xl font-bold text-white tracking-tighter"
+                            className="text-5xl md:text-7xl font-bold text-text-pri tracking-tighter"
                         >
                             Certifications & <br />
-                            <span className="text-secondary bg-clip-text text-transparent bg-gradient-to-r from-secondary to-purple-400">
+                            <span className="text-text-acc bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-400">
                                 Achievements
                             </span>
                         </motion.h1>
@@ -64,14 +64,14 @@ export default function CertificatesHero({ totalCount }) {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.3, type: "spring" }}
-                        className="bg-primary-light/50 backdrop-blur-xl border border-slate-800 p-6 rounded-3xl min-w-[200px]"
+                        className="bg-bg-card/50 backdrop-blur-xl border border-border-def p-6 rounded-3xl min-w-[200px]"
                     >
-                        <div className="text-slate-500 text-sm font-medium mb-1">Total Obtenu</div>
-                        <div className="text-5xl font-bold text-white flex items-baseline gap-2">
+                        <div className="text-text-mut text-sm font-medium mb-1">Total Obtenu</div>
+                        <div className="text-5xl font-bold text-text-pri flex items-baseline gap-2">
                             <AnimatedCounter value={totalCount} />
-                            <span className="text-secondary text-2xl font-black">+</span>
+                            <span className="text-text-acc text-2xl font-black">+</span>
                         </div>
-                        <div className="w-12 h-1 bg-secondary mt-4 rounded-full" />
+                        <div className="w-12 h-1 bg-accent mt-4 rounded-full" />
                     </motion.div>
                 </div>
             </div>
@@ -85,3 +85,5 @@ export default function CertificatesHero({ totalCount }) {
         </section>
     );
 }
+
+

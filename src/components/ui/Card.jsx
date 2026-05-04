@@ -15,8 +15,8 @@ export default function Card({
             viewport={{ once: true }}
             whileHover={hover ? { y: -10, transition: { duration: 0.3 } } : {}}
             className={cn(
-                "relative rounded-2xl p-6 bg-primary-light border border-slate-800 shadow-premium overflow-hidden",
-                glass && "bg-opacity-20 backdrop-blur-md border-white/10",
+                "relative rounded-2xl p-6 bg-bg-card border border-border-def shadow-theme-sm overflow-hidden",
+                glass && "bg-opacity-20 backdrop-blur-md border-border-def/50",
                 className
             )}
             {...props}
@@ -29,3 +29,5 @@ export default function Card({
         </motion.div>
     );
 }
+
+

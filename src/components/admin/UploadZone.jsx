@@ -71,7 +71,7 @@ export default function UploadZone({
                 onClick={() => fileInputRef.current.click()}
                 className={`
                     relative cursor-pointer group border-2 border-dashed rounded-2xl p-8 transition-all duration-200 flex flex-col items-center justify-center min-h-[200px]
-                    ${isDragging ? 'bg-accent/10 border-accent' : 'bg-primary/40 border-slate-800 hover:border-slate-600'}
+                    ${isDragging ? 'bg-text-text-accent/10 border-text-text-accent' : 'bg-bg-surface/40 border hover:border-text-text-muted'}
                     ${preview ? 'border-none p-0' : ''}
                 `}
             >
@@ -92,9 +92,9 @@ export default function UploadZone({
                             onClick={(e) => e.stopPropagation()}
                         >
                             {preview.endsWith('.pdf') ? (
-                                <div className="w-full h-full bg-slate-900 flex flex-col items-center justify-center p-4">
-                                    <File size={48} className="text-accent mb-2" />
-                                    <p className="text-white text-sm font-medium">Document PDF sélectionné</p>
+                                <div className="w-full h-full bg-bg-surface flex flex-col items-center justify-center p-4">
+                                    <File size={48} className="text-text-accent mb-2" />
+                                    <p className="text-text-primary text-sm font-medium">Document PDF sélectionné</p>
                                 </div>
                             ) : (
                                 <img src={preview} alt="Preview" className="w-full h-full object-cover" />
@@ -123,13 +123,13 @@ export default function UploadZone({
                             animate={{ opacity: 1, scale: 1 }}
                             className="text-center"
                         >
-                            <div className="w-16 h-16 bg-accent/10 border border-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                                <Upload size={32} className="text-accent" />
+                            <div className="w-16 h-16 bg-text-text-accent/10 border border-text-text-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                                <Upload size={32} className="text-text-accent" />
                             </div>
-                            <h4 className="text-white font-medium mb-1">
+                            <h4 className="text-text-primary font-medium mb-1">
                                 {isDragging ? "Déposez ici" : "Cliquez ou glissez un fichier"}
                             </h4>
-                            <p className="text-slate-500 text-sm">
+                            <p className="text-text-muted text-sm">
                                 {accept.includes('image') ? 'PNG, JPG, WebP' : 'PDF'} (Max {maxSizeMB} Mo)
                             </p>
                         </motion.div>
@@ -150,3 +150,5 @@ export default function UploadZone({
         </div>
     );
 }
+
+

@@ -33,10 +33,10 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen bg-primary flex items-center justify-center px-4">
+        <div className="min-h-screen bg-bg-primary flex items-center justify-center px-4">
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[120px]" />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px]" />
+                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-text-text-accent/10 rounded-full blur-[120px]" />
+                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-text-text-secondary/10 rounded-full blur-[120px]" />
             </div>
 
             <motion.div
@@ -44,10 +44,10 @@ export default function LoginPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="w-full max-w-md"
             >
-                <div className="bg-secondary/50 backdrop-blur-xl border border-slate-800 p-8 rounded-2xl shadow-2xl relative z-10">
+                <div className="bg-bg-card/50 backdrop-blur-xl border border p-8 rounded-2xl shadow-2xl relative z-10">
                     <div className="text-center mb-10">
-                        <h1 className="text-3xl font-bold text-white mb-2">Administration</h1>
-                        <p className="text-slate-400">Accédez à votre tableau de bord</p>
+                        <h1 className="text-3xl font-bold text-text-primary mb-2">Administration</h1>
+                        <p className="text-text-secondary">Accédez à votre tableau de bord</p>
                     </div>
 
                     {error && (
@@ -63,30 +63,30 @@ export default function LoginPage() {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
+                            <label className="block text-sm font-medium text-text-secondary mb-2">Email</label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
                                 <input
                                     type="email"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full bg-primary border border-slate-800 focus:border-accent rounded-lg py-3 pl-11 pr-4 text-white placeholder:text-slate-600 outline-none transition-colors"
+                                    className="w-full bg-bg-surface border border focus:border-text-text-accent rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted/50 outline-none transition-colors"
                                     placeholder="nom@exemple.com"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-400 mb-2">Mot de passe</label>
+                            <label className="block text-sm font-medium text-text-secondary mb-2">Mot de passe</label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
                                 <input
                                     type="password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-primary border border-slate-800 focus:border-accent rounded-lg py-3 pl-11 pr-4 text-white placeholder:text-slate-600 outline-none transition-colors"
+                                    className="w-full bg-bg-surface border border focus:border-text-text-accent rounded-lg py-3 pl-11 pr-4 text-text-primary placeholder:text-text-muted/50 outline-none transition-colors"
                                     placeholder="••••••••"
                                 />
                             </div>
@@ -107,7 +107,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="mt-8 text-center">
-                    <a href="/" className="text-slate-500 hover:text-accent transition-colors text-sm">
+                    <a href="/" className="text-text-muted hover:text-text-accent transition-colors text-sm">
                         Retour au portfolio
                     </a>
                 </div>
@@ -115,3 +115,5 @@ export default function LoginPage() {
         </div>
     );
 }
+
+

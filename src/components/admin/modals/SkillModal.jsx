@@ -67,20 +67,20 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
-                    className="absolute inset-0 bg-primary/80 backdrop-blur-md"
+                    className="absolute inset-0 bg-bg-primary/80 backdrop-blur-md"
                 />
 
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative w-full max-w-2xl bg-secondary border border-slate-800 rounded-2xl shadow-2xl overflow-hidden"
+                    className="relative w-full max-w-2xl bg-bg-card border border rounded-2xl shadow-2xl overflow-hidden"
                 >
-                    <div className="p-6 border-b border-slate-800 flex items-center justify-between">
-                        <h2 className="text-xl font-bold text-white">
+                    <div className="p-6 border-b border flex items-center justify-between">
+                        <h2 className="text-xl font-bold text-text-primary">
                             {skill ? 'Modifier la compétence' : 'Nouvelle compétence'}
                         </h2>
-                        <button onClick={onClose} className="p-2 text-slate-400 hover:text-white transition-colors">
+                        <button onClick={onClose} className="p-2 text-text-secondary hover:text-text-primary transition-colors">
                             <X size={20} />
                         </button>
                     </div>
@@ -89,23 +89,23 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Name */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-400">Nom</label>
+                                <label className="text-sm font-medium text-text-secondary">Nom</label>
                                 <input
                                     type="text"
                                     required
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full bg-primary border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-accent outline-none"
+                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-2.5 text-text-primary focus:border-text-text-accent outline-none"
                                 />
                             </div>
 
                             {/* Category */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-400">Catégorie</label>
+                                <label className="text-sm font-medium text-text-secondary">Catégorie</label>
                                 <select
                                     value={formData.category}
                                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                    className="w-full bg-primary border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-accent outline-none"
+                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-2.5 text-text-primary focus:border-text-text-accent outline-none"
                                 >
                                     {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                                 </select>
@@ -113,7 +113,7 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
 
                             {/* Icon Key */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-400">Clé d'icône (DevIcon)</label>
+                                <label className="text-sm font-medium text-text-secondary">Clé d'icône (DevIcon)</label>
                                 <input
                                     type="text"
                                     placeholder="e.g. react, nodejs"
@@ -127,20 +127,20 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
                                             color: config ? config.color : formData.color
                                         });
                                     }}
-                                    className="w-full bg-primary border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-accent outline-none"
+                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-2.5 text-text-primary focus:border-text-text-accent outline-none"
                                 />
                             </div>
 
                             {/* Color */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-400">Couleur Hex (#ffffff)</label>
+                                <label className="text-sm font-medium text-text-secondary">Couleur Hex (#ffffff)</label>
                                 <div className="flex gap-2">
                                     <input
                                         type="text"
                                         placeholder="#61dafb"
                                         value={formData.color}
                                         onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                                        className="flex-1 bg-primary border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-accent outline-none font-mono"
+                                        className="flex-1 bg-bg-surface border border rounded-xl px-4 py-2.5 text-text-primary focus:border-text-text-accent outline-none font-mono"
                                     />
                                     <div
                                         className="w-10.5 h-10.5 rounded-xl border border-slate-800"
@@ -151,11 +151,11 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
 
                             {/* Level */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-400">Niveau</label>
+                                <label className="text-sm font-medium text-text-secondary">Niveau</label>
                                 <select
                                     value={formData.level}
                                     onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-                                    className="w-full bg-primary border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-accent outline-none"
+                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-2.5 text-text-primary focus:border-text-text-accent outline-none"
                                 >
                                     {LEVELS.map(l => <option key={l} value={l}>{l}</option>)}
                                 </select>
@@ -163,12 +163,12 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
 
                             {/* Order Index */}
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-slate-400">Index d'ordre</label>
+                                <label className="text-sm font-medium text-text-secondary">Index d'ordre</label>
                                 <input
                                     type="number"
                                     value={formData.order_index}
                                     onChange={(e) => setFormData({ ...formData, order_index: parseInt(e.target.value) })}
-                                    className="w-full bg-primary border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:border-accent outline-none"
+                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-2.5 text-text-primary focus:border-text-text-accent outline-none"
                                 />
                             </div>
                         </div>
@@ -182,15 +182,15 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
                                     checked={formData.featured}
                                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
                                 />
-                                <div className="w-full h-full bg-slate-800 rounded-full peer-checked:bg-accent transition-colors" />
-                                <div className={`absolute left-1 w-4 h-4 bg-white rounded-full transition-transform ${formData.featured ? 'translate-x-6' : ''}`} />
+                                <div className="w-full h-full bg-bg-surface rounded-full peer-checked:bg-text-text-accent transition-colors" />
+                                <div className={`absolute left-1 w-4 h-4 bg-text-text-primary rounded-full transition-transform ${formData.featured ? 'translate-x-6' : ''}`} />
                             </div>
-                            <span className="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">
+                            <span className="text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors">
                                 Mettre en avant (Featured)
                             </span>
                         </label>
 
-                        <div className="pt-6 border-t border-slate-800 flex justify-end gap-4">
+                        <div className="pt-6 border-t border flex justify-end gap-4">
                             <Button type="button" variant="secondary" onClick={onClose}>
                                 Annuler
                             </Button>
@@ -210,3 +210,5 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
         </AnimatePresence>
     );
 }
+
+

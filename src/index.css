@@ -1,12 +1,136 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* ═══ LIGHT MODE ═══ */
+
+  /* Backgrounds */
+  --bg-primary: #F4F3FF;
+  /* soft lavender white */
+  --bg-surface: #EDEAFB;
+  /* cards background */
+  --bg-card: #FFFFFF;
+  /* pure white cards */
+  --bg-elevated: #E8E4F8;
+  /* hover/elevated */
+
+  /* Text — ALL readable on light bg */
+  --text-primary: #1E1B4B;
+  /* deep indigo (not black) */
+  --text-secondary: #3730A3;
+  /* indigo-800 */
+  --text-muted: #6366F1;
+  /* indigo-500 */
+  --text-accent: #7C3AED;
+  /* violet-600 */
+  --text-inverse: #F0EEFF;
+  /* for colored bg buttons */
+
+  /* Borders & Dividers */
+  --border: #C7D2FE;
+  /* indigo-200 */
+  --border-strong: #A5B4FC;
+  /* indigo-300 */
+
+  /* Interactive */
+  --accent-primary: #6D28D9;
+  /* violet — CTAs */
+  --accent-glow: rgba(109, 40, 217, 0.25);
+  --accent-hover: #5B21B6;
+
+  /* Neon (subtle in light mode) */
+  --neon-cyan: #0891B2;
+  /* darker cyan — visible on white */
+  --neon-purple: #7C3AED;
+  --neon-glow: rgba(8, 145, 178, 0.2);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(99, 102, 241, 0.12);
+  --shadow-md: 0 4px 16px rgba(99, 102, 241, 0.16);
+  --shadow-lg: 0 8px 32px rgba(99, 102, 241, 0.20);
+}
+
+.dark {
+  /* ═══ DARK MODE ═══ */
+
+  /* Backgrounds */
+  --bg-primary: #080810;
+  /* deepest dark */
+  --bg-surface: #0F0F1A;
+  /* section bg */
+  --bg-card: #1A1A2E;
+  /* card bg */
+  --bg-elevated: #22223B;
+  /* hover/elevated */
+
+  /* Text — ALL readable on dark bg */
+  --text-primary: #F0EEFF;
+  /* soft white-purple (not pure white) */
+  --text-secondary: #C4B5FD;
+  /* violet-300 */
+  --text-muted: #818CF8;
+  /* indigo-400 */
+  --text-accent: #00f0ff;
+  /* neon cyan */
+  --text-inverse: #0F0F1A;
+  /* for light bg buttons */
+
+  /* Borders & Dividers */
+  --border: #2D2B55;
+  /* subtle purple */
+  --border-strong: #4C4870;
+
+  /* Interactive */
+  --accent-primary: #7C3AED;
+  --accent-glow: rgba(0, 240, 255, 0.15);
+  --accent-hover: #6D28D9;
+
+  /* Neon (vivid in dark mode) */
+  --neon-cyan: #00f0ff;
+  --neon-purple: #a855f7;
+  --neon-glow: rgba(0, 240, 255, 0.25);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 240, 255, 0.08);
+}
+
+/* Smooth transition on theme switch */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Exception: no transition on animations or heavy elements if needed */
+.no-transition {
+  transition: none !important;
+}
+
 @layer base {
+  * {
+    transition:
+      background-color 0.4s ease,
+      color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
   body {
-    @apply bg-primary text-slate-300 font-inter antialiased selection:bg-accent selection:text-white;
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1,
@@ -15,30 +139,94 @@
   h4,
   h5,
   h6 {
-    @apply text-white font-bold tracking-tight;
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.025em;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-secondary/80 backdrop-blur-md border border-slate-800 rounded-2xl;
+    background-color: color-mix(in srgb, var(--bg-card) 80%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+  }
+
+  .marquee-row {
+    @apply flex items-center gap-6 py-4;
+  }
+
+  .tech-icon {
+    @apply transition-all duration-300;
+    color: var(--accent-primary);
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+  }
+
+  .tech-icon:hover {
+    color: var(--accent-hover);
+    transform: scale(1.1);
   }
 }
 
-/* Custom Scrollbar Styles */
+/* Marquee Animations */
+@keyframes marquee-right {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-right {
+  animation: marquee-right linear infinite;
+}
+
+.animate-marquee-left {
+  animation: marquee-left linear infinite;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background-color: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #262626;
-  border-radius: 10px;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--bg-primary);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3b82f6;
+  background-color: var(--text-muted);
+}
+
+@layer utilities {
+  .hover\:bg-muted:hover {
+    background-color: var(--text-muted);
+  }
+
+  .hover\:bg-surface:hover {
+    background-color: var(--bg-surface);
+  }
+
+  .hover\:bg-accent:hover {
+    background-color: var(--text-accent);
+  }
 }
