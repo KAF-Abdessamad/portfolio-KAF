@@ -3,7 +3,7 @@
     "available": "AVAILABLE FOR PROJECTS",
     "greeting": "Hello, I'm Abdessamad",
     "subtitle_prefix": "Future Engineer",
-    "description": "Hello! I am <strong>Abdessamad KAF</strong>, a Software Engineering student passionate about Full Stack development. I design fluid interfaces and robust architectures — from React to Laravel — to transform complex ideas into exceptional digital experiences.",
+    "description": "I am <strong>Abdessamad KAF</strong>, a Software Engineering student focused on building end-to-end digital solutions combining software development, data analytics, and DevOps. I design and develop scalable web applications, analyze data to extract meaningful insights, and implement reliable deployment workflows. I use technologies such as React, Node.js, SQL, Power BI, Docker, and cloud tools to deliver efficient, data-driven, production-ready systems.",
     "view_projects": "View projects",
     "my_cv": "My CV",
     "connect": "Let's connect"
@@ -77,7 +77,7 @@
     "form_error": "Error sending message."
   },
   "footer": {
-    "description": "Full Stack Engineer passionate about creating immersive and high-performance digital experiences. Based in Morocco, available worldwide.",
+    "description": "Software Engineering student specializing in end-to-end digital solutions. Web application design, data analytics and DevOps. Based in Morocco, available for international opportunities.",
     "nav_title": "Navigation",
     "contact_title": "Contact",
     "rights": "All rights reserved.",

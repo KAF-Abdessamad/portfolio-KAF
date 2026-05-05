@@ -3,7 +3,7 @@
     "available": "DISPONIBLE POUR PROJETS",
     "greeting": "Bonjour, je suis Abdessamad",
     "subtitle_prefix": "Futur Ingénieur",
-    "description": "Bonjour ! Je suis <strong>Abdessamad KAF</strong>, étudiant en Génie Informatique passionné par le développement Full Stack. Je conçois des interfaces fluides et des architectures robustes — de React à Laravel — pour transformer des idées complexes en expériences numériques d'exception.",
+    "description": "Je suis <strong>Abdessamad KAF</strong>, étudiant en Génie Logiciel spécialisé dans la conception de solutions digitales complètes, alliant développement logiciel, analyse de données et DevOps. Je conçois et développe des applications web scalables, j'analyse les données pour en extraire des insights pertinents, et je mets en place des workflows de déploiement fiables. J'utilise des technologies telles que React, Node.js, SQL, Power BI, Docker et des outils cloud pour livrer des systèmes efficaces, data-driven et prêts pour la production.",
     "view_projects": "Voir projets",
     "my_cv": "Mon CV",
     "connect": "Connectons-nous"
@@ -77,7 +77,7 @@
     "form_error": "Erreur lors de l'envoi du message."
   },
   "footer": {
-    "description": "Ingénieur Full Stack passionné par la création d'expériences numériques immersives et performantes. Basé au Maroc, disponible pour le monde entier.",
+    "description": "Étudiant en Génie Logiciel spécialisé dans les solutions digitales end-to-end. Conception d'applications web, data analytics et DevOps. Basé au Maroc, disponible pour des opportunités internationales.",
     "nav_title": "Navigation",
     "contact_title": "Contact",
     "rights": "Tous droits réservés.",

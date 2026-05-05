@@ -26,9 +26,9 @@ export default function SecretAdminRoute({ children }) {
         );
     }
 
-    // No secret access - redirect to home (404 style)
+    // No secret access - redirect to admin gate
     if (!hasSecretAccess) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/admin-access" replace />;
     }
 
     // Has secret access but not logged in - redirect to admin login

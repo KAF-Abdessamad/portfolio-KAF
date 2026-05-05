@@ -12,7 +12,7 @@ import CVPage from './pages/CVPage';
 
 // Admin Pages
 import LoginPage from './pages/admin/LoginPage';
-import SecretPortal from './pages/admin/SecretPortal';
+import AdminGate from './pages/admin/AdminGate';
 import DashboardPage from './pages/admin/DashboardPage';
 import ProjectsPage from './pages/admin/ProjectsPage';
 import SkillsPageAdmin from './pages/admin/SkillsPage';
@@ -33,8 +33,8 @@ function App() {
                         <Route path="/certificates" element={<CertificatesPage />} />
                         <Route path="/cv" element={<CVPage />} />
 
-                        {/* Admin Routes - Protected by secret URL */}
-                        <Route path="/portal/:secret" element={<SecretPortal />} />
+                        {/* Admin Routes - Protected by PIN gate */}
+                        <Route path="/admin-access" element={<AdminGate />} />
                         <Route path="/admin/login" element={<LoginPage />} />
                         <Route path="/admin" element={
                             <SecretAdminRoute>
