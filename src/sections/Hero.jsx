@@ -90,7 +90,7 @@ export default function Hero() {
                             </motion.h1>
 
                             {/* Animated subtitle Mobile */}
-                            <motion.div variants={itemVariants} className="h-10 mb-6 overflow-hidden">
+                            <motion.div variants={itemVariants} className="h-14 mb-4 overflow-hidden">
                                 <AnimatePresence mode="wait">
                                     <motion.p
                                         key={SUBTITLES[subtitleIndex]}
@@ -98,9 +98,10 @@ export default function Hero() {
                                         animate={{ y: 0, opacity: 1 }}
                                         exit={{ y: -20, opacity: 0 }}
                                         transition={{ duration: 0.35, ease: "backOut" }}
-                                        className="text-lg sm:text-xl text-text-sec font-mono"
+                                        className="text-base sm:text-lg text-text-sec font-mono leading-tight"
                                     >
-                                        {t('hero.subtitle_prefix')} &nbsp;<span className="text-text-acc">{SUBTITLES[subtitleIndex]}</span>
+                                        <span className="block text-sm text-text-muted mb-1">{t('hero.subtitle_prefix')}</span>
+                                        <span className="text-text-acc">{SUBTITLES[subtitleIndex]}</span>
                                     </motion.p>
                                 </AnimatePresence>
                             </motion.div>
@@ -145,18 +146,19 @@ export default function Hero() {
                         </div>
 
                         {/* Animated subtitle (Desktop Only) */}
-                        <motion.div variants={itemVariants} className="h-12 mb-6 overflow-hidden hidden lg:block">
+                        <motion.div variants={itemVariants} className="h-16 mb-4 overflow-hidden hidden lg:block">
                             <AnimatePresence mode="wait">
-                                <motion.p
+                                <motion.div
                                     key={SUBTITLES[subtitleIndex]}
                                     initial={{ y: 36, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     exit={{ y: -36, opacity: 0 }}
                                     transition={{ duration: 0.45, ease: "backOut" }}
-                                    className="text-xl md:text-2xl text-text-sec font-mono"
+                                    className="flex flex-col"
                                 >
-                                    {t('hero.subtitle_prefix')} &nbsp;<span className="text-text-acc">{SUBTITLES[subtitleIndex]}</span>
-                                </motion.p>
+                                    <span className="text-sm text-text-muted font-mono mb-1">{t('hero.subtitle_prefix')}</span>
+                                    <span className="text-xl md:text-2xl text-text-acc font-mono">{SUBTITLES[subtitleIndex]}</span>
+                                </motion.div>
                             </AnimatePresence>
                         </motion.div>
 
