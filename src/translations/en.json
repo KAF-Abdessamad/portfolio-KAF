@@ -1,7 +1,7 @@
 {
   "hero": {
     "available": "AVAILABLE FOR PROJECTS",
-    "greeting": "Hi I'm Abdessamad KAF",
+    "greeting": "Hello, I'm KAF Abdessamad",
     "subtitle_prefix": "Software Engineering Student",
     "description": "I am <strong>Abdessamad KAF</strong>, a Software Engineering student. I design and develop scalable and robust web applications, using modern technologies such as React, Node.js, and cloud architectures to deliver efficient, production-ready systems.",
     "view_projects": "View projects",
@@ -14,6 +14,7 @@
     "projects": "Projects",
     "contact": "Contact",
     "cv": "My CV",
+    "activities": "Activities",
     "open": "Open menu",
     "close": "Close menu"
   },

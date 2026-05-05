@@ -14,7 +14,8 @@ import {
     UserCircle,
     Zap,
     User,
-    GraduationCap
+    GraduationCap,
+    Sparkles
 } from 'lucide-react';
 import { useAdmin } from '../../context/AdminContext';
 import { cn } from '../../lib/utils'; // Assuming this utility exists, otherwise I'll use simple template literals
@@ -23,6 +24,7 @@ const navItems = [
     { name: 'Vue d\'ensemble', href: '/admin', icon: LayoutDashboard },
     { name: 'Expériences', href: '/admin/experience', icon: GraduationCap },
     { name: 'Projets', href: '/admin/projects', icon: Briefcase },
+    { name: 'Activités', href: '/admin/activities', icon: Sparkles },
     { name: 'Certificats', href: '/admin/certificates', icon: Award },
     { name: 'Compétences', href: '/admin/skills', icon: Zap },
     { name: 'CV / Résumé', href: '/admin/cv', icon: FileText },

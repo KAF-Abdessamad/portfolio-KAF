@@ -159,6 +159,37 @@ CREATE POLICY "public_read_skills" ON skills FOR SELECT USING (true);
 CREATE POLICY "admin_all_skills" ON skills FOR ALL TO authenticated USING (true);
 
 -- ==========================================
+-- ACTIVITIES TABLE (Parascolaires)
+-- ==========================================
+CREATE TABLE IF NOT EXISTS activities (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  description TEXT NOT NULL,
+  category VARCHAR(50),        -- 'Club' | 'Competition' | 'Event' | 'Volunteering'
+  date_start DATE,
+  date_end DATE,
+  location VARCHAR(100),
+  images TEXT[],                -- Array of image URLs
+  cover_image_index INT DEFAULT 0,  -- Index of the cover image in the images array
+  is_active BOOLEAN DEFAULT true,
+  order_index INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE activities ENABLE ROW LEVEL SECURITY;
+
+-- Public can read active activities
+CREATE POLICY "Public read active activities" 
+ON activities FOR SELECT 
+TO public USING (is_active = true);
+
+-- Admin can do everything
+CREATE POLICY "Admin full access on activities" 
+ON activities FOR ALL 
+TO authenticated USING (true);
+
+-- ==========================================
 -- STORAGE POLICIES (Supabase Storage)
 -- ==========================================
 
@@ -166,12 +197,12 @@ CREATE POLICY "admin_all_skills" ON skills FOR ALL TO authenticated USING (true)
 CREATE POLICY "Public view access" 
 ON storage.objects FOR SELECT 
 TO public 
-USING (bucket_id IN ('portfolio-images', 'cv-files', 'certificates-img'));
+USING (bucket_id IN ('portfolio-images', 'cv-files', 'certificates-img', 'activities-img'));
 
 -- Allow Admin (Authenticated) to upload/view/delete files in all buckets
 CREATE POLICY "Admin full access on storage" 
 ON storage.objects FOR ALL 
 TO authenticated 
-USING (bucket_id IN ('portfolio-images', 'cv-files', 'certificates-img'))
-WITH CHECK (bucket_id IN ('portfolio-images', 'cv-files', 'certificates-img'));
+USING (bucket_id IN ('portfolio-images', 'cv-files', 'certificates-img', 'activities-img'))
+WITH CHECK (bucket_id IN ('portfolio-images', 'cv-files', 'certificates-img', 'activities-img'));
 

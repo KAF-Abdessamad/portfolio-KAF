@@ -13,11 +13,12 @@ import { useTranslation } from 'react-i18next';
 const SECTION_IDS = ['hero', 'projects', 'contact'];
 
 const NAV_LINKS = [
-    { key: 'home',     href: '/',             hash: '#hero' },
-    { key: 'projects',     href: '/#projects',     hash: '#projects' },
-    { key: 'certificates', href: '/certificates',  page: '/certificates' },
-    { key: 'cv',          href: '/cv',            page: '/cv' },
-    { key: 'contact',     href: '/#contact',      hash: '#contact' },
+    { key: 'home',       href: '/',              hash: '#hero' },
+    { key: 'projects',   href: '/#projects',     hash: '#projects' },
+    { key: 'certificates', href: '/certificates', page: '/certificates' },
+    { key: 'cv',         href: '/cv',            page: '/cv' },
+    { key: 'activities', href: '/activities',    page: '/activities' },
+    { key: 'contact',    href: '/#contact',      hash: '#contact' },
 ];
 
 function isActive(link, activeSection) {
