@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AdminProvider } from './context/AdminContext';
 import AdminRoute from './components/admin/AdminRoute';
+import SecretAdminRoute from './components/admin/SecretAdminRoute';
 import AdminLayout from './components/admin/AdminLayout';
 
 // Public Pages
@@ -11,6 +12,7 @@ import CVPage from './pages/CVPage';
 
 // Admin Pages
 import LoginPage from './pages/admin/LoginPage';
+import SecretPortal from './pages/admin/SecretPortal';
 import DashboardPage from './pages/admin/DashboardPage';
 import ProjectsPage from './pages/admin/ProjectsPage';
 import SkillsPageAdmin from './pages/admin/SkillsPage';
@@ -31,12 +33,13 @@ function App() {
                         <Route path="/certificates" element={<CertificatesPage />} />
                         <Route path="/cv" element={<CVPage />} />
 
-                        {/* Admin Routes */}
+                        {/* Admin Routes - Protected by secret URL */}
+                        <Route path="/portal/:secret" element={<SecretPortal />} />
                         <Route path="/admin/login" element={<LoginPage />} />
                         <Route path="/admin" element={
-                            <AdminRoute>
+                            <SecretAdminRoute>
                                 <AdminLayout />
-                            </AdminRoute>
+                            </SecretAdminRoute>
                         }>
                             <Route index element={<DashboardPage />} />
                             <Route path="projects" element={<ProjectsPage />} />

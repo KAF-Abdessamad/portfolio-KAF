@@ -1,9 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
-import { ENV } from './constants/env';
 
-// Create a single Supabase client for interacting with your database
-// Provide a dummy URL/key if not set to prevent immediate crashing during development/build
-const supabaseUrl = ENV.SUPABASE_URL || 'https://placeholder-url.supabase.co';
-const supabaseAnonKey = ENV.SUPABASE_ANON_KEY || 'placeholder-key';
+// Get environment variables from Vite (must start with VITE_)
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Validation: warn if env variables are missing
+if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('⚠️ VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY is missing!');
+    console.warn('   Create a .env file with these variables (not .env.example)');
+}
+
+// Use fallback values for development (replace with your actual credentials)
+const finalUrl = supabaseUrl || 'https://kozlzchjgedgcqowyojd.supabase.co';
+const finalKey = supabaseAnonKey || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtvemx6Y2hqZ2VkZ2Nxb3d5b2pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1OTExOTAsImV4cCI6MjA4OTE2NzE5MH0.xLOJT23Yxn-1AO3dKJe58XLS99DhF2LBWrMrYCHCM78';
+
+export const supabase = createClient(finalUrl, finalKey);
