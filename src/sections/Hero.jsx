@@ -7,7 +7,7 @@ import Container from '../components/layout/Container';
 import { SOCIAL_LINKS } from '../lib/constants/contact';
 import profilePhoto from '../assets/images/img_portfolio.jpeg';
 
-const SUBTITLES = ["React.js", "Laravel", "Node.js", "DevOps"];
+const SUBTITLES = ["React.js", "Node.js", "Power BI", "Docker", "Cloud"];
 
 export default function Hero() {
     const { t } = useTranslation();
