@@ -7,7 +7,7 @@ import Container from '../components/layout/Container';
 import { SOCIAL_LINKS } from '../lib/constants/contact';
 import profilePhoto from '../assets/images/img_portfolio.jpeg';
 
-const SUBTITLES = ["React.js", "Node.js", "Power BI", "Docker", "Cloud"];
+const SUBTITLES = ["React.js", "Node.js", "Laravel", "Docker", "Cloud"];
 
 export default function Hero() {
     const { t } = useTranslation();
@@ -235,7 +235,7 @@ export default function Hero() {
                             <motion.div
                                 animate={{ rotate: 360 }}
                                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                className="absolute -inset-3 rounded-full border border-dashed border-accent/30"
+                                className="absolute -inset-3 rounded-full border-2 border-dashed border-[#7C3AED] dark:border-[#00f0ff]/50"
                             />
 
                             {/* Photo frame */}

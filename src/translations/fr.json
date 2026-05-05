@@ -1,9 +1,9 @@
 {
   "hero": {
     "available": "DISPONIBLE POUR PROJETS",
-    "greeting": "Bonjour, je suis Abdessamad",
-    "subtitle_prefix": "Software Engineer | Data & DevOps",
-    "description": "Je suis <strong>Abdessamad KAF</strong>, étudiant en Génie logiciel spécialisé dans la conception de solutions digitales complètes, alliant développement logiciel, analyse de données et DevOps. Je conçois et développe des applications web scalables, j'analyse les données pour en extraire des insights pertinents, et je mets en place des workflows de déploiement fiables. ",
+    "greeting": "Hi I'm Abdessamad KAF",
+    "subtitle_prefix": "Software Engineering Student",
+    "description": "Je suis <strong>Abdessamad KAF</strong>, étudiant en Génie Logiciel. Je conçois et développe des applications web scalables et robustes, en utilisant des technologies modernes telles que React, Node.js, et des architectures cloud pour livrer des systèmes efficaces et prêts pour la production.",
     "view_projects": "Voir projets",
     "my_cv": "Mon CV",
     "connect": "Connectons-nous"
