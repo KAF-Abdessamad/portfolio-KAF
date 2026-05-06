@@ -8,9 +8,8 @@ export const ThemeProvider = ({ children }) => {
         const savedTheme = localStorage.getItem('portfolio-theme');
         if (savedTheme) return savedTheme;
 
-        // Check system preference
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        return prefersDark ? 'dark' : 'light';
+        // Default to dark for all new visitors
+        return 'dark';
     });
 
     useEffect(() => {

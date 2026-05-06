@@ -102,25 +102,25 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                 </div>
 
                 {/* Content Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10">
                     {/* Main Info */}
-                    <div className="md:col-span-2 space-y-6">
+                    <div className="lg:col-span-2 space-y-6 sm:space-y-8">
                         {description && (
-                            <div>
-                                <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-2">{t('projects.description_title')}</h4>
-                                <p className="text-text-sec leading-relaxed text-lg whitespace-pre-wrap">
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <h4 className="text-text-acc font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-3 opacity-80">{t('projects.description_title')}</h4>
+                                <p className="text-text-sec leading-relaxed text-base sm:text-lg whitespace-pre-wrap">
                                     {description}
                                 </p>
                             </div>
                         )}
 
                         {challenges.length > 0 && (
-                            <div>
-                                <h4 className="text-text-sec font-mono text-sm uppercase tracking-widest mb-4">{t('projects.technical_challenges')}</h4>
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
+                                <h4 className="text-text-sec font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-4 opacity-80">{t('projects.technical_challenges')}</h4>
                                 <ul className="space-y-3">
                                     {challenges.map((challenge, i) => (
-                                        <li key={i} className="flex items-start space-x-3 text-text-mut">
-                                            <CheckCircle2 size={18} className="text-text-sec mt-1 shrink-0" />
+                                        <li key={i} className="flex items-start space-x-3 text-text-mut text-sm sm:text-base">
+                                            <CheckCircle2 size={18} className="text-text-sec mt-0.5 shrink-0" />
                                             <span>{challenge}</span>
                                         </li>
                                     ))}
@@ -130,13 +130,13 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                     </div>
 
                     {/* Sidebar Info */}
-                    <div className="space-y-6">
+                    <div className="space-y-8 lg:space-y-10">
                         {techStack.length > 0 && (
-                            <div>
-                                <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-4">{t('projects.technologies')}</h4>
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
+                                <h4 className="text-text-acc font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-4 opacity-80">{t('projects.technologies')}</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {techStack.map((tech) => (
-                                        <Badge key={tech} variant="outline" className="border border-border-def text-text-sec bg-bg-surface/50">
+                                        <Badge key={tech} variant="outline" className="border border-white/10 text-text-sec bg-white/[0.03] px-3 py-1 text-xs">
                                             {tech}
                                         </Badge>
                                     ))}
@@ -145,15 +145,15 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                         )}
 
                         {(liveUrl || githubUrl) && (
-                            <div className="pt-6 border-t border-border-def">
-                                <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-4">{t('projects.links')}</h4>
+                            <div className="pt-6 sm:pt-8 border-t border-white/5 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-500">
+                                <h4 className="text-text-acc font-mono text-[10px] sm:text-xs uppercase tracking-widest mb-5 opacity-80">{t('projects.links')}</h4>
                                 <div className="flex flex-col gap-3">
                                     {liveUrl && (
                                         <Button
                                             onClick={() => window.open(liveUrl, '_blank')}
-                                            className="w-full justify-between group"
+                                            className="w-full justify-between group py-3 px-5"
                                         >
-                                            <span>{t('projects.view_demo')}</span>
+                                            <span className="text-sm font-semibold">{t('projects.view_demo')}</span>
                                             <ExternalLink size={18} className="group-hover:translate-x-1 transition-transform" />
                                         </Button>
                                     )}
@@ -161,9 +161,9 @@ export default function ProjectModal({ project, isOpen, onClose }) {
                                         <Button
                                             variant="secondary"
                                             onClick={() => window.open(githubUrl, '_blank')}
-                                            className="w-full justify-between group"
+                                            className="w-full justify-between group py-3 px-5 bg-white/[0.03] border-white/10"
                                         >
-                                            <span>{t('projects.source_code')}</span>
+                                            <span className="text-sm font-semibold">{t('projects.source_code')}</span>
                                             <Github size={18} className="group-hover:scale-110 transition-transform" />
                                         </Button>
                                     )}
