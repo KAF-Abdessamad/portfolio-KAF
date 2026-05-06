@@ -155,15 +155,16 @@ export default function ActivitiesPage() {
                                             className="group bg-bg-card border border-border rounded-2xl overflow-hidden cursor-pointer hover:border-text-accent/30 transition-all"
                                         >
                                             {/* Image */}
-                                            <div className="relative h-48 overflow-hidden">
+                                            <div className="relative h-48 sm:h-56 overflow-hidden bg-bg-surface">
                                                 {activity.images?.[activity.cover_image_index ?? 0] ? (
                                                     <img
                                                         src={activity.images[activity.cover_image_index ?? 0]}
                                                         alt={activity.title}
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                                                        loading="lazy"
                                                     />
                                                 ) : (
-                                                    <div className="w-full h-full bg-bg-surface flex items-center justify-center">
+                                                    <div className="w-full h-full flex items-center justify-center">
                                                         <CategoryIcon size={48} className="text-text-muted" />
                                                     </div>
                                                 )}
@@ -263,13 +264,13 @@ export default function ActivitiesPage() {
 
                             <div className="flex flex-col lg:flex-row max-h-[90vh] overflow-y-auto">
                                 {/* Image Gallery */}
-                                <div className="relative lg:w-1/2 h-48 sm:h-64 lg:h-auto min-h-[200px] bg-bg-surface flex-shrink-0">
+                                <div className="relative lg:w-1/2 h-64 sm:h-80 lg:h-auto lg:min-h-[400px] bg-bg-surface flex-shrink-0 flex items-center justify-center">
                                     {selectedActivity.images?.length > 0 ? (
                                         <>
                                             <img
                                                 src={selectedActivity.images[currentImageIndex]}
                                                 alt={selectedActivity.title}
-                                                className="w-full h-full object-cover"
+                                                className="w-full h-full object-contain lg:object-cover"
                                             />
 
                                             {/* Navigation Arrows */}

@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import {
-    Loader2,
     ZoomIn,
     ZoomOut,
     RotateCw,
-    ChevronLeft,
-    ChevronRight,
-    Search,
     AlertCircle
 } from 'lucide-react';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
@@ -23,7 +19,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 export default function CVPreview({ fileUrl }) {
     const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
     const [scale, setScale] = useState(1.0);
     const [rotate, setRotate] = useState(0);
 
@@ -31,62 +26,44 @@ export default function CVPreview({ fileUrl }) {
         setNumPages(numPages);
     }
 
-    const changePage = (offset) => {
-        setPageNumber(prev => Math.min(Math.max(1, prev + offset), numPages));
-    };
-
     return (
-        <div className="flex flex-col h-full bg-bg-card backdrop-blur-sm rounded-3xl overflow-hidden border border-border-def">
+        <div className="flex flex-col h-[85vh] sm:h-[90vh] bg-bg-card backdrop-blur-sm rounded-xl sm:rounded-3xl overflow-hidden border border-border-def">
             {/* Toolbar */}
-            <div className="p-4 bg-bg-surface/50 border-b border flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => changePage(-1)}
-                        disabled={pageNumber <= 1}
-                        className="p-2 rounded-lg hover:bg-bg-surface disabled:opacity-30 text-text-pri transition-colors"
-                    >
-                        <ChevronLeft size={20} />
-                    </button>
-                    <span className="text-sm font-mono text-text-pri">
-                        Page {pageNumber} sur {numPages || '?'}
+            <div className="p-2 sm:p-4 bg-bg-surface/50 border-b border flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+                <div className="flex items-center gap-1 sm:gap-2">
+                    <span className="text-xs sm:text-sm font-mono text-text-pri">
+                        {numPages || '?'} pages
                     </span>
-                    <button
-                        onClick={() => changePage(1)}
-                        disabled={pageNumber >= numPages}
-                        className="p-2 rounded-lg hover:bg-bg-surface disabled:opacity-30 text-text-pri transition-colors"
-                    >
-                        <ChevronRight size={20} />
-                    </button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 sm:gap-2">
                     <button
                         onClick={() => setScale(prev => Math.max(0.5, prev - 0.1))}
-                        className="p-2 rounded-lg hover:bg-bg-surface text-text-pri transition-colors"
+                        className="p-1.5 sm:p-2 rounded-lg hover:bg-bg-surface text-text-pri transition-colors"
                     >
-                        <ZoomOut size={18} />
+                        <ZoomOut size={16} className="sm:w-[18px] sm:h-[18px]" />
                     </button>
-                    <span className="text-xs font-mono text-text-mut w-12 text-center">
+                    <span className="text-[10px] sm:text-xs font-mono text-text-mut w-10 sm:w-12 text-center">
                         {Math.round(scale * 100)}%
                     </span>
                     <button
                         onClick={() => setScale(prev => Math.min(2, prev + 0.1))}
-                        className="p-2 rounded-lg hover:bg-bg-surface text-text-pri transition-colors"
+                        className="p-1.5 sm:p-2 rounded-lg hover:bg-bg-surface text-text-pri transition-colors"
                     >
-                        <ZoomIn size={18} />
+                        <ZoomIn size={16} className="sm:w-[18px] sm:h-[18px]" />
                     </button>
-                    <div className="w-px h-6 bg-border mx-2" />
+                    <div className="hidden sm:block w-px h-6 bg-border mx-2" />
                     <button
                         onClick={() => setRotate(prev => (prev + 90) % 360)}
-                        className="p-2 rounded-lg hover:bg-bg-surface text-text-pri transition-colors"
+                        className="p-1.5 sm:p-2 rounded-lg hover:bg-bg-surface text-text-pri transition-colors"
                     >
-                        <RotateCw size={18} />
+                        <RotateCw size={16} className="sm:w-[18px] sm:h-[18px]" />
                     </button>
                 </div>
             </div>
 
-            {/* Content View */}
-            <div className="flex-1 overflow-auto p-8 custom-scrollbar bg-bg-primary flex justify-center items-start min-h-[500px]">
+            {/* Content View - All Pages */}
+            <div className="flex-1 overflow-auto p-2 sm:p-4 lg:p-8 custom-scrollbar bg-bg-primary flex flex-col items-center gap-4 min-h-[300px] sm:min-h-[400px]">
                 {!fileUrl ? (
                     <div className="flex flex-col items-center justify-center h-full text-text-mut space-y-4">
                         <AlertCircle size={48} className="opacity-20" />
@@ -97,8 +74,8 @@ export default function CVPreview({ fileUrl }) {
                         file={fileUrl}
                         onLoadSuccess={onDocumentLoadSuccess}
                         loading={
-                            <div className="flex flex-col items-center justify-center py-20 space-y-4">
-                                <Loader2 className="animate-spin text-text-acc" size={40} />
+                            <div className="flex flex-col items-center justify-center py-20">
+                                <div className="w-12 h-12 border-2 border-text-accent border-t-transparent rounded-full animate-spin mb-4" />
                                 <p className="text-text-mut font-mono text-xs">Chargement du document...</p>
                             </div>
                         }
@@ -109,15 +86,19 @@ export default function CVPreview({ fileUrl }) {
                             </div>
                         }
                     >
-                        <div className="shadow-theme-lg border border-border-def/10 rounded-sm overflow-hidden bg-white">
-                            <Page
-                                pageNumber={pageNumber}
-                                scale={scale}
-                                rotate={rotate}
-                                renderAnnotationLayer={true}
-                                renderTextLayer={true}
-                            />
-                        </div>
+                        {Array.from(new Array(numPages), (el, index) => (
+                            <div key={`page_${index + 1}`} className="shadow-theme-lg border border-border-def/10 rounded-sm overflow-hidden bg-white max-w-full mb-4">
+                                <Page
+                                    pageNumber={index + 1}
+                                    scale={scale}
+                                    rotate={rotate}
+                                    renderAnnotationLayer={true}
+                                    renderTextLayer={true}
+                                    className="max-w-full"
+                                    width={typeof window !== 'undefined' && window.innerWidth < 640 ? window.innerWidth - 32 : undefined}
+                                />
+                            </div>
+                        ))}
                     </Document>
                 )}
             </div>

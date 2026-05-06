@@ -11,9 +11,14 @@ const CATEGORIES = [
 ];
 
 export default function CertificatesFilter({ activeCategory, setCategory, counts }) {
+    // Filter categories to only show those with certificates (except 'All')
+    const visibleCategories = CATEGORIES.filter(cat =>
+        cat.id === 'All' || (counts[cat.id] || 0) > 0
+    );
+
     return (
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-12">
-            {CATEGORIES.map((cat) => {
+            {visibleCategories.map((cat) => {
                 const isActive = activeCategory === cat.id;
                 const count = counts[cat.id] || 0;
 
@@ -24,7 +29,7 @@ export default function CertificatesFilter({ activeCategory, setCategory, counts
                         className={cn(
                             "relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 border",
                             isActive
-                                ? "text-text-inv border-accent shadow-accent"
+                                ? "text-white border-accent shadow-accent"
                                 : "text-text-sec border-border-def hover:border-accent/50 hover:text-text-pri"
                         )}
                     >
@@ -43,7 +48,7 @@ export default function CertificatesFilter({ activeCategory, setCategory, counts
                         <span className={cn(
                             "px-1.5 py-0.5 rounded-md text-[10px] font-bold border",
                             isActive
-                                ? "bg-text-inv/20 border-accent/20 text-text-inv"
+                                ? "bg-white/20 border-white/30 text-white"
                                 : "bg-bg-surface border-border-def text-text-mut"
                         )}>
                             {count}

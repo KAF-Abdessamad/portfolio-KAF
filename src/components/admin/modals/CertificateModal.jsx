@@ -42,6 +42,11 @@ export default function CertificateModal({ isOpen, onClose, onSave, certificate 
         }));
     };
 
+    const handleFileSelected = (file) => {
+        setImageFile(file);
+        setPreviewUrl(URL.createObjectURL(file));
+    };
+
     const handleSave = async (e) => {
         e.preventDefault();
         setIsSaving(true);

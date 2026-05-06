@@ -8,7 +8,7 @@ import { useCertificates } from '../../hooks/useCertificates';
 import { supabase } from '../../lib/supabase';
 
 export default function CertificatesPage() {
-    const { certificates, loading } = useCertificates();
+    const { certificates, loading, refresh } = useCertificates();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentCert, setCurrentCert] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -59,6 +59,9 @@ export default function CertificatesPage() {
                     .insert([certData]);
                 if (insertError) throw insertError;
             }
+            // Rafraîchir la liste après ajout/modification
+            await refresh();
+            setIsModalOpen(false);
         } catch (err) {
             console.error("Error in handleSave:", err);
             throw err;

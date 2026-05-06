@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Award, ExternalLink, Calendar, ShieldCheck, Star } from 'lucide-react';
-import { cn } from '../../lib/utils';
 
 export default function CertificateCard({ certificate, onClick }) {
     const {
@@ -9,7 +8,6 @@ export default function CertificateCard({ certificate, onClick }) {
         issuer,
         issue_date,
         image_url,
-        category,
         featured,
         credential_url
     } = certificate;
@@ -47,15 +45,6 @@ export default function CertificateCard({ certificate, onClick }) {
         month: 'short',
         year: 'numeric'
     });
-
-    const categoryColors = {
-        Dev: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
-        Cloud: 'text-purple-400 bg-purple-400/10 border-purple-400/20',
-        Design: 'text-pink-400 bg-pink-400/10 border-pink-400/20',
-        Other: 'text-text-mut bg-text-text-mut/10 border-text-mut/20'
-    };
-
-    const colorClass = categoryColors[category] || categoryColors.Other;
 
     return (
         <motion.div
@@ -108,12 +97,6 @@ export default function CertificateCard({ certificate, onClick }) {
 
                 {/* Content */}
                 <div className="flex-1 flex flex-col space-y-3">
-                    <div className="flex items-center gap-2">
-                        <span className={cn("text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border", colorClass)}>
-                            {category}
-                        </span>
-                    </div>
-
                     <h3 className="text-lg font-bold text-text-pri group-hover:text-text-acc transition-colors line-clamp-2 leading-tight">
                         {title}
                     </h3>
