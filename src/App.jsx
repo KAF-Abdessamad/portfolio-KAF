@@ -22,25 +22,48 @@ import SettingsPage from './pages/admin/SettingsPage';
 import ExperiencePageAdmin from './pages/admin/ExperiencePage';
 import ActivitiesPageAdmin from './pages/admin/ActivitiesPage';
 
+import { useEffect } from 'react';
+
+import { useNavigate, useLocation } from 'react-router-dom';
+
+// Component to handle the redirect to home on refresh
+function HomeRedirect({ children }) {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        const path = location.pathname;
+        const isAdmin = path.startsWith('/admin');
+        const isHome = path === '/';
+        
+        if (!isAdmin && !isHome) {
+            navigate('/', { replace: true });
+        }
+    }, []); // Only run once on mount (refresh)
+
+    return children;
+}
+
 function App() {
     return (
         <HelmetProvider>
             <AdminProvider>
                 <BrowserRouter>
-                    <Routes>
-                        {/* Public Routes */}
-                        <Route path="/" element={<Home />} />
-                        <Route path="/certificates" element={<CertificatesPage />} />
-                        <Route path="/cv" element={<CVPage />} />
-                        <Route path="/activities" element={<ActivitiesPage />} />
+                    <HomeRedirect>
+                        <Routes>
+                            {/* Public Routes */}
+                            <Route path="/" element={<Home />} />
+                            <Route path="/certificates" element={<CertificatesPage />} />
+                            <Route path="/cv" element={<CVPage />} />
+                            <Route path="/activities" element={<ActivitiesPage />} />
 
-                        {/* Admin Routes - Protected by Login */}
-                        <Route path="/admin/login" element={<LoginPage />} />
-                        <Route path="/admin" element={
-                            <AdminRoute>
-                                <AdminLayout />
-                            </AdminRoute>
-                        }>
+                            {/* Admin Routes - Protected by Login */}
+                            <Route path="/admin/login" element={<LoginPage />} />
+                            <Route path="/admin" element={
+                                <AdminRoute>
+                                    <AdminLayout />
+                                </AdminRoute>
+                            }>
                             <Route index element={<DashboardPage />} />
                             <Route path="projects" element={<ProjectsPage />} />
                             <Route path="skills" element={<SkillsPageAdmin />} />
@@ -53,8 +76,10 @@ function App() {
                         </Route>
 
                         {/* Fallback */}
-                        <Route path="*" element={<Navigate to="/" replace />} />
-                    </Routes>
+                            {/* Fallback */}
+                            <Route path="*" element={<Navigate to="/" replace />} />
+                        </Routes>
+                    </HomeRedirect>
                 </BrowserRouter>
             </AdminProvider>
         </HelmetProvider>
