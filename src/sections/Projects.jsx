@@ -29,7 +29,13 @@ export default function Projects() {
     const displayedProjects = filteredProjects.slice(0, visibleCount);
     const hasMore = visibleCount < filteredProjects.length;
 
-    if (error) return null;
+    if (error) return (
+        <Section id="projects" className="bg-bg-primary pt-24 text-center">
+            <Container>
+                <p className="text-red-500 font-mono">Erreur de chargement des projets : {error.message || "Veuillez vérifier votre base de données Supabase."}</p>
+            </Container>
+        </Section>
+    );
 
     return (
         <Section id="projects" className="bg-bg-primary pt-24">

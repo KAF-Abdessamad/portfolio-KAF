@@ -6,12 +6,17 @@
 CREATE TABLE projects (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
+  title_en VARCHAR(100),
   description TEXT,
+  description_en TEXT,
   long_description TEXT,
+  long_description_en TEXT,
   tech_stack TEXT[],
   category VARCHAR(50),        -- 'Web' | 'Mobile' | '3D' | 'Design'
   image_url TEXT,
+  project_images TEXT[],       -- Array of additional image URLs
   github_url TEXT,
+  has_github BOOLEAN DEFAULT true,
   live_url TEXT,
   featured BOOLEAN DEFAULT false,
   order_index INT DEFAULT 0,

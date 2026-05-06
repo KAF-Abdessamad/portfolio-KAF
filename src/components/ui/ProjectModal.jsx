@@ -9,53 +9,110 @@ import { useTranslation } from 'react-i18next';
 export default function ProjectModal({ project, isOpen, onClose }) {
     const { t, i18n } = useTranslation();
     const [imageError, setImageError] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const isEn = i18n.language.startsWith('en');
 
     if (!project) return null;
 
     // Normalization
     const title = isEn ? (project.title_en || project.title) : project.title;
-    const description = isEn ? (project.long_description_en || project.long_description) : project.long_description;
-    const imageUrl = project.image_url || project.image;
+    
+    // Fallback logic: if long_description is empty, use description
+    const rawDescription = isEn ? (project.long_description_en || project.long_description) : project.long_description;
+    const shortDescription = isEn ? (project.description_en || project.description) : project.description;
+    const description = rawDescription || shortDescription;
+
     const githubUrl = project.github_url || project.github;
     const liveUrl = project.live_url || project.demo || project.live;
     const techStack = project.tech_stack || project.technologies || [];
     const challenges = project.challenges || [];
-    const gallery = project.gallery || [];
+    
+    // Combine cover image and project images into a single gallery
+    const coverImage = project.image_url || project.image;
+    const projectImages = Array.isArray(project.project_images) ? project.project_images : [];
+    const gallery = [coverImage, ...projectImages].filter(Boolean);
+
+    const nextImage = (e) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) => (prev + 1) % gallery.length);
+    };
+
+    const prevImage = (e) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) => (prev === 0 ? gallery.length - 1 : prev - 1));
+    };
 
     const fallbackImage = "https://images.unsplash.com/photo-1614850523296-62c0af475430?auto=format&fit=crop&q=80&w=800";
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} title={title}>
             <div className="space-y-8">
-                {/* Gallery/Image Section */}
-                <div className="relative rounded-xl overflow-hidden bg-bg-surface aspect-video group">
-                    {!imageError ? (
-                        <img
-                            src={imageUrl || fallbackImage}
-                            alt={title}
-                            onError={() => setImageError(true)}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                    ) : (
-                        <div className="w-full h-full flex flex-col items-center justify-center text-text-mut bg-bg-surface/50">
-                            <ImageOff size={64} className="mb-4 opacity-20" />
-                            <span className="text-sm font-mono uppercase tracking-widest opacity-40">{t('projects.preview_not_available')}</span>
-                        </div>
+                {/* Carousel Section (Scrollable for tall images) */}
+                <div className="relative rounded-xl bg-[#0a0a0a] border border-white/5 shadow-2xl overflow-hidden group">
+                    <div className="max-h-[65vh] overflow-y-auto custom-scrollbar flex items-start justify-center bg-black/20">
+                        {gallery.length > 0 && !imageError ? (
+                            <motion.img
+                                key={currentImageIndex}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4 }}
+                                src={gallery[currentImageIndex]}
+                                alt={`${title} - image ${currentImageIndex + 1}`}
+                                onError={() => setImageError(true)}
+                                className="w-full h-auto object-top"
+                            />
+                        ) : (
+                            <div className="w-full h-[400px] flex flex-col items-center justify-center text-text-mut bg-bg-surface/50">
+                                <ImageOff size={64} className="mb-4 opacity-20" />
+                                <span className="text-sm font-mono uppercase tracking-widest opacity-40">{t('projects.preview_not_available')}</span>
+                            </div>
+                        )}
+                    </div>
+                    
+                    {/* Navigation Arrows (Fixed over the scrollable area) */}
+                    {gallery.length > 1 && (
+                        <>
+                            <button
+                                onClick={prevImage}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/60 hover:bg-black/80 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 backdrop-blur-md border border-white/10 z-10"
+                            >
+                                <ChevronRight size={24} className="rotate-180" />
+                            </button>
+                            <button
+                                onClick={nextImage}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/60 hover:bg-black/80 rounded-full text-white transition-all opacity-0 group-hover:opacity-100 backdrop-blur-md border border-white/10 z-10"
+                            >
+                                <ChevronRight size={24} />
+                            </button>
+
+                            {/* Indicators (Dots) */}
+                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                {gallery.map((_, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(idx); }}
+                                        className={`h-1.5 rounded-full transition-all duration-300 shadow-lg ${
+                                            idx === currentImageIndex ? 'bg-text-acc w-6' : 'bg-white/40 w-1.5'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        </>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-bg-primary/60 to-transparent" />
                 </div>
 
                 {/* Content Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Main Info */}
                     <div className="md:col-span-2 space-y-6">
-                        <div>
-                            <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-2">{t('projects.description_title')}</h4>
-                            <p className="text-text-sec leading-relaxed text-lg">
-                                {description}
-                            </p>
-                        </div>
+                        {description && (
+                            <div>
+                                <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-2">{t('projects.description_title')}</h4>
+                                <p className="text-text-sec leading-relaxed text-lg whitespace-pre-wrap">
+                                    {description}
+                                </p>
+                            </div>
+                        )}
 
                         {challenges.length > 0 && (
                             <div>
@@ -74,57 +131,47 @@ export default function ProjectModal({ project, isOpen, onClose }) {
 
                     {/* Sidebar Info */}
                     <div className="space-y-6">
-                        <div>
-                            <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-4">{t('projects.technologies')}</h4>
-                            <div className="flex flex-wrap gap-2">
-                                {techStack.map((tech) => (
-                                    <Badge key={tech} variant="outline" className="border border-border-def text-text-sec">
-                                        {tech}
-                                    </Badge>
-                                ))}
+                        {techStack.length > 0 && (
+                            <div>
+                                <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-4">{t('projects.technologies')}</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {techStack.map((tech) => (
+                                        <Badge key={tech} variant="outline" className="border border-border-def text-text-sec bg-bg-surface/50">
+                                            {tech}
+                                        </Badge>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
-                        <div className="pt-6 border-t border-border-def">
-                            <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-4">{t('projects.links')}</h4>
-                            <div className="flex flex-col gap-3">
-                                {liveUrl && (
-                                    <Button
-                                        onClick={() => window.open(liveUrl, '_blank')}
-                                        className="w-full justify-between group"
-                                    >
-                                        <span>{t('projects.view_demo')}</span>
-                                        <ExternalLink size={18} className="group-hover:translate-x-1 transition-transform" />
-                                    </Button>
-                                )}
-                                {githubUrl && (
-                                    <Button
-                                        variant="secondary"
-                                        onClick={() => window.open(githubUrl, '_blank')}
-                                        className="w-full justify-between group"
-                                    >
-                                        <span>{t('projects.source_code')}</span>
-                                        <Github size={18} className="group-hover:scale-110 transition-transform" />
-                                    </Button>
-                                )}
+                        {(liveUrl || githubUrl) && (
+                            <div className="pt-6 border-t border-border-def">
+                                <h4 className="text-text-acc font-mono text-sm uppercase tracking-widest mb-4">{t('projects.links')}</h4>
+                                <div className="flex flex-col gap-3">
+                                    {liveUrl && (
+                                        <Button
+                                            onClick={() => window.open(liveUrl, '_blank')}
+                                            className="w-full justify-between group"
+                                        >
+                                            <span>{t('projects.view_demo')}</span>
+                                            <ExternalLink size={18} className="group-hover:translate-x-1 transition-transform" />
+                                        </Button>
+                                    )}
+                                    {githubUrl && (
+                                        <Button
+                                            variant="secondary"
+                                            onClick={() => window.open(githubUrl, '_blank')}
+                                            className="w-full justify-between group"
+                                        >
+                                            <span>{t('projects.source_code')}</span>
+                                            <Github size={18} className="group-hover:scale-110 transition-transform" />
+                                        </Button>
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
-
-                {/* Dynamic Gallery (if exists) */}
-                {gallery.length > 0 && (
-                    <div className="pt-8 border-t border">
-                        <h4 className="text-text-accent font-mono text-sm uppercase tracking-widest mb-6 text-center">{t('projects.gallery_title')}</h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {gallery.map((img, i) => (
-                                <div key={i} className="rounded-lg overflow-hidden border border hover:border-text-text-accent/30 transition-colors">
-                                    <img src={img} alt={`${title} screen ${i}`} className="w-full h-auto" />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
         </Modal>
     );

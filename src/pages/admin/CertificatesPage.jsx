@@ -35,9 +35,9 @@ export default function CertificatesPage() {
             const { error: deleteError } = await supabase
                 .from('certificates')
                 .delete()
-                .eq('id', cert.id);
 
             if (deleteError) throw deleteError;
+            await refresh();
         } catch (err) {
             console.error("Error deleting certificate:", err);
             alert("Erreur lors de la suppression.");

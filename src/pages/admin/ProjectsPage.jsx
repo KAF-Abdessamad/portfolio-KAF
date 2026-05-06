@@ -8,7 +8,7 @@ import { useProjects } from '../../hooks/useProjects';
 import { supabase } from '../../lib/supabase';
 
 export default function ProjectsPage() {
-    const { projects, loading, error } = useProjects();
+    const { projects, loading, error, fetchProjects } = useProjects();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentProject, setCurrentProject] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -38,14 +38,20 @@ export default function ProjectsPage() {
                 .eq('id', project.id);
 
             if (deleteError) throw deleteError;
+            
+            await fetchProjects();
+            console.log("Projet supprimé avec succès");
         } catch (err) {
-            console.error("Error deleting project:", err);
-            alert("Erreur lors de la suppression.");
+            console.error("Erreur lors de la suppression:", err);
+            const detail = err.message || "Erreur inconnue";
+            alert(`Erreur lors de la suppression.\n\nDétail: ${detail}`);
         }
     };
 
     const handleSave = async (projectData) => {
         try {
+            console.log("Tentative d'enregistrement du projet:", projectData);
+            
             if (currentProject) {
                 // Update
                 const { id, created_at, ...updateData } = projectData;
@@ -63,8 +69,12 @@ export default function ProjectsPage() {
 
                 if (insertError) throw insertError;
             }
+            
+            // Attendre que la liste soit rafraîchie
+            await fetchProjects();
+            console.log("Liste des projets rafraîchie avec succès");
         } catch (err) {
-            console.error("Error in handleSave:", err);
+            console.error("Erreur détaillée dans handleSave:", err);
             throw err;
         }
     };

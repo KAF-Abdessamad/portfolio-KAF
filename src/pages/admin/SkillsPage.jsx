@@ -36,9 +36,9 @@ export default function SkillsPage() {
             const { error: deleteError } = await supabase
                 .from('skills')
                 .delete()
-                .eq('id', skill.id);
 
             if (deleteError) throw deleteError;
+            refresh();
         } catch (err) {
             console.error("Error deleting skill:", err);
             alert("Erreur lors de la suppression.");

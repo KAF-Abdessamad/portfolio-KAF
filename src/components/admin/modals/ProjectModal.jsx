@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Save, Loader2, Plus } from 'lucide-react';
+import { X, Save, Loader2, Plus, ImagePlus, Trash2 } from 'lucide-react';
 import Button from '../../ui/Button';
 import UploadZone from '../UploadZone';
 import { uploadFile, getPublicUrl } from '../../../lib/storage';
@@ -18,9 +18,11 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
         category: 'Web',
         github_url: '',
         live_url: '',
+        image_url: '',
+        project_images: [],
+        has_github: true,
         featured: false,
-        order_index: 0,
-        image_url: ''
+        order_index: 0
     };
 
     const [formData, setFormData] = useState(initialForm);
@@ -30,22 +32,40 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
     const [isTranslating, setIsTranslating] = useState(false);
 
     const handleAutoTranslate = async () => {
+        if (!formData.title && !formData.description && !formData.long_description) {
+            alert("Veuillez remplir au moins un champ en français avant de traduire.");
+            return;
+        }
+
         setIsTranslating(true);
         try {
-            const [enTitle, enDesc, enLongDesc] = await Promise.all([
-                translateText(formData.title, 'fr', 'en'),
-                translateText(formData.description, 'fr', 'en'),
-                translateText(formData.long_description, 'fr', 'en')
+            // Translate fields independently to avoid one failure blocking everything
+            const results = await Promise.all([
+                formData.title ? translateText(formData.title, 'fr', 'en') : Promise.resolve(''),
+                formData.description ? translateText(formData.description, 'fr', 'en') : Promise.resolve(''),
+                formData.long_description ? translateText(formData.long_description, 'fr', 'en') : Promise.resolve('')
             ]);
+
+            const [enTitle, enDesc, enLongDesc] = results;
+
+            // Check if any translation actually happened (api might return original text on failure)
+            const nothingChanged = 
+                (formData.title && enTitle === formData.title) && 
+                (formData.description && enDesc === formData.description);
+
+            if (nothingChanged && (formData.title || formData.description)) {
+                alert("La traduction a renvoyé le texte original. L'API est peut-être saturée. Veuillez réessayer dans quelques instants.");
+            }
 
             setFormData(prev => ({
                 ...prev,
-                title_en: enTitle,
-                description_en: enDesc,
-                long_description_en: enLongDesc
+                title_en: enTitle || prev.title_en,
+                description_en: enDesc || prev.description_en,
+                long_description_en: enLongDesc || prev.long_description_en
             }));
         } catch (error) {
             console.error("Translation failed:", error);
+            alert("Erreur lors de la traduction. Vérifiez votre connexion ou réessayez plus tard.");
         } finally {
             setIsTranslating(false);
         }
@@ -78,6 +98,25 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
         setPreviewUrl(URL.createObjectURL(file));
     };
 
+    const handleProjectImageSelected = (file) => {
+        const newImage = {
+            file,
+            preview: URL.createObjectURL(file),
+            id: Date.now()
+        };
+        setFormData(prev => ({
+            ...prev,
+            project_images: [...(prev.project_images || []), newImage]
+        }));
+    };
+
+    const handleRemoveProjectImage = (id) => {
+        setFormData(prev => ({
+            ...prev,
+            project_images: prev.project_images.filter(img => img.id !== id)
+        }));
+    };
+
     const handleSave = async (e) => {
         e.preventDefault();
         setIsSaving(true);
@@ -85,7 +124,7 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
         try {
             let finalImageUrl = formData.image_url;
 
-            // 1. Upload new image if selected
+            // 1. Upload cover image if selected
             if (imageFile) {
                 const fileName = `${Date.now()}-${imageFile.name}`;
                 const { path, error } = await uploadFile('portfolio-images', imageFile, fileName);
@@ -93,10 +132,27 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                 finalImageUrl = getPublicUrl('portfolio-images', path);
             }
 
-            // 2. Prepare final data
+            // 2. Upload additional project images
+            const uploadedProjectImages = [];
+            if (formData.project_images?.length > 0) {
+                for (const img of formData.project_images) {
+                    if (img.file) {
+                        const fileName = `proj-${Date.now()}-${img.id}-${img.file.name}`;
+                        const { path, error } = await uploadFile('portfolio-images', img.file, fileName);
+                        if (error) throw error;
+                        uploadedProjectImages.push(getPublicUrl('portfolio-images', path));
+                    } else {
+                        // Keep existing URLs (when editing)
+                        uploadedProjectImages.push(img.preview || img);
+                    }
+                }
+            }
+
+            // 3. Prepare final data
             const finalData = {
                 ...formData,
                 image_url: finalImageUrl,
+                project_images: uploadedProjectImages,
                 tech_stack: formData.tech_stack.split(',').map(item => item.trim()).filter(Boolean)
             };
 
@@ -104,7 +160,11 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
             onClose();
         } catch (error) {
             console.error("Error saving project:", error);
-            alert("Erreur lors de l'enregistrement du projet.");
+            const message =
+                (typeof error?.message === 'string' && error.message.trim()) ||
+                (typeof error === 'string' && error.trim()) ||
+                "Erreur inconnue";
+            alert(`Erreur lors de l'enregistrement du projet.\n\nDétail: ${message}`);
         } finally {
             setIsSaving(false);
         }
@@ -216,16 +276,29 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                         />
                                     </div>
 
-                                    <div className="flex items-center gap-2 pt-2">
-                                        <input
-                                            type="checkbox"
-                                            id="featured"
-                                            name="featured"
-                                            checked={formData.featured}
-                                            onChange={handleChange}
-                                            className="w-5 h-5 rounded border-slate-800 bg-bg-primary text-text-accent focus:ring-accent"
-                                        />
-                                        <label htmlFor="featured" className="text-sm text-white">Mettre en avant (Featured)</label>
+                                    <div className="flex items-center gap-4 pt-2">
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="checkbox"
+                                                id="has_github"
+                                                name="has_github"
+                                                checked={formData.has_github}
+                                                onChange={handleChange}
+                                                className="w-5 h-5 rounded border-slate-800 bg-bg-primary text-text-accent focus:ring-accent"
+                                            />
+                                            <label htmlFor="has_github" className="text-sm text-white">Projet sur GitHub</label>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="checkbox"
+                                                id="featured"
+                                                name="featured"
+                                                checked={formData.featured}
+                                                onChange={handleChange}
+                                                className="w-5 h-5 rounded border-slate-800 bg-bg-primary text-text-accent focus:ring-accent"
+                                            />
+                                            <label htmlFor="featured" className="text-sm text-white">Mettre en avant (Featured)</label>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -243,17 +316,66 @@ export default function ProjectModal({ isOpen, onClose, onSave, project = null }
                                         />
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-slate-400 mb-2">URL GitHub</label>
+                                    {/* Additional Project Images */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-400 mb-2">
+                                            Images du projet ({formData.project_images?.length || 0})
+                                        </label>
+
+                                        {/* Image Gallery Preview */}
+                                        {formData.project_images?.length > 0 && (
+                                            <div className="grid grid-cols-3 gap-2 mb-3">
+                                                {formData.project_images.map((img, idx) => (
+                                                    <div key={img.id || idx} className="relative aspect-square rounded-lg overflow-hidden border border-slate-700 bg-bg-primary">
+                                                        <img
+                                                            src={img.preview || img}
+                                                            alt={`Preview ${idx + 1}`}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleRemoveProjectImage(img.id || idx)}
+                                                            className="absolute top-1 right-1 p-1 bg-red-500/80 hover:bg-red-600 text-white rounded-md transition-colors"
+                                                        >
+                                                            <Trash2 size={12} />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        {/* Add Image Button */}
+                                        <div className="relative">
                                             <input
-                                                name="github_url"
-                                                value={formData.github_url}
-                                                onChange={handleChange}
-                                                className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
-                                                placeholder="https://github.com/..."
+                                                type="file"
+                                                accept="image/*"
+                                                multiple
+                                                onChange={(e) => {
+                                                    const files = Array.from(e.target.files);
+                                                    files.forEach(handleProjectImageSelected);
+                                                }}
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                             />
+                                            <div className="flex items-center justify-center gap-2 py-3 px-4 border-2 border-dashed border-slate-700 hover:border-accent/50 rounded-xl bg-bg-primary/50 transition-colors">
+                                                <ImagePlus size={20} className="text-slate-400" />
+                                                <span className="text-sm text-slate-400">Ajouter des images</span>
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        {formData.has_github && (
+                                            <div>
+                                                <label className="block text-sm font-medium text-slate-400 mb-2">URL GitHub</label>
+                                                <input
+                                                    name="github_url"
+                                                    value={formData.github_url}
+                                                    onChange={handleChange}
+                                                    className="w-full bg-bg-primary border border-slate-800 focus:border-accent rounded-xl py-3 px-4 text-white outline-none transition-colors"
+                                                    placeholder="https://github.com/..."
+                                                />
+                                            </div>
+                                        )}
                                         <div>
                                             <label className="block text-sm font-medium text-slate-400 mb-2">Lien Live</label>
                                             <input
