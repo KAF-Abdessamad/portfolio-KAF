@@ -16,7 +16,7 @@ export default function LanguageSwitcher() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleLanguage}
-            className="group flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-surface border border-border-def hover:border-accent/40 transition-all duration-300"
+            className="group flex items-center gap-2 px-3 h-9 rounded-lg bg-bg-surface border border-border-def hover:border-accent/40 transition-all duration-300"
             title={i18n.language === 'fr' ? 'Switch to English' : 'Passer au Français'}
         >
             <Globe className="w-4 h-4 text-text-mut group-hover:text-text-acc transition-colors" />

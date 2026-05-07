@@ -165,10 +165,10 @@ export default function Header() {
                             <button
                                 id="mobile-menu-toggle"
                                 aria-label={mobileOpen ? t('nav.close') : t('nav.open')}
-                                className="p-2 rounded-lg text-text-pri hover:bg-bg-surface transition-colors"
+                                className="w-9 h-9 flex items-center justify-center rounded-lg text-text-pri hover:bg-bg-surface border border-transparent hover:border-border-def transition-all"
                                 onClick={() => setMobileOpen((v) => !v)}
                             >
-                                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
                             </button>
                         </div>
                     </nav>

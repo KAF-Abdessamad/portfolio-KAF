@@ -12,6 +12,7 @@ import Footer from '../components/layout/Footer';
 import CVPreview from '../sections/CV/CVPreview';
 import { useCV } from '../hooks/useCV';
 import Button from '../components/ui/Button';
+import Chatbot from '../components/ui/Chatbot';
 
 export default function CVPage() {
     const [lang, setLang] = useState('fr');
@@ -102,6 +103,7 @@ export default function CVPage() {
             </main >
 
             <Footer />
+            <Chatbot />
         </div >
     );
 }

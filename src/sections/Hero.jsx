@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Linkedin, ArrowRight, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { useTranslation } from 'react-i18next';
 import Container from '../components/layout/Container';
@@ -187,13 +188,13 @@ export default function Hero() {
                                 {t('hero.view_projects')}
                                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                             </a>
-                            <a
-                                href="/cv"
+                            <Link
+                                to="/cv"
                                 className="px-7 py-3 bg-bg-surface hover:bg-bg-elevated border border-border-def text-text-pri rounded-lg font-medium transition-all duration-300 flex items-center gap-2"
                             >
                                 <Download className="w-4 h-4" />
-                                {t('hero.my_cv')}
-                            </a>
+                                {t('hero.download_cv')}
+                            </Link>
                         </motion.div>
 
                         {/* Social links */}

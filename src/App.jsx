@@ -35,8 +35,9 @@ function HomeRedirect({ children }) {
         const path = location.pathname;
         const isAdmin = path.startsWith('/admin');
         const isHome = path === '/';
+        const isPublicPage = ['/cv', '/certificates', '/activities'].includes(path);
         
-        if (!isAdmin && !isHome) {
+        if (!isAdmin && !isHome && !isPublicPage) {
             navigate('/', { replace: true });
         }
     }, []); // Only run once on mount (refresh)

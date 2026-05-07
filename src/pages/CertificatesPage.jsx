@@ -10,6 +10,7 @@ import { useCertificates } from '../hooks/useCertificates';
 import Container from '../components/layout/Container';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
+import Chatbot from '../components/ui/Chatbot';
 
 export default function CertificatesPage() {
     const { certificates, loading, error } = useCertificates();
@@ -107,6 +108,7 @@ export default function CertificatesPage() {
                 onPrev={handlePrev}
                 onNext={handleNext}
             />
+            <Chatbot />
         </div>
     );
 }

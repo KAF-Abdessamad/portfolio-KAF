@@ -11,7 +11,7 @@ const ThemeToggle = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={toggleTheme}
-            className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-bg-card border border-border-def shadow-theme-sm hover:border-border-str transition-colors overflow-hidden group"
+            className="relative flex items-center justify-center w-9 h-9 rounded-lg bg-bg-card border border-border-def shadow-theme-sm hover:border-border-str transition-colors overflow-hidden group"
             aria-label="Toggle Theme"
         >
             <div className="relative w-6 h-6">

@@ -31,9 +31,9 @@ const ContactInfo = () => {
                         <div className="w-12 h-12 shrink-0 rounded-xl bg-bg-surface border border-border-def flex items-center justify-center text-text-accent group-hover:scale-110 group-hover:border-accent group-hover:shadow-accent transition-all duration-300">
                             <Mail size={20} />
                         </div>
-                        <div>
+                        <div className="min-w-0 flex-1">
                             <p className="text-sm font-mono text-text-mut uppercase tracking-widest mb-1">{t('contact.email_label')}</p>
-                            <a href={`mailto:${CONTACT_INFO.email}`} className="text-text-sec hover:text-text-pri transition-colors text-lg">
+                            <a href={`mailto:${CONTACT_INFO.email}`} className="text-text-sec hover:text-text-pri transition-colors text-base break-all">
                                 {CONTACT_INFO.email}
                             </a>
                         </div>

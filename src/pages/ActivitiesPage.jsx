@@ -17,6 +17,7 @@ import Container from '../components/layout/Container';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import { useActivities } from '../hooks/useActivities';
+import Chatbot from '../components/ui/Chatbot';
 
 const categoryIcons = {
     'Club': Users,
@@ -353,6 +354,7 @@ export default function ActivitiesPage() {
             </AnimatePresence>
 
             <Footer />
+            <Chatbot />
         </div>
     );
 }
