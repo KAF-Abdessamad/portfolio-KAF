@@ -1,71 +1,63 @@
-# Portfolio Ingénieur 3D Interactif 🚀
+# Portfolio Ingénieur Logiciel & Full Stack 🚀
 
-Un portfolio professionnel moderne, performant et immersif, conçu pour mettre en valeur des compétences d'ingénierie Full Stack avec des technologies web avancées.
-
-Ce projet se distingue par son design system premium, ses animations fluides et sa scène 3D interactive, offrant une expérience utilisateur (UX) de haut niveau.
+Un portfolio professionnel moderne, performant et immersif, conçu pour mettre en valeur des compétences d'ingénierie logicielle avec des technologies web de pointe. Ce projet combine une interface premium, une expérience utilisateur (UX) fluide et une intelligence artificielle intégrée.
 
 ## ✨ Fonctionnalités Clés
 
-*   **Hero Section 3D Immersive :** Un "Tech Cube" interactif en Three.js avec effet de parallaxe au mouvement de la souris, éclairage dynamique et particules flottantes.
-*   **Design System Premium :** Une interface basée sur le glassmorphism (cartes translucides, flous d'arrière-plan), avec une palette de couleurs soignée (Primary `#0A0A0A`, Secondary `#1A1A1A`, Accent `#3B82F6`).
-*   **Animations Fluides :** Combinaison de GSAP (GreenSock) pour des apparitions séquentielles (stagger) et de Framer Motion pour les interactions d'interface (survols, fenêtres modales, onglets dynamiques).
-*   **Typographie Dynamique :** Effet de "machine à écrire" personnalisé (`useTypewriter`) et sous-titres cycliques animés.
-*   **Galerie de Projets Interactive :** Un système de filtrage performant (Web, Mobile, 3D, Design) avec des cartes de projets interactives et des modales détaillées (technologies, défis techniques, galerie d'images).
-*   **Timeline d'Expériences :** Un parcours professionnel présenté sous forme de frise chronologique verticale animée au défilement.
-*   **Entièrement Responsive :** Une conception "Mobile-first" garantissant une expérience optimale sur les smartphones, tablettes et ordinateurs de bureau (avec déclinaison intelligente de la 3D sur mobile).
+*   **Assistant IA Intelligent :** Chatbot intégré propulsé par **OpenAI (GPT-3.5)** capable de répondre aux questions sur le parcours, les compétences et les projets. Inclut un système de fallback local intelligent.
+*   **Multilingue (i18next) :** Support complet du **Français** et de l'**Anglais** avec détection automatique de la langue et changement instantané.
+*   **Design System Premium :** Interface basée sur le glassmorphism, avec un **mode sombre/clair** dynamique et une palette de couleurs harmonieuse.
+*   **Backend Dynamique (Supabase) :** Gestion en temps réel des projets, certificats, activités parascolaires et messages via une base de données PostgreSQL.
+*   **Système de CV Interactif :** Page dédiée pour visualiser le CV et bouton "DOWNLOAD CV" optimisé pour le téléchargement direct.
+*   **Animations Avancées :** Utilisation de **Framer Motion** pour les interactions fluides (modales, onglets, transitions).
+*   **Entièrement Responsive :** Optimisation "Mobile-first" rigoureuse avec une attention particulière à l'alignement des contrôles et à la lisibilité des informations.
 
 ## 🛠️ Pile Technologique (Tech Stack)
 
-### Coeur & Architecture
-*   **[React](https://react.dev/) (v19) :** Bibliothèque UI basée sur les composants.
-*   **[Vite](https://vitejs.dev/) :** Outil de build ultra-rapide et serveur de développement.
-*   **[React Router DOM](https://reactrouter.com/) :** Gestion de la navigation et du routage de l'application.
+### Frontend & Frameworks
+*   **[React](https://react.dev/) (v19) :** Architecture basée sur les composants.
+*   **[Vite](https://vitejs.dev/) :** Environnement de développement ultra-rapide.
+*   **[Tailwind CSS](https://tailwindcss.com/) :** Design system utilitaire et responsive.
+*   **[React Router](https://reactrouter.com/) :** Gestion fluide de la navigation.
+*   **[i18next](https://www.i18next.com/) :** Internationalisation (FR/EN).
 
-### Visuel & Styling
-*   **[Tailwind CSS](https://tailwindcss.com/) (v3) :** Framework CSS utilitaire pour un design rapide et cohérent.
-*   **[Lucide React](https://lucide.dev/) :** Bibliothèque d'icônes SVG nettes et modernes.
-*   **[clsx](https://github.com/lukeed/clsx) & [tailwind-merge](https://github.com/dcastil/tailwind-merge) :** Utilitaires pour la composition conditionnelle et sécurisée des classes Tailwind.
+### Backend & Services
+*   **[Supabase](https://supabase.com/) :** Base de données PostgreSQL, authentification et stockage.
+*   **[OpenAI API](https://openai.com/) :** Intelligence artificielle pour l'assistant virtuel.
+*   **[EmailJS](https://www.emailjs.com/) :** Service d'envoi de formulaires de contact sans backend.
 
-### Animations & 3D
-*   **[Three.js](https://threejs.org/) :** Moteur 3D WebGL de référence.
-*   **[React Three Fiber](https://docs.pmnd.rs/react-three-fiber/) (@react-three/fiber) :** Intégration déclarative de Three.js dans l'écosystème React.
-*   **[Drei](https://github.com/pmndrs/drei) (@react-three/drei) :** Helpers utiles pour R3F (Étoiles, Flottaison, Distorsion de maillage, etc.).
-*   **[Framer Motion](https://www.framer.com/motion/) :** Bibliothèque d'animation déclarative pour les composants React.
-*   **[GSAP](https://gsap.com/) :** Bibliothèque d'animation JavaScript robuste pour les séquences asynchrones complexes.
+### Animations
+*   **[Framer Motion](https://www.framer.com/motion/) :** Transitions et micro-interactions fluides.
 
-## 📁 Architecture du Code
-
-Le projet est organisé selon une architecture modulaire et scalable :
+## 📁 Architecture du Projet
 
 ```
 portfolio-KAF/
-├── public/                 # Assets statiques (modèles, textures, favicons)
 ├── src/
-│   ├── assets/             # Images, polices locales
 │   ├── components/         # Composants réutilisables
-│   │   ├── 3d/             # Scènes et objets Three.js (ex: HeroScene.jsx)
-│   │   ├── layout/         # Éléments de structure (Header, Footer, Container, Section)
-│   │   └── ui/             # Design System (Button, Card, Modal, Input, Badge, Tabs)
-│   ├── constants/          # Données de l'application (projects.js, experiences.js)
-│   ├── hooks/              # Hooks React personnalisés (ex: useTypewriter.js)
-│   ├── sections/           # Vues principales de l'application (Hero, Projects, Experience)
-│   ├── App.jsx             # Point d'entrée de l'application et définition du routage
-│   ├── main.jsx            # Point de montage React
-│   └── index.css           # Configuration globale CSS et directives Tailwind
-├── postcss.config.js       # Configuration des plugins PostCSS (Autoprefixer, Tailwind)
-├── tailwind.config.js      # Configuration du thème Tailwind, palettes de couleurs personnalisées
-└── vite.config.js          # Paramétrage de Vite
+│   │   ├── common/         # Éléments partagés (ThemeToggle, LanguageSwitcher)
+│   │   ├── layout/         # Header, Footer, Container
+│   │   └── ui/             # Composants Design System (Chatbot, ProjectCard, Button)
+│   ├── context/            # Gestion du Thème et des données globales
+│   ├── hooks/              # Logique réutilisable (useCV, useActivities, useOpenAI)
+│   ├── lib/                # Configuration Supabase, EmailJS, i18n
+│   ├── pages/              # Vues principales (Home, CV, Certificates, Admin)
+│   ├── sections/           # Blocs de contenu (Hero, Projects, Contact, About)
+│   └── translations/       # Fichiers JSON de traduction (fr.json, en.json)
+├── supabase/               # Scripts SQL et configuration de la base de données
+└── .env                    # Variables d'environnement (Clés API)
 ```
 
 ## 🚀 Démarrage Rapide
 
 ### Prérequis
-*   [Node.js](https://nodejs.org/) (version 18+ recommandée)
-*   [npm](https://www.npmjs.com/) (ou yarn, pnpm)
+*   Node.js (18+)
+*   Un compte Supabase (pour la base de données)
+*   Une clé API OpenAI (pour le chatbot)
 
 ### Installation
 
-1.  **Cloner le dépôt :**
+1.  **Cloner le projet :**
     ```bash
     git clone https://github.com/KAF-Abdessamad/portfolio-KAF.git
     cd portfolio-KAF
@@ -74,31 +66,28 @@ portfolio-KAF/
 2.  **Installer les dépendances :**
     ```bash
     npm install
-    # ou yarn install / pnpm install
     ```
 
-3.  **Lancer le serveur de développement :**
+3.  **Configurer les variables d'environnement :**
+    Créez un fichier `.env` à la racine et ajoutez vos clés :
+    ```env
+    VITE_SUPABASE_URL=votre_url
+    VITE_SUPABASE_ANON_KEY=votre_cle_anon
+    VITE_OPENAI_API_KEY=votre_cle_openai
+    VITE_EMAILJS_SERVICE_ID=...
+    VITE_EMAILJS_TEMPLATE_ID=...
+    VITE_EMAILJS_PUBLIC_KEY=...
+    ```
+
+4.  **Lancer le serveur :**
     ```bash
     npm run dev
     ```
-    L'application sera accessible sur `http://localhost:5173`.
 
-### Compilation pour la Production
+## 🎨 Déploiement
 
-Pour créer une version optimisée prête pour le déploiement :
-```bash
-npm run build
-```
-Les fichiers générés se trouveront dans le dossier `dist/`. Vous pouvez prévisualiser le build de production avec :
-```bash
-npm run preview
-```
-
-## 🎨 Personnalisation
-
-*   **Données :** Modifiez les fichiers `src/constants/projects.js` et `src/constants/experiences.js` pour y insérer votre propre contenu professionnel.
-*   **Couleurs :** Le thème global est défini dans `tailwind.config.js` sous `theme.extend.colors`. Modifiez les objets `primary`, `secondary` et `accent` pour changer toute l'apparence du site.
-*   **Composants 3D :** Ajustez les couleurs, les vitesses de rotation et l'éclairage directement dans `src/components/3d/HeroScene.jsx`.
+Le projet est configuré pour un déploiement facile sur **Vercel** ou **Netlify**.
+- Les variables d'environnement doivent être ajoutées dans les paramètres de votre plateforme de déploiement (Dashboard Vercel -> Settings -> Environment Variables).
 
 ---
-*Créé avec ❤️ en combinant la puissance de React et la beauté de WebGL.*
+*Développé avec passion par **Abdessamad KAF**. Alliant technique, design et innovation.*

@@ -14,7 +14,6 @@ export const ICON_CONFIG = {
     "postgresql": { component: DevIcons.DiPostgresql, color: "#336791" },
     "docker": { component: DevIcons.DiDocker, color: "#2496ED" },
     "git": { component: DevIcons.DiGit, color: "#F05032" },
-    "threejs": { component: DevIcons.DiCodepen, color: "#FFFFFF" }, // Placeholder
     "tailwind": { component: DevIcons.DiCss3, color: "#06B6D4" }, // Placeholder
     "supabase": { component: DevIcons.DiDatabase, color: "#3ECF8E" }, // Placeholder
 };
