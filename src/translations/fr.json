@@ -86,5 +86,46 @@
     "rights": "Tous droits réservés. Conçu et développé avec passion par Abdessamad KAF.",
     "privacy": "Politique de confidentialité",
     "terms": "mentions légales"
+  },
+  "activities": {
+    "title": "Activités",
+    "accent": "Parascolaires",
+    "subtitle": "Beyond the Classroom",
+    "description": "Mes engagements en dehors des cours : clubs, compétitions, événements et bénévolat.",
+    "meta_title": "Activités Parascolaires | Abdessamad KAF",
+    "meta_description": "Découvrez mes activités parascolaires, clubs, compétitions et événements.",
+    "no_activities": "Aucune activité pour le moment.",
+    "view_details": "Voir les détails",
+    "touch_details": "Appuyer pour les détails",
+    "activity": "Activité",
+    "categories": {
+      "Club": "Club",
+      "Competition": "Compétition",
+      "Event": "Événement",
+      "Volunteering": "Bénévolat"
+    }
+  },
+  "certificates": {
+    "title": "Certifications",
+    "accent": "Professionnelles",
+    "subtitle": "Mes Accomplissements Académiques",
+    "description": "Découvrez mes certifications professionnelles et mes accomplissements académiques.",
+    "meta_title": "Certifications | Abdessamad KAF",
+    "meta_description": "Découvrez mes certifications professionnelles et mes accomplissements académiques.",
+    "error_title": "Oups ! Une erreur est survenue",
+    "error_desc": "Impossible de charger les certificats pour le moment.",
+    "retry": "Réessayer",
+    "filter_all": "Tous",
+    "credential_id": "ID du justificatif",
+    "issue_date": "Délivré le",
+    "view_credential": "Voir le justificatif",
+    "badge": "Certifications",
+    "stats_total": "certificats au total",
+    "categories": {
+      "Dev": "Développement",
+      "Cloud": "Cloud",
+      "Design": "Design",
+      "Other": "Autre"
+    }
   }
 }

@@ -2,8 +2,10 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Calendar, ShieldCheck, Hash, Share2, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import Button from '../../components/ui/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function CertificateModal({ isOpen, onClose, certificate, onPrev, onNext }) {
+    const { t, i18n } = useTranslation();
     if (!certificate) return null;
 
     const {
@@ -18,7 +20,7 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
         description
     } = certificate;
 
-    const formattedDate = new Date(issue_date).toLocaleDateString('fr-FR', {
+    const formattedDate = new Date(issue_date).toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'
@@ -27,7 +29,7 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
     const handleShare = () => {
         if (credential_url) {
             navigator.clipboard.writeText(credential_url);
-            alert("Lien de vérification copié !");
+            alert(i18n.language === 'fr' ? "Lien de vérification copié !" : "Credential link copied!");
         }
     };
 
@@ -69,7 +71,7 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                             <button
                                 onClick={handleShare}
                                 className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-text-mut hover:text-text-pri transition-all border border-border-def/10"
-                                title="Copier le lien"
+                                title={i18n.language === 'fr' ? "Copier le lien" : "Copy link"}
                             >
                                 <Share2 size={20} />
                             </button>
@@ -111,7 +113,7 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                             <div className="space-y-8">
                                 <div>
                                     <span className="text-text-acc font-bold text-xs uppercase tracking-[0.3em] mb-3 block">
-                                        Achievement Details
+                                        {t('certificates.badge')}
                                     </span>
                                     <h2 className="text-3xl font-bold text-text-pri leading-tight">
                                         {title}
@@ -127,29 +129,31 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                                 <div className="grid grid-cols-1 gap-6 pb-8 border-b border-white/5">
                                     <DetailItem
                                         icon={Calendar}
-                                        label="Date d'émission"
+                                        label={t('certificates.issue_date')}
                                         value={formattedDate}
                                     />
                                     {credential_id && (
                                         <DetailItem
                                             icon={Hash}
-                                            label="ID de certification"
+                                            label={t('certificates.credential_id')}
                                             value={credential_id}
                                         />
                                     )}
                                     <DetailItem
                                         icon={Calendar}
-                                        label="Expiration"
-                                        value={expiry_date ? new Date(expiry_date).toLocaleDateString('fr-FR') : "Aucune"}
+                                        label={i18n.language === 'fr' ? "Expiration" : "Expiry"}
+                                        value={expiry_date ? new Date(expiry_date).toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US') : (i18n.language === 'fr' ? "Aucune" : "None")}
                                     />
                                 </div>
 
                                 <div className="space-y-4">
                                     <h4 className="text-text-pri font-bold flex items-center gap-2">
-                                        Description
+                                        {t('projects.description_title')}
                                     </h4>
                                     <p className="text-text-sec leading-relaxed italic">
-                                        {description || "Cette certification valide mes compétences techniques et mon expertise dans ce domaine spécifique, démontrant mon engagement envers l'apprentissage continu et l'excellence professionnelle."}
+                                        {description || (i18n.language === 'fr' 
+                                            ? "Cette certification valide mes compétences techniques et mon expertise dans ce domaine spécifique, démontrant mon engagement envers l'apprentissage continu et l'excellence professionnelle."
+                                            : "This certification validates my technical skills and expertise in this specific field, demonstrating my commitment to continuous learning and professional excellence.")}
                                     </p>
                                 </div>
 
@@ -160,13 +164,13 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                                             className="w-full py-4 rounded-2xl flex items-center justify-center gap-2"
                                             onClick={() => window.open(credential_url, '_blank')}
                                         >
-                                            Vérifier l'Accréditation
+                                            {t('certificates.view_credential')}
                                             <ExternalLink size={18} />
                                         </Button>
                                     )}
                                     <button className="w-full py-4 text-text-sec hover:text-text-pri transition-colors flex items-center justify-center gap-2 border border-border-def rounded-2xl hover:bg-white/5">
                                         <Download size={18} />
-                                        Télécharger PDF
+                                        {i18n.language === 'fr' ? "Télécharger PDF" : "Download PDF"}
                                     </button>
                                 </div>
                             </div>

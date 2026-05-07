@@ -1,31 +1,32 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
+import { useTranslation } from 'react-i18next';
 
-const CATEGORIES = [
-    { id: 'All', label: 'Tous' },
-    { id: 'Dev', label: 'Développement' },
-    { id: 'Cloud', label: 'Cloud & DevOps' },
-    { id: 'Design', label: 'Design' },
-    { id: 'Other', label: 'Autres' }
-];
+const CATEGORIES = ['All', 'Dev', 'Cloud', 'Design', 'Other'];
 
 export default function CertificatesFilter({ activeCategory, setCategory, counts }) {
+    const { t } = useTranslation();
+
     // Filter categories to only show those with certificates (except 'All')
-    const visibleCategories = CATEGORIES.filter(cat =>
-        cat.id === 'All' || (counts[cat.id] || 0) > 0
+    const visibleCategories = CATEGORIES.filter(catId =>
+        catId === 'All' || (counts[catId] || 0) > 0
     );
 
     return (
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-12">
-            {visibleCategories.map((cat) => {
-                const isActive = activeCategory === cat.id;
-                const count = counts[cat.id] || 0;
+            {visibleCategories.map((catId) => {
+                const isActive = activeCategory === catId;
+                const count = counts[catId] || 0;
+                
+                const label = catId === 'All' 
+                    ? t('certificates.filter_all') 
+                    : t(`certificates.categories.${catId}`);
 
                 return (
                     <button
-                        key={cat.id}
-                        onClick={() => setCategory(cat.id)}
+                        key={catId}
+                        onClick={() => setCategory(catId)}
                         className={cn(
                             "relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 border",
                             isActive
@@ -42,7 +43,7 @@ export default function CertificatesFilter({ activeCategory, setCategory, counts
                             />
                         )}
 
-                        <span>{cat.label}</span>
+                        <span>{label}</span>
 
                         {/* Count Badge */}
                         <span className={cn(

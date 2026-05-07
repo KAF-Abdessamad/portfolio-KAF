@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { Award, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 function AnimatedCounter({ value }) {
     const [displayValue, setDisplayValue] = useState(0);
@@ -18,6 +19,7 @@ function AnimatedCounter({ value }) {
 }
 
 export default function CertificatesHero({ totalCount }) {
+    const { t } = useTranslation();
     return (
         <section className="relative pt-32 pb-16 overflow-hidden">
             {/* Background Grid & Glows */}
@@ -31,9 +33,9 @@ export default function CertificatesHero({ totalCount }) {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-text-mut mb-8"
                 >
-                    <Link to="/" className="hover:text-text-sec transition-colors">Accueil</Link>
+                    <Link to="/" className="hover:text-text-sec transition-colors">{t('nav.home')}</Link>
                     <ChevronRight size={12} />
-                    <span className="text-text-pri">Certificats</span>
+                    <span className="text-text-pri">{t('nav.certificates')}</span>
                 </motion.div>
 
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -44,7 +46,7 @@ export default function CertificatesHero({ totalCount }) {
                             className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-border-def rounded-full text-text-sec text-xs font-bold uppercase tracking-widest mb-4"
                         >
                             <Award size={14} />
-                            Success & Recognition
+                            {t('certificates.badge')}
                         </motion.div>
 
                         <motion.h1
@@ -53,9 +55,9 @@ export default function CertificatesHero({ totalCount }) {
                             transition={{ delay: 0.1 }}
                             className="text-5xl md:text-7xl font-bold text-text-pri tracking-tighter"
                         >
-                            Certifications & <br />
+                            {t('certificates.title')} <br />
                             <span className="text-text-acc bg-clip-text text-transparent bg-gradient-to-r from-accent to-purple-400">
-                                Achievements
+                                {t('certificates.accent')}
                             </span>
                         </motion.h1>
                     </div>
@@ -66,7 +68,7 @@ export default function CertificatesHero({ totalCount }) {
                         transition={{ delay: 0.3, type: "spring" }}
                         className="bg-bg-card/50 backdrop-blur-xl border border-border-def p-6 rounded-3xl min-w-[200px]"
                     >
-                        <div className="text-text-mut text-sm font-medium mb-1">Total Obtenu</div>
+                        <div className="text-text-mut text-sm font-medium mb-1">{t('certificates.stats_total')}</div>
                         <div className="text-5xl font-bold text-text-pri flex items-baseline gap-2">
                             <AnimatedCounter value={totalCount} />
                             <span className="text-text-acc text-2xl font-black">+</span>

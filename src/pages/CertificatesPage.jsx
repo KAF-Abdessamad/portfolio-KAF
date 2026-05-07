@@ -11,8 +11,10 @@ import Container from '../components/layout/Container';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 import Chatbot from '../components/ui/Chatbot';
+import { useTranslation } from 'react-i18next';
 
 export default function CertificatesPage() {
+    const { t } = useTranslation();
     const { certificates, loading, error } = useCertificates();
     const [activeCategory, setActiveCategory] = useState('All');
     const [selectedCert, setSelectedCert] = useState(null);
@@ -54,8 +56,8 @@ export default function CertificatesPage() {
         return (
             <div className="min-h-screen bg-bg-primary flex items-center justify-center p-6 text-center">
                 <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-white">Oups ! Une erreur est survenue</h2>
-                    <p className="text-slate-400">Impossible de charger les certificats pour le moment.</p>
+                    <h2 className="text-2xl font-bold text-white">{t('certificates.error_title')}</h2>
+                    <p className="text-slate-400">{t('certificates.error_desc')}</p>
                     <div className="bg-red-500/10 border border-red-500/20 p-4 rounded-xl max-w-md mx-auto">
                         <p className="text-xs font-mono text-red-500/80">
                             {error?.message || JSON.stringify(error)}
@@ -65,7 +67,7 @@ export default function CertificatesPage() {
                         onClick={() => window.location.reload()}
                         className="px-6 py-2 bg-secondary text-text-primary font-bold rounded-lg"
                     >
-                        Réessayer
+                        {t('certificates.retry')}
                     </button>
                 </div>
             </div>
@@ -75,8 +77,8 @@ export default function CertificatesPage() {
     return (
         <div className="bg-bg-primary min-h-screen">
             <Helmet>
-                <title>Certifications | Abdessamad KAF</title>
-                <meta name="description" content="Découvrez mes certifications professionnelles et mes accomplissements académiques." />
+                <title>{t('certificates.meta_title')}</title>
+                <meta name="description" content={t('certificates.meta_description')} />
             </Helmet>
 
             <Header />

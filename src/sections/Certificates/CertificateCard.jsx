@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Award, ExternalLink, Calendar, ShieldCheck, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function CertificateCard({ certificate, onClick }) {
+    const { t, i18n } = useTranslation();
     const {
         title,
         issuer,
@@ -41,7 +43,7 @@ export default function CertificateCard({ certificate, onClick }) {
         y.set(0);
     };
 
-    const formattedDate = new Date(issue_date).toLocaleDateString('fr-FR', {
+    const formattedDate = new Date(issue_date).toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US', {
         month: 'short',
         year: 'numeric'
     });
@@ -89,7 +91,7 @@ export default function CertificateCard({ certificate, onClick }) {
                             whileHover={{ y: 0, opacity: 1 }}
                             className="flex items-center gap-2 px-4 py-2 bg-accent text-text-inv font-bold rounded-full text-sm shadow-xl"
                         >
-                            Voir Détails
+                            {t('projects.details')}
                             <ExternalLink size={14} />
                         </motion.div>
                     </div>
@@ -108,7 +110,7 @@ export default function CertificateCard({ certificate, onClick }) {
                         </div>
                         <div className="flex items-center gap-2 text-text-muted text-xs">
                             <Calendar size={14} />
-                            <span>Obtenu en {formattedDate}</span>
+                            <span>{i18n.language === 'fr' ? `Obtenu en ${formattedDate}` : `Issued on ${formattedDate}`}</span>
                         </div>
                     </div>
                 </div>

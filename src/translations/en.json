@@ -86,5 +86,46 @@
     "rights": "All rights reserved. Designed and developed with passion by Abdessamad KAF.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service"
+  },
+  "activities": {
+    "title": "Extracurricular",
+    "accent": "Activities",
+    "subtitle": "Beyond the Classroom",
+    "description": "My commitments outside of class: clubs, competitions, events, and volunteering.",
+    "meta_title": "Extracurricular Activities | Abdessamad KAF",
+    "meta_description": "Discover my extracurricular activities, clubs, competitions, and events.",
+    "no_activities": "No activities for the moment.",
+    "view_details": "View details",
+    "touch_details": "Tap for details",
+    "activity": "Activity",
+    "categories": {
+      "Club": "Club",
+      "Competition": "Competition",
+      "Event": "Event",
+      "Volunteering": "Volunteering"
+    }
+  },
+  "certificates": {
+    "title": "Professional",
+    "accent": "Certifications",
+    "subtitle": "My Academic Achievements",
+    "description": "Discover my professional certifications and academic accomplishments.",
+    "meta_title": "Certifications | Abdessamad KAF",
+    "meta_description": "Discover my professional certifications and academic accomplishments.",
+    "error_title": "Oops! An error occurred",
+    "error_desc": "Unable to load certificates at the moment.",
+    "retry": "Retry",
+    "filter_all": "All",
+    "credential_id": "Credential ID",
+    "issue_date": "Issued on",
+    "view_credential": "View credential",
+    "badge": "Certifications",
+    "stats_total": "total certificates",
+    "categories": {
+      "Dev": "Development",
+      "Cloud": "Cloud",
+      "Design": "Design",
+      "Other": "Other"
+    }
   }
 }

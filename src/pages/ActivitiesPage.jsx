@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import {
     Calendar,
     MapPin,
@@ -36,6 +37,7 @@ const categoryColors = {
 };
 
 export default function ActivitiesPage() {
+    const { t, i18n } = useTranslation();
     const { activities, loading } = useActivities();
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -43,7 +45,7 @@ export default function ActivitiesPage() {
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
         const date = new Date(dateStr);
-        return date.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
+        return date.toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US', { month: 'short', year: 'numeric' });
     };
 
     const formatDateRange = (start, end) => {
@@ -80,8 +82,8 @@ export default function ActivitiesPage() {
     return (
         <div className="bg-bg-primary min-h-screen">
             <Helmet>
-                <title>Activités Parascolaires | Abdessamad KAF</title>
-                <meta name="description" content="Découvrez mes activités parascolaires, clubs, compétitions et événements." />
+                <title>{t('activities.meta_title')}</title>
+                <meta name="description" content={t('activities.meta_description')} />
             </Helmet>
 
             <Header />
@@ -97,7 +99,7 @@ export default function ActivitiesPage() {
                                 className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.3em] text-text-accent"
                             >
                                 <Sparkles size={14} />
-                                Beyond the Classroom
+                                {t('activities.subtitle')}
                             </motion.div>
                             <motion.h1
                                 initial={{ opacity: 0, y: 20 }}
@@ -105,8 +107,8 @@ export default function ActivitiesPage() {
                                 transition={{ delay: 0.1 }}
                                 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary tracking-tighter"
                             >
-                                Activités <br className="hidden sm:block" />
-                                <span className="text-text-accent">Parascolaires</span>
+                                {t('activities.title')} <br className="hidden sm:block" />
+                                <span className="text-text-accent">{t('activities.accent')}</span>
                             </motion.h1>
                             <motion.p
                                 initial={{ opacity: 0, y: 20 }}
@@ -114,7 +116,7 @@ export default function ActivitiesPage() {
                                 transition={{ delay: 0.2 }}
                                 className="text-text-secondary max-w-xl text-sm sm:text-base"
                             >
-                                Mes engagements en dehors des cours : clubs, compétitions, événements et bénévolat.
+                                {t('activities.description')}
                             </motion.p>
                         </div>
                     </div>
@@ -138,7 +140,7 @@ export default function ActivitiesPage() {
                                     animate={{ opacity: 1 }}
                                     className="col-span-full text-center py-20"
                                 >
-                                    <p className="text-text-muted">Aucune activité pour le moment.</p>
+                                    <p className="text-text-muted">{t('activities.no_activities')}</p>
                                 </motion.div>
                             ) : (
                                 activities.map((activity, index) => {
@@ -174,7 +176,7 @@ export default function ActivitiesPage() {
                                                 {/* Hover Details Overlay - Hidden on touch devices */}
                                                 <div className="absolute inset-0 bg-text-accent/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden sm:flex">
                                                     <span className="px-4 py-2 bg-white text-text-accent font-semibold rounded-full flex items-center gap-2 text-sm">
-                                                        Voir les détails
+                                                        {t('activities.view_details')}
                                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                             <path d="M5 12h14M12 5l7 7-7 7"/>
                                                         </svg>
@@ -184,7 +186,7 @@ export default function ActivitiesPage() {
                                                 {/* Mobile touch indicator */}
                                                 <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent sm:hidden">
                                                     <span className="text-white text-xs font-medium flex items-center gap-1">
-                                                        Appuyer pour les détails
+                                                        {t('activities.touch_details')}
                                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                             <path d="M5 12h14M12 5l7 7-7 7"/>
                                                         </svg>
@@ -193,7 +195,7 @@ export default function ActivitiesPage() {
 
                                                 {/* Category Badge */}
                                                 <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium border ${categoryColor}`}>
-                                                    {activity.category || 'Activité'}
+                                                    {t(`activities.categories.${activity.category}`) || activity.category || t('activities.activity')}
                                                 </div>
 
                                                 {/* Image Count */}
@@ -318,7 +320,7 @@ export default function ActivitiesPage() {
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
                                             categoryColors[selectedActivity.category] || categoryColors.default
                                         }`}>
-                                            {selectedActivity.category || 'Activité'}
+                                            {t(`activities.categories.${selectedActivity.category}`) || selectedActivity.category || t('activities.activity')}
                                         </span>
                                     </div>
 
