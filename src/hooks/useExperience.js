@@ -17,6 +17,7 @@ const DEFAULT_EXPERIENCES = [
         highlights_en: ["Laravel 11 / React.js", "DB Design & MySQL", "Advanced CRUD", "Image Upload", "Laravel Auth", "Axios / API", "Jira / Scrum"],
         badge: "Stage",
         badge_en: "Internship",
+        logo_url: null,
         order_index: 0,
     },
     {
@@ -33,6 +34,7 @@ const DEFAULT_EXPERIENCES = [
         highlights_en: ["Laravel / Blade & React", "MySQL & Eloquent", "Excel Import/Export", "Auth & Roles", "Middleware/CSRF", "Tailwind CSS"],
         badge: "Stage",
         badge_en: "Internship",
+        logo_url: null,
         order_index: 1,
     },
     // ── Formations ──────────────────────────────────────────────────────────
@@ -50,6 +52,7 @@ const DEFAULT_EXPERIENCES = [
         highlights_en: ["Software Engineering", "Software Architecture", "Full Stack Development"],
         badge: "Bac+5",
         badge_en: "Master's",
+        logo_url: null,
         order_index: 2,
     },
     {
@@ -66,15 +69,41 @@ const DEFAULT_EXPERIENCES = [
         highlights_en: ["Web Development", "Databases", "Practical Projects"],
         badge: "Bac+2",
         badge_en: "Associate Degree",
+        logo_url: null,
         order_index: 3,
     },
 ];
 
 let EXPERIENCES_CACHE = null;
 
+// Helper to save logo in site_settings as resilient backup if logo_url column doesn't exist
+async function saveLogoToSettings(experienceId, logoUrl) {
+    try {
+        const { data } = await supabase.from('site_settings').select('data').eq('id', 'default').maybeSingle();
+        const prevData = data?.data || {};
+        const logos = prevData.experience_logos || {};
+        logos[experienceId] = logoUrl;
+        await supabase.from('site_settings').upsert({
+            id: 'default',
+            data: { ...prevData, experience_logos: logos },
+            updated_at: new Date().toISOString()
+        });
+    } catch (e) {
+        console.warn('Could not save logo to site_settings backup:', e);
+    }
+}
+
+async function getLogosFromSettings() {
+    try {
+        const { data } = await supabase.from('site_settings').select('data').eq('id', 'default').maybeSingle();
+        return data?.data?.experience_logos || {};
+    } catch {
+        return {};
+    }
+}
+
 /**
  * Hook for managing the "Expérience / Formation" content with Supabase.
- * Falls back to DEFAULT_EXPERIENCES when the table hasn't been created yet.
  */
 export const useExperience = () => {
     const [experiences, setExperiences] = useState(EXPERIENCES_CACHE || DEFAULT_EXPERIENCES);
@@ -89,16 +118,21 @@ export const useExperience = () => {
         }
         try {
             setLoading(true);
-            const { data, error: dbError } = await supabase
-                .from('experiences')
-                .select('*')
-                .order('order_index', { ascending: true });
+            const [{ data: dbData, error: dbError }, logosMap] = await Promise.all([
+                supabase.from('experiences').select('*').order('order_index', { ascending: true }),
+                getLogosFromSettings()
+            ]);
 
             if (dbError) throw dbError;
 
-            const result = (data && data.length > 0) ? data : DEFAULT_EXPERIENCES;
-            EXPERIENCES_CACHE = result;
-            setExperiences(result);
+            const baseList = (dbData && dbData.length > 0) ? dbData : DEFAULT_EXPERIENCES;
+            const merged = baseList.map(item => ({
+                ...item,
+                logo_url: item.logo_url || logosMap[item.id] || null,
+            }));
+
+            EXPERIENCES_CACHE = merged;
+            setExperiences(merged);
         } catch (err) {
             console.warn('useExperience: falling back to defaults.', err.message);
             setExperiences(DEFAULT_EXPERIENCES);
@@ -111,26 +145,75 @@ export const useExperience = () => {
      * Add a new experience entry.
      */
     const addExperience = useCallback(async (payload) => {
-        // highlights can be stored as JSON array in Supabase
-        const { data, error: dbError } = await supabase
-            .from('experiences')
-            .insert([{ ...payload, highlights: payload.highlights || [] }])
-            .select()
-            .single();
-        if (dbError) throw dbError;
+        const itemData = { ...payload, highlights: payload.highlights || [] };
+        let insertedId = null;
+
+        // Strip logo_url before sending to Supabase if the column doesn't exist
+        const logoUrl = itemData.logo_url;
+        const isLogoColumnMissing = (err) =>
+            err?.code === '42703' ||
+            (err?.message && err.message.includes('logo_url'));
+
+        try {
+            const { data, error: dbError } = await supabase
+                .from('experiences')
+                .insert([itemData])
+                .select()
+                .single();
+            if (dbError) throw dbError;
+            insertedId = data?.id;
+        } catch (err) {
+            if (isLogoColumnMissing(err)) {
+                const { logo_url, ...withoutLogo } = itemData;
+                const { data, error: dbError2 } = await supabase
+                    .from('experiences')
+                    .insert([withoutLogo])
+                    .select()
+                    .single();
+                if (dbError2) throw dbError2;
+                insertedId = data?.id;
+                if (insertedId && logoUrl) {
+                    await saveLogoToSettings(insertedId, logoUrl);
+                }
+            } else {
+                throw err;
+            }
+        }
+
         await fetchExperiences(true);
-        return data;
+        return insertedId;
     }, [fetchExperiences]);
 
     /**
      * Update an existing experience entry.
      */
     const updateExperience = useCallback(async (id, payload) => {
-        const { error: dbError } = await supabase
-            .from('experiences')
-            .update({ ...payload, highlights: payload.highlights || [] })
-            .eq('id', id);
-        if (dbError) throw dbError;
+        const itemData = { ...payload, highlights: payload.highlights || [] };
+        const logoUrl = itemData.logo_url;
+        const isLogoColumnMissing = (err) =>
+            err?.code === '42703' ||
+            (err?.message && err.message.includes('logo_url'));
+
+        try {
+            const { error: dbError } = await supabase
+                .from('experiences')
+                .update(itemData)
+                .eq('id', id);
+            if (dbError) throw dbError;
+        } catch (err) {
+            if (isLogoColumnMissing(err)) {
+                const { logo_url, ...withoutLogo } = itemData;
+                const { error: dbError2 } = await supabase
+                    .from('experiences')
+                    .update(withoutLogo)
+                    .eq('id', id);
+                if (dbError2) throw dbError2;
+                await saveLogoToSettings(id, logoUrl || null);
+            } else {
+                throw err;
+            }
+        }
+
         await fetchExperiences(true);
     }, [fetchExperiences]);
 
@@ -159,21 +242,20 @@ export const useExperience = () => {
         return () => supabase.removeChannel(subscription);
     }, [fetchExperiences]);
 
-    /** Returns only 'formation' type entries, excluding simpler 'Bac' level as requested */
-    const getFormations = () => experiences.filter(e => e.type === 'formation' && e.badge?.toLowerCase() !== 'bac');
-
-    /** Returns only 'stage' type entries */
-    const getStages = () => experiences.filter(e => e.type === 'stage');
+    const stages = experiences.filter(e => e.type === 'stage');
+    const formations = experiences.filter(e => e.type === 'formation');
 
     return {
         experiences,
         loading,
         error,
-        fetchExperiences: () => fetchExperiences(true),
+        fetchExperiences,
         addExperience,
         updateExperience,
         deleteExperience,
-        getFormations,
-        getStages,
+        stages,
+        formations,
+        getStages: () => stages,
+        getFormations: () => formations,
     };
 };

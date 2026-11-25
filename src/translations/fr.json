@@ -1,12 +1,12 @@
 {
   "hero": {
     "available": "DISPONIBLE POUR PROJETS",
-    "greeting": "Hi I'm Abdessamad KAF",
-    "subtitle_prefix": "Software Engineering Student",
+    "greeting": "Bonjour, je suis Abdessamad KAF",
+    "subtitle_prefix": "Étudiant en Génie Logiciel",
     "description": "Je suis <strong>Abdessamad KAF</strong>, étudiant en Génie Logiciel. Je conçois et développe des applications web scalables et robustes, en utilisant des technologies modernes telles que React, Node.js, et des architectures cloud pour livrer des systèmes efficaces et prêts pour la production.",
     "view_projects": "Voir projets",
     "my_cv": "Mon CV",
-    "download_cv": "DOWNLOAD CV",
+    "download_cv": "TÉLÉCHARGER CV",
     "connect": "Connectons-nous"
   },
   "nav": {
@@ -21,12 +21,24 @@
     "close": "Fermer le menu"
   },
   "projects": {
+    "badge": "Sélection de travaux",
+    "spotlight_badge": "Projet phare",
     "title": "Mes Projets",
     "description": "Une sélection de mes travaux récents mêlant excellence technique et design soigné.",
     "all": "Tous",
     "no_projects": "Aucun projet trouvé dans cette catégorie.",
+    "reset_filter": "Afficher tous les projets",
     "load_more": "Voir plus de projets",
+    "showing_count": "{{shown}} sur {{total}}",
+    "error_title": "Impossible de charger les projets",
+    "load_error": "Erreur de chargement des projets :",
+    "load_error_fallback": "Veuillez vérifier votre base de données Supabase.",
+    "retry": "Réessayer",
     "details": "Détails",
+    "view_project": "Explorer le projet",
+    "view_case_study": "Voir l'étude de cas",
+    "demo_or_code": "Démo / Code source",
+    "impact_label": "Impact & Vue d'ensemble",
     "read_more": "Lire la suite",
     "featured": "Mis en avant",
     "image_not_available": "Image non disponible",
@@ -37,7 +49,19 @@
     "links": "Liens",
     "view_demo": "Voir Démo",
     "source_code": "Code Source",
-    "gallery_title": "Galerie du Projet"
+    "gallery_title": "Galerie du Projet",
+    "close_modal": "Fermer la fenêtre",
+    "prev_image": "Image précédente",
+    "next_image": "Image suivante",
+    "open_github": "Voir le code source de {{title}} sur GitHub",
+    "open_demo": "Ouvrir la démo en ligne de {{title}}",
+    "categories": {
+      "All": "Tous",
+      "Web": "Web",
+      "Mobile": "Mobile",
+      "3D": "3D",
+      "Design": "Design"
+    }
   },
   "about": {
     "badge": "À propos de moi",
@@ -55,7 +79,7 @@
     "experience_desc": "Un aperçu de mon parcours, des startups agiles aux grandes entreprises technologiques.",
     "internship": "Stage",
     "tech_skills": "Technologies & Compétences",
-    "location_default": "FES, Maroc — Disponible pour des opportunités",
+    "location_default": "Fès, Maroc — Disponible pour des opportunités",
     "cv_label": "Télécharger le CV",
     "contact_label": "Me contacter"
   },
@@ -69,15 +93,25 @@
     "email_label": "Email",
     "phone_label": "Téléphone",
     "location_label": "Localisation",
+    "location_value": "Fès, Maroc",
     "social_label": "Réseaux Sociaux",
     "form_name": "Nom complet",
     "form_email": "Adresse email",
     "form_subject": "Sujet du message",
     "form_message": "Votre message",
+    "placeholders": {
+      "user_name": "Votre nom complet...",
+      "user_email": "votre@email.com",
+      "subject": "Sujet de votre message...",
+      "message": "Décrivez votre projet ou votre message..."
+    },
+    "error_required": "Ce champ est requis",
+    "error_email": "Adresse email invalide",
     "form_submit": "Envoyer le message",
     "form_sending": "Envoi en cours...",
     "form_success": "Message envoyé avec succès !",
-    "form_error": "Erreur lors de l'envoi du message."
+    "form_error": "Erreur lors de l'envoi du message.",
+    "form_config_error": "Veuillez vérifier votre configuration EmailJS (Clés manquantes)."
   },
   "footer": {
     "description": "Développeur Full Stack & Étudiant en Génie Logiciel, passionné par la création d'expériences numériques robustes et innovantes. Je transforme vos idées en solutions techniques performantes et prêtes pour la production.",
@@ -85,12 +119,12 @@
     "contact_title": "Contact",
     "rights": "Tous droits réservés. Conçu et développé avec passion par Abdessamad KAF.",
     "privacy": "Politique de confidentialité",
-    "terms": "mentions légales"
+    "terms": "Mentions légales"
   },
   "activities": {
     "title": "Activités",
     "accent": "Parascolaires",
-    "subtitle": "Beyond the Classroom",
+    "subtitle": "Au-delà des cours",
     "description": "Mes engagements en dehors des cours : clubs, compétitions, événements et bénévolat.",
     "meta_title": "Activités Parascolaires | Abdessamad KAF",
     "meta_description": "Découvrez mes activités parascolaires, clubs, compétitions et événements.",
@@ -118,7 +152,16 @@
     "filter_all": "Tous",
     "credential_id": "ID du justificatif",
     "issue_date": "Délivré le",
+    "issued_prefix": "Obtenu en",
+    "expiry_label": "Expiration",
+    "expiry_none": "Aucune",
     "view_credential": "Voir le justificatif",
+    "download_pdf": "Télécharger",
+    "copy_link": "Copier le lien",
+    "link_copied": "Lien de vérification copié !",
+    "default_description": "Cette certification valide mes compétences techniques et mon expertise dans ce domaine spécifique, démontrant mon engagement envers l'apprentissage continu et l'excellence professionnelle.",
+    "no_certificates": "Aucun certificat trouvé",
+    "no_certificates_desc": "Désolé, nous n'avons trouvé aucun certificat correspondant à votre sélection.",
     "badge": "Certifications",
     "stats_total": "certificats au total",
     "categories": {
@@ -127,5 +170,29 @@
       "Design": "Design",
       "Other": "Autre"
     }
+  },
+  "cv": {
+    "meta_title": "Curriculum Vitæ | Abdessamad KAF",
+    "meta_description": "Découvrez mon parcours professionnel et mes compétences techniques.",
+    "subtitle": "Curriculum Vitæ Professionnel",
+    "title": "Mon Parcours &",
+    "accent": "Compétences",
+    "print": "Imprimer",
+    "download": "Télécharger",
+    "card_title": "Curriculum Vitæ",
+    "card_description": "Téléchargez mon CV pour en savoir plus sur mon parcours et mes compétences techniques.",
+    "download_btn": "Télécharger le CV",
+    "downloads_count": "téléchargements",
+    "updated_on": "Mis à jour le",
+    "download_error": "Erreur lors du téléchargement. Veuillez réessayer.",
+    "pages_count": "pages",
+    "select_prompt": "Veuillez sélectionner un CV pour prévisualiser",
+    "loading_doc": "Chargement du document...",
+    "pdf_error": "Erreur lors de l'affichage du PDF"
+  },
+  "seo": {
+    "role": "Ingénieur Full Stack",
+    "description": "Portfolio professionnel de Abdessamad KAF, Ingénieur Full Stack passionné par la création d'expériences numériques immersives et performantes avec React, Node.js et l'écosystème web moderne.",
+    "keywords": "Ingénieur, Full Stack, React, Node.js, Développeur Web, Portfolio, Abdessamad KAF"
   }
 }

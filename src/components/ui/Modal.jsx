@@ -1,18 +1,48 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function Modal({ isOpen, onClose, title, children, maxWidth = 'max-w-5xl' }) {
-    // Prevent scroll when modal is open
+export default function Modal({
+    isOpen,
+    onClose,
+    title,
+    children,
+    maxWidth = 'max-w-5xl',
+    closeLabel = 'Close modal'
+}) {
+    const titleId = useId();
+    const closeBtnRef = useRef(null);
+    const shouldReduceMotion = useReducedMotion();
+
+    // Prevent scroll when modal is open & focus close button on open
     useEffect(() => {
         if (isOpen) {
+            const previousOverflow = document.body.style.overflow;
             document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'unset';
+            // Focus close button for keyboard accessibility
+            const timer = setTimeout(() => {
+                closeBtnRef.current?.focus();
+            }, 20);
+            return () => {
+                clearTimeout(timer);
+                document.body.style.overflow = previousOverflow;
+            };
         }
-        return () => { document.body.style.overflow = 'unset'; };
     }, [isOpen]);
+
+    // Close on Escape key
+    useEffect(() => {
+        if (!isOpen) return;
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                onClose();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, onClose]);
 
     return createPortal(
         <AnimatePresence>
@@ -23,32 +53,47 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
+                        transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
                         onClick={onClose}
-                        className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md"
+                        className="fixed inset-0 z-[100] bg-black/70 dark:bg-black/85 backdrop-blur-md"
+                        aria-hidden="true"
                     />
 
                     {/* Modal Container */}
-                    <div className="fixed inset-0 z-[110] flex items-center justify-center p-2 sm:p-4 md:p-8 pointer-events-none">
+                    <div
+                        className="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-4 md:p-8 pointer-events-none"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby={titleId}
+                    >
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                            animate={{ scale: 1, opacity: 1, y: 0 }}
-                            exit={{ scale: 0.95, opacity: 0, y: 10 }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                            className={`w-full ${maxWidth} bg-[#0D0D0D] border border-white/5 rounded-2xl sm:rounded-3xl shadow-2xl pointer-events-auto overflow-hidden flex flex-col max-h-[95vh]`}
+                            initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.96, opacity: 0, y: 16 }}
+                            animate={shouldReduceMotion ? { opacity: 1 } : { scale: 1, opacity: 1, y: 0 }}
+                            exit={shouldReduceMotion ? { opacity: 0 } : { scale: 0.96, opacity: 0, y: 12 }}
+                            transition={{ duration: shouldReduceMotion ? 0 : 0.22, ease: 'easeOut' }}
+                            className={`w-full ${maxWidth} bg-bg-card border border-border-def rounded-2xl sm:rounded-3xl shadow-theme-lg pointer-events-auto overflow-hidden flex flex-col max-h-[92vh] text-text-pri`}
                         >
                             {/* Header */}
-                            <div className="flex items-center justify-between p-4 sm:p-6 border-b border-white/5 bg-white/[0.02]">
-                                <h3 className="text-lg sm:text-xl font-bold text-white uppercase tracking-wider">{title}</h3>
-                                <button
-                                    onClick={onClose}
-                                    className="p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-all active:scale-90"
+                            <div className="flex items-center justify-between gap-4 px-5 py-4 sm:px-8 sm:py-5 border-b border-border-def bg-bg-surface/70">
+                                <h3
+                                    id={titleId}
+                                    className="text-lg sm:text-xl font-bold text-text-pri tracking-tight leading-snug"
                                 >
-                                    <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    {title}
+                                </h3>
+                                <button
+                                    ref={closeBtnRef}
+                                    type="button"
+                                    onClick={onClose}
+                                    aria-label={closeLabel}
+                                    className="w-11 h-11 shrink-0 inline-flex items-center justify-center rounded-xl bg-bg-card border border-border-def text-text-sec hover:text-text-pri hover:border-accent/50 hover:bg-bg-elevated transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                                >
+                                    <X className="w-5 h-5" />
                                 </button>
                             </div>
 
                             {/* Content */}
-                            <div className="p-4 sm:p-8 overflow-y-auto custom-scrollbar flex-1">
+                            <div className="p-5 sm:p-8 overflow-y-auto custom-scrollbar flex-1">
                                 {children}
                             </div>
                         </motion.div>
@@ -59,5 +104,3 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
         document.body
     );
 }
-
-

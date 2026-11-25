@@ -8,6 +8,7 @@ import ThemeToggle from '../common/ThemeToggle';
 import LanguageSwitcher from '../common/LanguageSwitcher';
 import { useScrollNav } from '../../hooks/useScrollNav';
 import { useTranslation } from 'react-i18next';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 // Ordered section IDs for IntersectionObserver (must match section id="" attributes)
 const SECTION_IDS = ['hero', 'projects', 'contact'];
@@ -33,6 +34,13 @@ export default function Header() {
     const { activeSection } = useScrollNav(SECTION_IDS);
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const { settings } = useSiteSettings();
+
+    const socialLinks = [
+        { name: 'GitHub', url: settings.profile?.githubUrl || SOCIAL_LINKS[0].url, icon: 'github' },
+        { name: 'LinkedIn', url: settings.profile?.linkedinUrl || SOCIAL_LINKS[1].url, icon: 'linkedin' },
+    ].filter(l => Boolean(l.url));
+    const showSocialLinks = settings.appearance?.showSocialLinks !== false;
 
     // Scroll detection
     useEffect(() => {
@@ -100,8 +108,8 @@ export default function Header() {
                             </a>
                         </motion.div>
 
-                        {/* Desktop Nav */}
-                        <ul className="hidden md:flex items-center space-x-1">
+                        {/* Desktop Nav - lg:flex (>= 1024px) to prevent overlap */}
+                        <ul className="hidden lg:flex items-center space-x-1">
                             {NAV_LINKS.map((link, i) => {
                                 const active = isActive(link, activeSection);
                                 const name = t(`nav.${link.key}`);
@@ -110,12 +118,12 @@ export default function Header() {
                                         key={link.key}
                                         initial={{ opacity: 0, y: -10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: i * 0.07 }}
+                                        transition={{ delay: i * 0.05 }}
                                     >
                                         <a
                                             href={link.href}
                                             onClick={(e) => handleNavClick(link, e)}
-                                            className={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-colors duration-300 ${
+                                            className={`relative px-2.5 xl:px-3 py-1.5 text-xs xl:text-sm font-medium rounded-md transition-colors duration-300 whitespace-nowrap ${
                                                 active
                                                     ? 'text-text-acc'
                                                     : 'text-text-mut hover:text-text-pri'
@@ -135,37 +143,39 @@ export default function Header() {
                             })}
                         </ul>
 
-                        {/* Desktop Right Actions */}
-                        <div className="hidden md:flex items-center space-x-4">
-                            <div className="flex items-center space-x-2 border-r border-border-def pr-4">
-                                {SOCIAL_LINKS.map((link) => {
-                                    const Icon = link.icon === 'github' ? Github : link.icon === 'linkedin' ? Linkedin : null;
-                                    if (!Icon) return null;
-                                    return (
-                                        <a
-                                            key={link.name}
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="p-1.5 rounded-lg hover:bg-bg-elevated text-text-mut hover:text-text-pri transition-all"
-                                        >
-                                            <Icon size={17} />
-                                        </a>
-                                    );
-                                })}
-                            </div>
+                        {/* Desktop Right Actions - lg:flex */}
+                        <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
+                            {showSocialLinks && (
+                                <div className="flex items-center space-x-1.5 border-r border-border-def pr-3">
+                                    {socialLinks.map((link) => {
+                                        const Icon = link.icon === 'github' ? Github : link.icon === 'linkedin' ? Linkedin : null;
+                                        if (!Icon) return null;
+                                        return (
+                                            <a
+                                                key={link.name}
+                                                href={link.url}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="p-1.5 rounded-lg hover:bg-bg-elevated text-text-mut hover:text-text-pri transition-all"
+                                            >
+                                                <Icon size={16} />
+                                            </a>
+                                        );
+                                    })}
+                                </div>
+                            )}
                             <LanguageSwitcher />
                             <ThemeToggle />
                         </div>
 
-                        {/* Mobile Toggle */}
-                        <div className="md:hidden flex items-center space-x-3">
+                        {/* Mobile & Tablet Toggle (< 1024px) */}
+                        <div className="lg:hidden flex items-center space-x-2">
                             <LanguageSwitcher />
                             <ThemeToggle />
                             <button
                                 id="mobile-menu-toggle"
                                 aria-label={mobileOpen ? t('nav.close') : t('nav.open')}
-                                className="w-9 h-9 flex items-center justify-center rounded-lg text-text-pri hover:bg-bg-surface border border-transparent hover:border-border-def transition-all"
+                                className="w-9 h-9 flex items-center justify-center rounded-lg text-text-pri hover:bg-bg-surface border border-border-def transition-all"
                                 onClick={() => setMobileOpen((v) => !v)}
                             >
                                 {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -234,7 +244,7 @@ export default function Header() {
                         <div className="px-6 pb-10 pt-4 border-t border-border-def">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
-                                    {SOCIAL_LINKS.map((link) => {
+                                    {showSocialLinks && socialLinks.map((link) => {
                                         const Icon = link.icon === 'github' ? Github : link.icon === 'linkedin' ? Linkedin : null;
                                         if (!Icon) return null;
                                         return (

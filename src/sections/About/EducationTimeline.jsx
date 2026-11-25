@@ -36,11 +36,19 @@ const TimelineCard = ({ edu, index }) => {
                     )}
 
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-3">
-                        <div>
-                            <h3 className="text-lg font-bold text-text-pri mb-1 leading-snug group-hover:text-text-acc transition-colors">
-                                {degree}
-                            </h3>
-                            <p className="text-text-sec text-sm font-medium">{school}</p>
+                        <div className="flex items-start gap-4">
+                            {/* Logo École / Université */}
+                            {edu.logo_url && (
+                                <div className="w-12 h-12 rounded-xl border border-border-def bg-bg-surface p-1.5 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                    <img src={edu.logo_url} alt={school || degree} className="w-full h-full object-contain" />
+                                </div>
+                            )}
+                            <div>
+                                <h3 className="text-lg font-bold text-text-pri mb-1 leading-snug group-hover:text-text-acc transition-colors">
+                                    {degree}
+                                </h3>
+                                <p className="text-text-sec text-sm font-medium">{school}</p>
+                            </div>
                         </div>
                         {/* Mobile period */}
                         <span className="md:hidden self-start text-[10px] font-mono text-text-acc bg-bg-surface px-2.5 py-1 rounded-lg border border-border-def whitespace-nowrap">
@@ -122,8 +130,8 @@ const SkeletonCard = ({ index }) => {
 };
 
 export default function EducationTimeline() {
-    const { getFormations, loading } = useExperience();
-    const experiences = getFormations();
+    const { formations, loading } = useExperience();
+    const experiences = formations || [];
 
     return (
         <div className="relative pt-10">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { GraduationCap, Briefcase } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Section from '../../components/layout/Section';
@@ -7,27 +7,44 @@ import Container from '../../components/layout/Container';
 import SkillsMarquee from './SkillsMarquee';
 import EducationTimeline from './EducationTimeline';
 import ExperienceTimeline from './ExperienceTimeline';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function About() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const shouldReduceMotion = useReducedMotion();
+    const { settings, getLocalizedValue } = useSiteSettings();
+    const lang = i18n.resolvedLanguage || i18n.language || 'fr';
+    const aboutSettings = settings.home?.about;
     const [activeTab, setActiveTab] = useState('education');
+
+    const techTitle = getLocalizedValue(aboutSettings, 'tech_title', lang, t('about.tech_title'));
+    const techSubtitle = getLocalizedValue(aboutSettings, 'tech_subtitle', lang, t('about.tech_subtitle'));
+    const academicTrack = getLocalizedValue(aboutSettings, 'academic_track', lang, t('about.academic_track'));
+    const educationTitle = getLocalizedValue(aboutSettings, 'education_title', lang, t('about.education_title'));
+    const educationAccent = getLocalizedValue(aboutSettings, 'education_accent', lang, t('about.education_accent'));
+    const educationDesc = getLocalizedValue(aboutSettings, 'education_desc', lang, t('about.education_desc'));
+    const careerTrack = getLocalizedValue(aboutSettings, 'career_track', lang, t('about.career_track'));
+    const experienceTitle = getLocalizedValue(aboutSettings, 'experience_title', lang, t('about.experience_title'));
+    const experienceAccent = getLocalizedValue(aboutSettings, 'experience_accent', lang, t('about.experience_accent'));
+    const experienceDesc = getLocalizedValue(aboutSettings, 'experience_desc', lang, t('about.experience_desc'));
 
     return (
         <Section id="about" className="bg-bg-primary pt-32 pb-20 overflow-hidden">
             <Container>
-                {/* Skills marquee */}
-                <div className="mb-28">
+                {/* Skills marquee with scroll trigger */}
+                <div className="mb-20 sm:mb-28">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-12"
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: "easeOut" }}
+                        className="text-center mb-10 sm:mb-12"
                     >
-                        <h3 className="text-3xl md:text-4xl font-semibold text-[#1e293b] dark:text-gray-200 mb-3 tracking-tight">
-                            {t('about.tech_title')}
+                        <h3 className="fluid-subtitle font-bold text-text-pri mb-3 tracking-tight">
+                            {techTitle}
                         </h3>
-                        <p className="text-[#64748b] dark:text-gray-400 text-base max-w-xl mx-auto">
-                            {t('about.tech_subtitle')}
+                        <p className="text-text-sec fluid-body max-w-xl mx-auto">
+                            {techSubtitle}
                         </p>
                     </motion.div>
 
@@ -47,7 +64,7 @@ export default function About() {
                                         : 'text-text-sec hover:text-text-pri hover:bg-bg-card'
                                 }`}
                             >
-                                    {t('about.education_tab')}
+                                {t('about.education_tab')}
                             </button>
                             <button
                                 onClick={() => setActiveTab('experience')}
@@ -57,7 +74,7 @@ export default function About() {
                                         : 'text-text-sec hover:text-text-pri hover:bg-bg-card'
                                 }`}
                             >
-                                    {t('about.experience_tab')}
+                                {t('about.experience_tab')}
                             </button>
                         </div>
                     </div>
@@ -74,14 +91,14 @@ export default function About() {
                                 >
                                     <div className="text-center max-w-3xl mx-auto mb-16">
                                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-surface border border-border-def text-text-mut font-mono text-xs uppercase tracking-[0.2em] mb-4">
-                                             <GraduationCap size={12} className="text-text-acc" />
-                                            {t('about.academic_track')}
+                                            <GraduationCap size={12} className="text-text-acc" />
+                                            {academicTrack}
                                         </div>
-                                         <h3 className="text-3xl md:text-4xl font-bold text-text-pri mb-4">
-                                            {t('about.education_title')} <span className="text-text-acc">{t('about.education_accent')}</span>
+                                        <h3 className="text-3xl md:text-4xl font-bold text-text-pri mb-4">
+                                            {educationTitle} <span className="text-text-acc">{educationAccent}</span>
                                         </h3>
                                         <p className="text-text-sec">
-                                            {t('about.education_desc')}
+                                            {educationDesc}
                                         </p>
                                     </div>
                                     <EducationTimeline />
@@ -96,14 +113,14 @@ export default function About() {
                                 >
                                     <div className="text-center max-w-3xl mx-auto mb-16">
                                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-bg-surface border border-border-def text-text-mut font-mono text-xs uppercase tracking-[0.2em] mb-4">
-                                             <Briefcase size={12} className="text-text-acc" />
-                                            {t('about.career_track')}
+                                            <Briefcase size={12} className="text-text-acc" />
+                                            {careerTrack}
                                         </div>
-                                         <h3 className="text-3xl md:text-4xl font-bold text-text-pri mb-4">
-                                            {t('about.experience_title')} <span className="text-text-acc">{t('about.experience_accent')}</span>
+                                        <h3 className="text-3xl md:text-4xl font-bold text-text-pri mb-4">
+                                            {experienceTitle} <span className="text-text-acc">{experienceAccent}</span>
                                         </h3>
                                         <p className="text-text-sec">
-                                            {t('about.experience_desc')}
+                                            {experienceDesc}
                                         </p>
                                     </div>
                                     <ExperienceTimeline />

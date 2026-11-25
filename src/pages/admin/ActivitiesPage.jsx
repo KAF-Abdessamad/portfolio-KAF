@@ -15,12 +15,14 @@ import {
     EyeOff,
     Image as ImageIcon,
     Info,
-    Star
+    Star,
+    Sparkles
 } from 'lucide-react';
 import { useAdminActivities } from '../../hooks/useActivities';
 import { supabase } from '../../lib/supabase';
 import { uploadFile, getPublicUrl, deleteFile } from '../../lib/storage';
 import Button from '../../components/ui/Button';
+import { translateText } from '../../utils/translate';
 
 const CATEGORIES = ['Club', 'Competition', 'Event', 'Volunteering'];
 
@@ -30,7 +32,9 @@ export default function ActivitiesPage() {
     const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         title: '',
+        title_en: '',
         description: '',
+        description_en: '',
         category: 'Club',
         date_start: '',
         date_end: '',
@@ -43,12 +47,15 @@ export default function ActivitiesPage() {
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [uploadingImages, setUploadingImages] = useState(false);
     const [uploadError, setUploadError] = useState(null);
+    const [isTranslating, setIsTranslating] = useState(false);
     const fileInputRef = useRef(null);
 
     const resetForm = () => {
         setFormData({
             title: '',
+            title_en: '',
             description: '',
+            description_en: '',
             category: 'Club',
             date_start: '',
             date_end: '',
@@ -66,6 +73,8 @@ export default function ActivitiesPage() {
     const startEdit = (activity) => {
         setFormData({
             ...activity,
+            title_en: activity.title_en || '',
+            description_en: activity.description_en || '',
             cover_image_index: activity.cover_image_index ?? 0,
             date_start: activity.date_start ? new Date(activity.date_start).toISOString().split('T')[0] : '',
             date_end: activity.date_end ? new Date(activity.date_end).toISOString().split('T')[0] : ''
@@ -73,6 +82,24 @@ export default function ActivitiesPage() {
         setEditingId(activity.id);
         setIsEditing(true);
         window.scrollTo(0, 0);
+    };
+
+    const handleAutoTranslate = async () => {
+        if (!formData.title && !formData.description) return;
+        setIsTranslating(true);
+        try {
+            const [tTitle, tDesc] = await Promise.all([
+                formData.title ? translateText(formData.title, 'fr', 'en') : Promise.resolve(''),
+                formData.description ? translateText(formData.description, 'fr', 'en') : Promise.resolve(''),
+            ]);
+            setFormData(prev => ({
+                ...prev,
+                title_en: tTitle || prev.title_en,
+                description_en: tDesc || prev.description_en,
+            }));
+        } finally {
+            setIsTranslating(false);
+        }
     };
 
     const handleImageUpload = async (files) => {
@@ -133,6 +160,14 @@ export default function ActivitiesPage() {
             result = await createActivity(activityData);
         }
 
+        // Fallback if title_en / description_en columns are not yet migrated in Supabase
+        if (!result.success && (result.error?.message || '').toLowerCase().includes('column')) {
+            const { title_en, description_en, ...legacyData } = activityData;
+            result = editingId
+                ? await updateActivity(editingId, legacyData)
+                : await createActivity(legacyData);
+        }
+
         if (result.success) {
             resetForm();
             alert(editingId ? 'Activité mise à jour!' : 'Activité créée!');
@@ -185,9 +220,20 @@ export default function ActivitiesPage() {
                             <h2 className="text-xl font-bold text-white">
                                 {editingId ? 'Modifier l\'activité' : 'Nouvelle activité'}
                             </h2>
-                            <button type="button" onClick={resetForm} className="p-2 hover:bg-white/10 rounded-lg">
-                                <X size={20} className="text-text-muted" />
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <button
+                                    type="button"
+                                    onClick={handleAutoTranslate}
+                                    disabled={isTranslating}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 text-text-acc rounded-lg hover:bg-accent/20 transition-all text-xs font-bold border border-accent/20"
+                                >
+                                    <Sparkles size={14} />
+                                    <span>{isTranslating ? 'Traduction...' : 'Auto-Translate (FR ➔ EN)'}</span>
+                                </button>
+                                <button type="button" onClick={resetForm} className="p-2 hover:bg-white/10 rounded-lg">
+                                    <X size={20} className="text-text-muted" />
+                                </button>
+                            </div>
                         </div>
 
                         {uploadError && (
@@ -198,15 +244,25 @@ export default function ActivitiesPage() {
                         )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {/* Title */}
-                            <div className="md:col-span-2">
-                                <label className="block text-sm text-text-muted mb-2">Titre</label>
+                            {/* Title FR & EN */}
+                            <div>
+                                <label className="block text-sm text-text-muted mb-2">Titre (FR)</label>
                                 <input
                                     type="text"
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-3 text-white focus:border-text-accent focus:outline-none"
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none"
                                     required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-text-muted mb-2">Title (EN)</label>
+                                <input
+                                    type="text"
+                                    value={formData.title_en || ''}
+                                    onChange={(e) => setFormData({ ...formData, title_en: e.target.value })}
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none"
+                                    placeholder="Optional English title..."
                                 />
                             </div>
 
@@ -216,7 +272,7 @@ export default function ActivitiesPage() {
                                 <select
                                     value={formData.category}
                                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-3 text-white focus:border-text-accent focus:outline-none"
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none"
                                 >
                                     {CATEGORIES.map(cat => (
                                         <option key={cat} value={cat}>{cat}</option>
@@ -231,7 +287,7 @@ export default function ActivitiesPage() {
                                     type="text"
                                     value={formData.location}
                                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-3 text-white focus:border-text-accent focus:outline-none"
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none"
                                     placeholder="Ex: Université, Club, etc."
                                 />
                             </div>
@@ -243,7 +299,7 @@ export default function ActivitiesPage() {
                                     type="date"
                                     value={formData.date_start}
                                     onChange={(e) => setFormData({ ...formData, date_start: e.target.value })}
-                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-3 text-white focus:border-text-accent focus:outline-none"
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -252,18 +308,27 @@ export default function ActivitiesPage() {
                                     type="date"
                                     value={formData.date_end}
                                     onChange={(e) => setFormData({ ...formData, date_end: e.target.value })}
-                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-3 text-white focus:border-text-accent focus:outline-none"
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none"
                                 />
                             </div>
 
-                            {/* Description */}
-                            <div className="md:col-span-2">
-                                <label className="block text-sm text-text-muted mb-2">Description</label>
+                            {/* Description FR & EN */}
+                            <div>
+                                <label className="block text-sm text-text-muted mb-2">Description (FR)</label>
                                 <textarea
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    className="w-full bg-bg-surface border border rounded-xl px-4 py-3 text-white focus:border-text-accent focus:outline-none min-h-[120px]"
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none min-h-[120px]"
                                     required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-text-muted mb-2">Description (EN)</label>
+                                <textarea
+                                    value={formData.description_en || ''}
+                                    onChange={(e) => setFormData({ ...formData, description_en: e.target.value })}
+                                    className="w-full bg-bg-surface border border-border-def rounded-xl px-4 py-3 text-text-pri focus:border-accent focus:outline-none min-h-[120px]"
+                                    placeholder="Optional English description..."
                                 />
                             </div>
 

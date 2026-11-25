@@ -1,140 +1,181 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Filter, LayoutGrid, List } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { Layers, AlertCircle, RefreshCw, FolderOpen } from 'lucide-react';
 import Section from '../components/layout/Section';
 import Container from '../components/layout/Container';
-import ProjectCard from '../components/ui/ProjectCard';
+import ProjectCard, { ProjectCardSkeleton } from '../components/ui/ProjectCard';
 import ProjectModal from '../components/ui/ProjectModal';
 import { useProjects } from '../hooks/useProjects';
 import { useTranslation } from 'react-i18next';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 
-const CATEGORIES = ["Tous", "Web", "Mobile", "3D", "Design"];
-const PROJECTS_PER_PAGE = 6;
+function StackingProjectCard({ project, index, total, onSelectProject, shouldReduceMotion }) {
+    const cardRef = useRef(null);
 
-export default function Projects() {
-    const { t } = useTranslation();
-    const { projects, loading, error } = useProjects();
-    const [activeCategory, setActiveCategory] = useState("All");
-    const [selectedProject, setSelectedProject] = useState(null);
-    const [visibleCount, setVisibleCount] = useState(PROJECTS_PER_PAGE);
+    // Track scroll of this card relative to the viewport
+    const { scrollYProgress } = useScroll({
+        target: cardRef,
+        offset: ['start start', 'end start'],
+    });
 
-    const categories = ["All", "Web", "Mobile", "3D", "Design"];
+    const isLast = index === total - 1;
+    const targetScale = isLast || shouldReduceMotion ? 1 : 0.94;
+    const targetDim = isLast || shouldReduceMotion ? 0 : 0.32;
 
-    const filteredProjects = useMemo(() => {
-        if (!projects) return [];
-        if (activeCategory === "All") return projects;
-        return projects.filter(p => p.category === activeCategory);
-    }, [activeCategory, projects]);
+    const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
+    const dim = useTransform(scrollYProgress, [0, 1], [0, targetDim]);
 
-    const displayedProjects = filteredProjects.slice(0, visibleCount);
-    const hasMore = visibleCount < filteredProjects.length;
-
-    if (error) return (
-        <Section id="projects" className="bg-bg-primary pt-24 text-center">
-            <Container>
-                <p className="text-red-500 font-mono">Erreur de chargement des projets : {error.message || "Veuillez vérifier votre base de données Supabase."}</p>
-            </Container>
-        </Section>
-    );
+    // Sticky offset under the navbar (staggered stack effect on mobile AND desktop)
+    // Mobile navbar is ~4.5rem high, desktop is ~5.5rem. We use a responsive calc.
+    const stickyTop = `calc(4.5rem + ${Math.min(index, 5) * 0.75}rem)`;
 
     return (
-        <Section id="projects" className="bg-bg-primary pt-24">
+        <div
+            ref={cardRef}
+            style={{ top: stickyTop }}
+            className="w-full sticky mb-10 sm:mb-14 lg:mb-16 last:mb-0"
+        >
+            <motion.div
+                style={{
+                    scale: shouldReduceMotion ? 1 : scale,
+                    transformOrigin: 'top center',
+                }}
+                className="w-full relative rounded-3xl"
+            >
+                <ProjectCard
+                    project={project}
+                    index={index}
+                    onClick={onSelectProject}
+                />
+
+                {/* Smooth dimming overlay as the card is covered by the next one */}
+                {!shouldReduceMotion && !isLast && (
+                    <motion.div
+                        style={{ opacity: dim }}
+                        className="absolute inset-0 rounded-3xl bg-black pointer-events-none"
+                        aria-hidden="true"
+                    />
+                )}
+            </motion.div>
+        </div>
+    );
+}
+
+export default function Projects() {
+    const { t, i18n } = useTranslation();
+    const shouldReduceMotion = useReducedMotion();
+    const { settings, getLocalizedValue } = useSiteSettings();
+    const lang = i18n.resolvedLanguage || i18n.language || 'fr';
+    const { projects, loading, error, fetchProjects } = useProjects();
+
+    const [selectedProject, setSelectedProject] = useState(null);
+
+    const sectionTitle = getLocalizedValue(settings.home?.projects, 'title', lang, t('projects.title'));
+    const sectionDescription = getLocalizedValue(settings.home?.projects, 'description', lang, t('projects.description'));
+
+    const titleWords = sectionTitle.split(' ');
+    const firstWord = titleWords[0] || '';
+    const restWords = titleWords.slice(1).join(' ');
+
+    return (
+        <Section id="projects" className="bg-bg-primary text-text-pri pt-24 pb-20 md:pb-32">
             <Container>
-                {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
-                    <div className="max-w-2xl">
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="text-4xl md:text-5xl font-bold text-text-pri mb-6"
-                        >
-                            {t('projects.title').split(' ')[0]} <span className="text-text-acc relative">{t('projects.title').split(' ').slice(1).join(' ')}
-                                <span className="absolute bottom-0 left-0 w-full h-[4px] bg-accent/30 -rotate-1 rounded-full"></span>
-                            </span>
-                        </motion.h2>
-                        <p className="text-text-sec text-lg">
-                            {t('projects.description')}
-                        </p>
+                {/* ── Section Header (No filters, No counters) ─────────────── */}
+                <div className="max-w-3xl mb-12 lg:mb-16">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-4 rounded-full bg-bg-surface border border-border-def text-text-acc text-xs font-mono uppercase tracking-[0.2em]">
+                        <Layers size={14} aria-hidden="true" />
+                        <span>{t('projects.badge')}</span>
                     </div>
 
-                    {/* Filtering System */}
-                     <div className="flex flex-wrap gap-3">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => {
-                                    setActiveCategory(cat);
-                                    setVisibleCount(PROJECTS_PER_PAGE);
-                                }}
-                                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-border-def ${activeCategory === cat
-                                    ? "bg-accent text-text-inv border-accent shadow-accent"
-                                    : "bg-bg-surface text-text-mut border-border-def hover:border-text-sec"
-                                    }`}
-                            >
-                                {cat === "All" ? t('projects.all') : cat}
-                                {activeCategory === cat && projects && (
-                                    <span className="ml-2 bg-text-inv/20 px-2 py-0.5 rounded-full text-[10px]">
-                                        {filteredProjects.length}
-                                    </span>
-                                )}
-                            </button>
-                        ))}
-                    </div>
+                    <motion.h2
+                        initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: shouldReduceMotion ? 0 : 0.3 }}
+                        className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-pri mb-4 leading-[1.15] tracking-tight"
+                    >
+                        {firstWord}
+                        {restWords ? ' ' : ''}
+                        {restWords && (
+                            <span className="text-text-acc relative inline-block">
+                                {restWords}
+                                <span
+                                    className="absolute bottom-0 left-0 w-full h-[3px] bg-accent/30 rounded-full"
+                                    aria-hidden="true"
+                                />
+                            </span>
+                        )}
+                    </motion.h2>
+
+                    <p className="text-text-sec text-base sm:text-lg leading-relaxed">
+                        {sectionDescription}
+                    </p>
                 </div>
 
-                {/* Projects Grid */}
-                <div className="relative min-h-[400px]">
-                    {loading ? (
-                        <div className="flex items-center justify-center py-20">
-                            <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+                {/* ── Main Content Area ────────────────────────────────────── */}
+                <div className="min-h-[360px]">
+                    {error ? (
+                        /* Error State */
+                        <div
+                            role="alert"
+                            className="bg-bg-card border border-red-500/30 rounded-3xl p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-theme-sm"
+                        >
+                            <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center mx-auto mb-5">
+                                <AlertCircle size={28} aria-hidden="true" />
+                            </div>
+                            <h3 className="text-xl font-bold text-text-pri mb-2">
+                                {t('projects.error_title')}
+                            </h3>
+                            <p className="text-text-sec text-sm sm:text-base leading-relaxed mb-6">
+                                {t('projects.load_error')} {error.message || t('projects.load_error_fallback')}
+                            </p>
+                            <button
+                                type="button"
+                                onClick={fetchProjects}
+                                className="min-h-[44px] px-6 py-2.5 rounded-xl bg-accent hover:bg-accent-h text-white font-semibold text-sm inline-flex items-center gap-2 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                            >
+                                <RefreshCw size={16} aria-hidden="true" />
+                                <span>{t('projects.retry')}</span>
+                            </button>
+                        </div>
+                    ) : loading ? (
+                        /* Loading Skeleton State */
+                        <div className="space-y-8" aria-busy="true" aria-live="polite">
+                            <ProjectCardSkeleton />
+                            <ProjectCardSkeleton />
+                        </div>
+                    ) : !projects || projects.length === 0 ? (
+                        /* Empty State */
+                        <div className="bg-bg-card border border-border-def rounded-3xl p-10 sm:p-14 text-center max-w-xl mx-auto shadow-theme-sm">
+                            <div className="w-16 h-16 rounded-2xl bg-bg-surface border border-border-def text-text-acc flex items-center justify-center mx-auto mb-5">
+                                <FolderOpen size={30} aria-hidden="true" />
+                            </div>
+                            <h3 className="text-xl font-bold text-text-pri mb-2">
+                                {t('projects.no_projects')}
+                            </h3>
+                            <p className="text-text-sec text-sm leading-relaxed">
+                                {sectionDescription}
+                            </p>
                         </div>
                     ) : (
-                        <motion.div
-                            layout
-                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                        >
-                            <AnimatePresence mode="popLayout">
-                                {displayedProjects.map((project) => (
-                                    <ProjectCard
-                                        key={project.id}
-                                        project={project}
-                                        onClick={setSelectedProject}
-                                    />
-                                ))}
-                            </AnimatePresence>
-                        </motion.div>
-                    )}
-
-                    {/* Empty State */}
-                    {!loading && displayedProjects.length === 0 && (
-                        <div className="py-20 text-center">
-                            <p className="text-text-mut font-mono italic">{t('projects.no_projects')}</p>
+                        /* Stacking Full-width Cards List */
+                        <div className="relative">
+                            {projects.map((project, index) => (
+                                <StackingProjectCard
+                                    key={project.id}
+                                    project={project}
+                                    index={index}
+                                    total={projects.length}
+                                    onSelectProject={setSelectedProject}
+                                    shouldReduceMotion={shouldReduceMotion}
+                                />
+                            ))}
                         </div>
                     )}
                 </div>
-
-                {/* Load More Button */}
-                {hasMore && !loading && (
-                    <div className="flex justify-center mt-16">
-                        <button
-                            onClick={() => setVisibleCount(prev => prev + PROJECTS_PER_PAGE)}
-                            className="group px-8 py-4 bg-transparent border-2 border-border-def text-text-pri rounded-xl font-bold hover:border-accent hover:text-text-acc transition-all duration-300"
-                        >
-                            {t('projects.load_more')}
-                            <motion.span
-                                animate={{ y: [0, 5, 0] }}
-                                transition={{ repeat: Infinity, duration: 2 }}
-                                className="inline-block ml-2"
-                            >
-                                ↓
-                            </motion.span>
-                        </button>
-                    </div>
-                )}
             </Container>
 
-            {/* Project Detail Modal */}
+            {/* Project Detail Modal (Étude de cas complète) */}
             <ProjectModal
                 project={selectedProject}
                 isOpen={!!selectedProject}
@@ -143,6 +184,3 @@ export default function Projects() {
         </Section>
     );
 }
-
-
-

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Save, Shield, Terminal, Zap, Layout, Database, Cpu } from 'lucide-react';
 import Button from '../../ui/Button';
@@ -59,22 +60,22 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
 
     if (!isOpen) return null;
 
-    return (
+    return createPortal(
         <AnimatePresence>
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
-                    className="absolute inset-0 bg-bg-primary/80 backdrop-blur-md"
+                    className="fixed inset-0 bg-black/85 backdrop-blur-md"
                 />
 
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative w-full max-w-2xl bg-bg-card border border rounded-2xl shadow-2xl overflow-hidden"
+                    className="relative w-full max-w-2xl bg-bg-card border border-border-def rounded-3xl shadow-2xl overflow-hidden z-10 my-auto"
                 >
                     <div className="p-6 border-b border flex items-center justify-between">
                         <h2 className="text-xl font-bold text-text-primary">
@@ -207,7 +208,8 @@ export default function SkillModal({ isOpen, onClose, skill, onSave }) {
                     </form>
                 </motion.div>
             </div>
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }
 

@@ -1,7 +1,7 @@
 {
   "hero": {
     "available": "AVAILABLE FOR PROJECTS",
-    "greeting": "Hello, I'm KAF Abdessamad",
+    "greeting": "Hello, I'm Abdessamad KAF",
     "subtitle_prefix": "Software Engineering Student",
     "description": "I am <strong>Abdessamad KAF</strong>, a Software Engineering student. I design and develop scalable and robust web applications, using modern technologies such as React, Node.js, and cloud architectures to deliver efficient, production-ready systems.",
     "view_projects": "View projects",
@@ -21,12 +21,24 @@
     "close": "Close menu"
   },
   "projects": {
+    "badge": "Selected Work",
+    "spotlight_badge": "Featured Spotlight",
     "title": "My Projects",
     "description": "A selection of my recent work blending technical excellence with careful design.",
     "all": "All",
     "no_projects": "No projects found in this category.",
+    "reset_filter": "Show all projects",
     "load_more": "View more projects",
+    "showing_count": "{{shown}} of {{total}}",
+    "error_title": "Unable to load projects",
+    "load_error": "Error loading projects:",
+    "load_error_fallback": "Please check your Supabase database configuration.",
+    "retry": "Retry",
     "details": "Details",
+    "view_project": "Explore project",
+    "view_case_study": "View case study",
+    "demo_or_code": "Demo / Source code",
+    "impact_label": "Impact & Overview",
     "read_more": "Read more",
     "featured": "Featured",
     "image_not_available": "Image not available",
@@ -37,7 +49,19 @@
     "links": "Links",
     "view_demo": "View Demo",
     "source_code": "Source Code",
-    "gallery_title": "Project Gallery"
+    "gallery_title": "Project Gallery",
+    "close_modal": "Close modal",
+    "prev_image": "Previous image",
+    "next_image": "Next image",
+    "open_github": "View {{title}} source code on GitHub",
+    "open_demo": "Open live demo for {{title}}",
+    "categories": {
+      "All": "All",
+      "Web": "Web",
+      "Mobile": "Mobile",
+      "3D": "3D",
+      "Design": "Design"
+    }
   },
   "about": {
     "badge": "About me",
@@ -55,7 +79,7 @@
     "experience_desc": "A glimpse into my journey, from agile startups to large tech companies.",
     "internship": "Internship",
     "tech_skills": "Technologies & Skills",
-    "location_default": "FES, Morocco — Available for opportunities",
+    "location_default": "Fez, Morocco — Available for opportunities",
     "cv_label": "Download CV",
     "contact_label": "Contact me"
   },
@@ -69,15 +93,25 @@
     "email_label": "Email",
     "phone_label": "Phone",
     "location_label": "Location",
+    "location_value": "Fez, Morocco",
     "social_label": "Social Networks",
     "form_name": "Full Name",
     "form_email": "Email Address",
     "form_subject": "Message Subject",
     "form_message": "Your Message",
+    "placeholders": {
+      "user_name": "Your full name...",
+      "user_email": "your@email.com",
+      "subject": "Subject of your message...",
+      "message": "Describe your project or message..."
+    },
+    "error_required": "This field is required",
+    "error_email": "Invalid email address",
     "form_submit": "Send Message",
     "form_sending": "Sending...",
     "form_success": "Message sent successfully!",
-    "form_error": "Error sending message."
+    "form_error": "Error sending message.",
+    "form_config_error": "Please check your EmailJS configuration (missing keys)."
   },
   "footer": {
     "description": "Full Stack Developer & Software Engineering Student, passionate about creating robust and innovative digital experiences. I transform your ideas into high-performance, production-ready technical solutions.",
@@ -118,7 +152,16 @@
     "filter_all": "All",
     "credential_id": "Credential ID",
     "issue_date": "Issued on",
+    "issued_prefix": "Issued on",
+    "expiry_label": "Expiry",
+    "expiry_none": "None",
     "view_credential": "View credential",
+    "download_pdf": "Download",
+    "copy_link": "Copy link",
+    "link_copied": "Credential link copied!",
+    "default_description": "This certification validates my technical skills and expertise in this specific field, demonstrating my commitment to continuous learning and professional excellence.",
+    "no_certificates": "No certificates found",
+    "no_certificates_desc": "Sorry, we couldn't find any certificates matching your selection.",
     "badge": "Certifications",
     "stats_total": "total certificates",
     "categories": {
@@ -127,5 +170,29 @@
       "Design": "Design",
       "Other": "Other"
     }
+  },
+  "cv": {
+    "meta_title": "Curriculum Vitae | Abdessamad KAF",
+    "meta_description": "Discover my professional background and technical skills.",
+    "subtitle": "Professional Résumé",
+    "title": "My Background &",
+    "accent": "Skills",
+    "print": "Print",
+    "download": "Download",
+    "card_title": "Curriculum Vitae",
+    "card_description": "Download my CV to learn more about my background and technical skills.",
+    "download_btn": "Download CV",
+    "downloads_count": "downloads",
+    "updated_on": "Updated on",
+    "download_error": "Error while downloading. Please try again.",
+    "pages_count": "pages",
+    "select_prompt": "Please select a CV to preview",
+    "loading_doc": "Loading document...",
+    "pdf_error": "Error displaying PDF"
+  },
+  "seo": {
+    "role": "Full Stack Engineer",
+    "description": "Professional portfolio of Abdessamad KAF, Full Stack Engineer passionate about creating immersive and high-performance digital experiences with React, Node.js, and the modern web ecosystem.",
+    "keywords": "Engineer, Full Stack, React, Node.js, Web Developer, Portfolio, Abdessamad KAF"
   }
 }

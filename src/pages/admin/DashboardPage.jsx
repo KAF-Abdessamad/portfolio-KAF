@@ -5,11 +5,13 @@ import {
     ArrowUpRight,
     MessageSquare,
     Briefcase,
+    Home,
 } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { Link } from 'react-router-dom';
 
 const QUICK_ACTIONS = [
+    { label: 'Modifier la page d\'accueil', href: '/admin/home', icon: Home },
     { label: 'Gérer les projets', href: '/admin/projects', icon: Briefcase },
     { label: 'Gérer l\'expérience', href: '/admin/experience', icon: ArrowUpRight },
     { label: 'Voir les messages', href: '/admin/messages', icon: MessageSquare },
@@ -44,7 +46,7 @@ export default function DashboardPage() {
             {/* Quick Actions */}
             <div className="bg-bg-card border border-border-def rounded-2xl p-6">
                 <h2 className="text-lg font-semibold text-text-pri mb-4">Actions rapides</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {QUICK_ACTIONS.map((action) => (
                         <Link
                             key={action.href}

@@ -22,6 +22,15 @@ export default {
         'text-mut': 'var(--text-muted)',
         'text-acc': 'var(--text-accent)',
         'text-inv': 'var(--text-inverse)',
+        // Backward-compatible aliases for admin components
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'text-muted': 'var(--text-muted)',
+        'text-accent': 'var(--text-accent)',
+        'text-text-primary': 'var(--text-primary)',
+        'text-text-secondary': 'var(--text-secondary)',
+        'text-text-muted': 'var(--text-muted)',
+        'text-text-accent': 'var(--text-accent)',
 
         /* Borders */
         'border-def': 'var(--border)',

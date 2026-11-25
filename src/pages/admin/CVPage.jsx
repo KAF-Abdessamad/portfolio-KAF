@@ -66,7 +66,7 @@ export default function CVPage() {
     return (
         <div className="space-y-8 pb-12">
             <div>
-                <h1 className="text-3xl font-bold text-white">Gestion du CV</h1>
+                <h1 className="text-3xl font-bold text-text-pri">Gestion du CV</h1>
                 <p className="text-text-secondary mt-1">Mettez à jour vos résumés PDF pour chaque langue.</p>
             </div>
 
@@ -114,7 +114,7 @@ function CVCard({ title, lang, currentUrl, onUpload, loading, isBusy }) {
                         <FileText size={24} />
                     </div>
                     <div>
-                        <h3 className="text-xl font-bold text-white">{title}</h3>
+                        <h3 className="text-xl font-bold text-text-pri">{title}</h3>
                         <div className="flex items-center gap-1.5 mt-0.5">
                             <Languages size={14} className="text-text-muted" />
                             <span className="text-xs text-text-muted font-medium uppercase">{lang}</span>
@@ -136,7 +136,7 @@ function CVCard({ title, lang, currentUrl, onUpload, loading, isBusy }) {
                 ) : currentUrl ? (
                     <>
                         <CheckCircle2 size={40} className="text-emerald-500 mb-3" />
-                        <p className="text-white font-medium mb-1">CV actuel en ligne</p>
+                        <p className="text-text-pri font-medium mb-1">CV actuel en ligne</p>
                         <a
                             href={currentUrl}
                             target="_blank"

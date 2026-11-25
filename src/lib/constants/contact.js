@@ -20,5 +20,5 @@ export const SOCIAL_LINKS = [
 export const CONTACT_INFO = {
     email: "kafabdssamad58@gmail.com",
     phone: "+212 6 28 94 67 07",
-    location: "Fes, Marroc"
+    location: "Fès, Maroc"
 };

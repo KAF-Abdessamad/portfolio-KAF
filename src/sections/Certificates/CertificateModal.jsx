@@ -8,28 +8,40 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
     const { t, i18n } = useTranslation();
     if (!certificate) return null;
 
+    const isEn = (i18n.resolvedLanguage || i18n.language || 'fr').startsWith('en');
+
     const {
         title,
+        title_en,
         issuer,
         issue_date,
         expiry_date,
         credential_id,
         credential_url,
         image_url,
-        category,
-        description
+        description,
+        description_en
     } = certificate;
 
-    const formattedDate = new Date(issue_date).toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US', {
+    const displayTitle = isEn ? (title_en || title) : title;
+    const displayDescription = isEn ? (description_en || description) : description;
+
+    const formattedDate = new Date(issue_date).toLocaleDateString(isEn ? 'en-US' : 'fr-FR', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'
     });
 
     const handleShare = () => {
-        if (credential_url) {
-            navigator.clipboard.writeText(credential_url);
-            alert(i18n.language === 'fr' ? "Lien de vérification copié !" : "Credential link copied!");
+        const linkToCopy = credential_url || window.location.href;
+        navigator.clipboard.writeText(linkToCopy);
+        alert(t('certificates.link_copied'));
+    };
+
+    const handleDownload = () => {
+        const targetUrl = image_url || credential_url;
+        if (targetUrl) {
+            window.open(targetUrl, '_blank');
         }
     };
 
@@ -51,7 +63,7 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="relative w-full max-w-5xl bg-bg-surface border border rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh]"
+                        className="relative w-full max-w-5xl bg-bg-surface border border-border-def rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh]"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Navigation Buttons */}
@@ -71,7 +83,7 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                             <button
                                 onClick={handleShare}
                                 className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-text-mut hover:text-text-pri transition-all border border-border-def/10"
-                                title={i18n.language === 'fr' ? "Copier le lien" : "Copy link"}
+                                title={t('certificates.copy_link')}
                             >
                                 <Share2 size={20} />
                             </button>
@@ -84,13 +96,13 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                         </div>
 
                         {/* Left: Certificate Visual */}
-                        <div className="w-full lg:w-3/5 bg-bg-card p-8 flex items-center justify-center min-h-[300px] lg:min-h-0 border-b lg:border-b-0 lg:border-r border">
+                        <div className="w-full lg:w-3/5 bg-bg-card p-8 flex items-center justify-center min-h-[300px] lg:min-h-0 border-b lg:border-b-0 lg:border-r border-border-def">
                             <div className="relative group w-full max-w-lg">
                                 <div className="absolute -inset-4 bg-accent/20 blur-3xl rounded-full opacity-30" />
                                 <motion.img
                                     layoutId={`cert-img-${certificate.id}`}
                                     src={image_url || 'https://via.placeholder.com/600x400?text=Certificate'}
-                                    alt={title}
+                                    alt={displayTitle}
                                     className="relative w-full rounded-xl shadow-2xl border border-white/5 transform hover:scale-[1.02] transition-transform duration-500"
                                 />
                                 {credential_url && (
@@ -115,11 +127,11 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                                     <span className="text-text-acc font-bold text-xs uppercase tracking-[0.3em] mb-3 block">
                                         {t('certificates.badge')}
                                     </span>
-                                    <h2 className="text-3xl font-bold text-text-pri leading-tight">
-                                        {title}
+                                    <h2 className="text-3xl font-bold text-text-pri leading-tight mb-4">
+                                        {displayTitle}
                                     </h2>
                                     <div className="flex items-center gap-3 p-3 bg-accent/10 border border-accent/20 rounded-xl mb-8 group">
-                                        <div className="p-2 bg-border rounded-lg">
+                                        <div className="p-2 bg-border-def rounded-lg">
                                             <ShieldCheck size={20} className="text-text-acc" />
                                         </div>
                                         <span className="text-lg font-medium">{issuer}</span>
@@ -141,8 +153,8 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                                     )}
                                     <DetailItem
                                         icon={Calendar}
-                                        label={i18n.language === 'fr' ? "Expiration" : "Expiry"}
-                                        value={expiry_date ? new Date(expiry_date).toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US') : (i18n.language === 'fr' ? "Aucune" : "None")}
+                                        label={t('certificates.expiry_label')}
+                                        value={expiry_date ? new Date(expiry_date).toLocaleDateString(isEn ? 'en-US' : 'fr-FR') : t('certificates.expiry_none')}
                                     />
                                 </div>
 
@@ -151,9 +163,7 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                                         {t('projects.description_title')}
                                     </h4>
                                     <p className="text-text-sec leading-relaxed italic">
-                                        {description || (i18n.language === 'fr' 
-                                            ? "Cette certification valide mes compétences techniques et mon expertise dans ce domaine spécifique, démontrant mon engagement envers l'apprentissage continu et l'excellence professionnelle."
-                                            : "This certification validates my technical skills and expertise in this specific field, demonstrating my commitment to continuous learning and professional excellence.")}
+                                        {displayDescription || t('certificates.default_description')}
                                     </p>
                                 </div>
 
@@ -168,10 +178,15 @@ export default function CertificateModal({ isOpen, onClose, certificate, onPrev,
                                             <ExternalLink size={18} />
                                         </Button>
                                     )}
-                                    <button className="w-full py-4 text-text-sec hover:text-text-pri transition-colors flex items-center justify-center gap-2 border border-border-def rounded-2xl hover:bg-white/5">
-                                        <Download size={18} />
-                                        {i18n.language === 'fr' ? "Télécharger PDF" : "Download PDF"}
-                                    </button>
+                                    {(image_url || credential_url) && (
+                                        <button
+                                            onClick={handleDownload}
+                                            className="w-full py-4 text-text-sec hover:text-text-pri transition-colors flex items-center justify-center gap-2 border border-border-def rounded-2xl hover:bg-white/5"
+                                        >
+                                            <Download size={18} />
+                                            {t('certificates.download_pdf')}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -190,7 +205,7 @@ function DetailItem({ icon: Icon, label, value }) {
             </div>
             <div>
                 <p className="text-[10px] text-text-mut uppercase tracking-widest mb-1">{label}</p>
-                <p className="text-sm text-text-primary font-mono">{value}</p>
+                <p className="text-sm text-text-pri font-mono">{value}</p>
             </div>
         </div>
     );

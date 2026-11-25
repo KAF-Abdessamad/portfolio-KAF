@@ -9,95 +9,85 @@
   /* ═══ LIGHT MODE ═══ */
 
   /* Backgrounds */
-  --bg-primary: #F4F3FF;
-  /* soft lavender white */
-  --bg-surface: #EDEAFB;
-  /* cards background */
+  --bg-primary: #EEF3F9;
+  --bg-surface: #DFE9F3;
   --bg-card: #FFFFFF;
-  /* pure white cards */
-  --bg-elevated: #E8E4F8;
-  /* hover/elevated */
+  --bg-elevated: #E8F0F8;
 
-  /* Text — ALL readable on light bg */
-  --text-primary: #1E1B4B;
-  /* deep indigo (not black) */
-  --text-secondary: #3730A3;
-  /* indigo-800 */
-  --text-muted: #6366F1;
-  /* indigo-500 */
-  --text-accent: #7C3AED;
-  /* violet-600 */
-  --text-inverse: #F0EEFF;
-  /* for colored bg buttons */
+  /* Text — 3 levels */
+  --text-primary: #0A1B2E;    /* Niveau 1: titres, texte principal */
+  --text-secondary: #2C4A68;  /* Niveau 2: descriptions, texte secondaire */
+  --text-muted: #55708E;      /* Niveau 3: métadonnées, légendes, compteurs */
+  --text-accent: #0B6FA4;     /* Accent text */
+  --text-inverse: #FFFFFF;    /* White text on accent buttons */
 
   /* Borders & Dividers */
-  --border: #C7D2FE;
-  /* indigo-200 */
-  --border-strong: #A5B4FC;
-  /* indigo-300 */
+  --border: #B9CFE2;
+  --border-strong: #8FB0CC;
 
   /* Interactive */
-  --accent-primary: #6D28D9;
-  /* violet — CTAs */
-  --accent-glow: rgba(109, 40, 217, 0.25);
-  --accent-hover: #5B21B6;
+  --accent-primary: #0B5FA5;
+  --accent-glow: rgba(11, 95, 165, 0.25);
+  --accent-hover: #084C86;
 
-  /* Neon (subtle in light mode) */
-  --neon-cyan: #0891B2;
-  /* darker cyan — visible on white */
-  --neon-purple: #7C3AED;
-  --neon-glow: rgba(8, 145, 178, 0.2);
+  /* Neon / Accents */
+  --neon-cyan: #0B6FA4;
+  --neon-purple: #0B5FA5;
+  --neon-glow: rgba(11, 95, 165, 0.2);
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(99, 102, 241, 0.12);
-  --shadow-md: 0 4px 16px rgba(99, 102, 241, 0.16);
-  --shadow-lg: 0 8px 32px rgba(99, 102, 241, 0.20);
+  --shadow-sm: 0 1px 3px rgba(10, 27, 46, 0.08);
+  --shadow-md: 0 4px 16px rgba(10, 27, 46, 0.12);
+  --shadow-lg: 0 8px 32px rgba(10, 27, 46, 0.16);
 }
 
 .dark {
   /* ═══ DARK MODE ═══ */
 
   /* Backgrounds */
-  --bg-primary: #080810;
-  /* deepest dark */
-  --bg-surface: #0F0F1A;
-  /* section bg */
-  --bg-card: #1A1A2E;
-  /* card bg */
-  --bg-elevated: #22223B;
-  /* hover/elevated */
+  --bg-primary: #060B14;
+  --bg-surface: #0B1522;
+  --bg-card: #101E30;
+  --bg-elevated: #16283F;
 
-  /* Text — ALL readable on dark bg */
-  --text-primary: #F0EEFF;
-  /* soft white-purple (not pure white) */
-  --text-secondary: #C4B5FD;
-  /* violet-300 */
-  --text-muted: #818CF8;
-  /* indigo-400 */
-  --text-accent: #00f0ff;
-  /* neon cyan */
-  --text-inverse: #0F0F1A;
-  /* for light bg buttons */
+  /* Text — 3 levels */
+  --text-primary: #F0F5FA;    /* Niveau 1: titres, texte principal */
+  --text-secondary: #B8CBDE;  /* Niveau 2: descriptions, texte secondaire */
+  --text-muted: #7E97B0;      /* Niveau 3: métadonnées, légendes, compteurs */
+  --text-accent: #4FD1E8;     /* Accent text cyan */
+  --text-inverse: #FFFFFF;    /* White text on accent buttons */
 
   /* Borders & Dividers */
-  --border: #2D2B55;
-  /* subtle purple */
-  --border-strong: #4C4870;
+  --border: #1E3A52;
+  --border-strong: #2E5878;
 
   /* Interactive */
-  --accent-primary: #7C3AED;
-  --accent-glow: rgba(0, 240, 255, 0.15);
-  --accent-hover: #6D28D9;
+  --accent-primary: #0F6CA8;
+  --accent-glow: rgba(79, 209, 232, 0.2);
+  --accent-hover: #2596D2;
 
-  /* Neon (vivid in dark mode) */
-  --neon-cyan: #00f0ff;
-  --neon-purple: #a855f7;
-  --neon-glow: rgba(0, 240, 255, 0.25);
+  /* Neon / Accents */
+  --neon-cyan: #4FD1E8;
+  --neon-purple: #0F6CA8;
+  --neon-glow: rgba(79, 209, 232, 0.25);
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 32px rgba(0, 240, 255, 0.08);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 32px rgba(79, 209, 232, 0.08);
+}
+
+/* Theme-adaptive inputs and autofill */
+input, textarea, select {
+  color: var(--text-primary);
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-primary) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--bg-surface) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Smooth transition on theme switch */
@@ -115,6 +105,34 @@
 .no-transition {
   transition: none !important;
 }
+
+  /* Responsive Fluid typography helpers */
+  .fluid-title {
+    font-size: clamp(2rem, 5vw + 1rem, 4.5rem);
+    line-height: 1.1;
+  }
+
+  .fluid-subtitle {
+    font-size: clamp(1.125rem, 2.5vw + 0.5rem, 1.875rem);
+    line-height: 1.25;
+  }
+
+  .fluid-body {
+    font-size: clamp(0.95rem, 1vw + 0.5rem, 1.15rem);
+    line-height: 1.6;
+  }
+
+  .fluid-section-gap {
+    padding-top: clamp(4rem, 8vw, 8rem);
+    padding-bottom: clamp(4rem, 8vw, 8rem);
+  }
+
+  /* Prevent horizontal scroll on small devices */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
 
 @layer base {
   * {

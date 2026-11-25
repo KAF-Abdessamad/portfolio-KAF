@@ -4,7 +4,7 @@ import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useContactForm } from '../../hooks/useContactForm';
 
-const InputField = ({ label, name, type = 'text', value, onChange, error, multiline = false }) => {
+const InputField = ({ label, name, type = 'text', value, onChange, error, placeholder, multiline = false }) => {
     return (
         <div className="relative mb-6">
             <label htmlFor={name} className="block text-sm font-mono text-text-mut uppercase tracking-widest mb-2">
@@ -20,7 +20,7 @@ const InputField = ({ label, name, type = 'text', value, onChange, error, multil
                         rows={5}
                         className={`w-full bg-bg-surface text-text-pri rounded-xl px-4 py-3 border ${error ? 'border-accent' : 'border-border-def'
                             } outline-none transition-all duration-300 focus:border-accent shadow-theme-sm focus:shadow-accent resize-none`}
-                        placeholder={`Votre ${label.toLowerCase()}...`}
+                        placeholder={placeholder}
                     />
                 ) : (
                     <input
@@ -31,7 +31,7 @@ const InputField = ({ label, name, type = 'text', value, onChange, error, multil
                         onChange={onChange}
                         className={`w-full bg-bg-surface text-text-pri rounded-xl px-4 py-3 border ${error ? 'border-accent' : 'border-border-def'
                             } outline-none transition-all duration-300 focus:border-accent shadow-theme-sm focus:shadow-accent`}
-                        placeholder={`Votre ${label.toLowerCase()}...`}
+                        placeholder={placeholder}
                     />
                 )}
             </div>
@@ -71,6 +71,7 @@ const ContactForm = () => {
                         value={formData.user_name}
                         onChange={handleChange}
                         error={errors.user_name}
+                        placeholder={t('contact.placeholders.user_name')}
                     />
                     <InputField
                         label={t('contact.form_email')}
@@ -79,6 +80,7 @@ const ContactForm = () => {
                         value={formData.user_email}
                         onChange={handleChange}
                         error={errors.user_email}
+                        placeholder={t('contact.placeholders.user_email')}
                     />
                 </div>
 
@@ -88,6 +90,7 @@ const ContactForm = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     error={errors.subject}
+                    placeholder={t('contact.placeholders.subject')}
                 />
 
                 <InputField
@@ -96,6 +99,7 @@ const ContactForm = () => {
                     value={formData.message}
                     onChange={handleChange}
                     error={errors.message}
+                    placeholder={t('contact.placeholders.message')}
                     multiline
                 />
 
@@ -105,7 +109,6 @@ const ContactForm = () => {
                         disabled={isSending}
                         className="group relative w-full flex justify-center py-4 px-6 border border-transparent rounded-xl text-text-inv font-bold text-lg focus:outline-none disabled:opacity-70 disabled:cursor-not-allowed overflow-hidden shadow-accent"
                     >
-                        {/* Magnetic/Gradient background */}
                         <div className="absolute inset-0 bg-gradient-to-r from-accent to-indigo-400 opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
 
                         <span className="relative flex items-center justify-center w-full">
@@ -141,7 +144,7 @@ const ContactForm = () => {
                                 exit={{ opacity: 0, height: 0 }}
                                 className="text-red-400 text-center text-sm font-mono mt-4"
                             >
-                                Veuillez vérifier votre configuration EmailJS (Clés manquantes).
+                                {t('contact.form_config_error')}
                             </motion.p>
                         )}
                     </AnimatePresence>
@@ -152,5 +155,3 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
-
-

@@ -21,6 +21,7 @@ import MessagesPage from './pages/admin/MessagesPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import ExperiencePageAdmin from './pages/admin/ExperiencePage';
 import ActivitiesPageAdmin from './pages/admin/ActivitiesPage';
+import HomeEditorPage from './pages/admin/HomeEditorPage';
 
 import { useEffect } from 'react';
 
@@ -66,6 +67,7 @@ function App() {
                                 </AdminRoute>
                             }>
                             <Route index element={<DashboardPage />} />
+                            <Route path="home" element={<HomeEditorPage />} />
                             <Route path="projects" element={<ProjectsPage />} />
                             <Route path="skills" element={<SkillsPageAdmin />} />
                             <Route path="certificates" element={<CertificatesPageAdmin />} />

@@ -5,14 +5,17 @@ import { useTranslation } from 'react-i18next';
 
 export default function CertificateCard({ certificate, onClick }) {
     const { t, i18n } = useTranslation();
+    const isEn = (i18n.resolvedLanguage || i18n.language || 'fr').startsWith('en');
     const {
         title,
+        title_en,
         issuer,
         issue_date,
         image_url,
         featured,
         credential_url
     } = certificate;
+    const displayTitle = isEn ? (title_en || title) : title;
 
     // 3D Tilt Effect using Framer Motion
     const x = useMotionValue(0);
@@ -43,7 +46,7 @@ export default function CertificateCard({ certificate, onClick }) {
         y.set(0);
     };
 
-    const formattedDate = new Date(issue_date).toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US', {
+    const formattedDate = new Date(issue_date).toLocaleDateString(isEn ? 'en-US' : 'fr-FR', {
         month: 'short',
         year: 'numeric'
     });
@@ -100,7 +103,7 @@ export default function CertificateCard({ certificate, onClick }) {
                 {/* Content */}
                 <div className="flex-1 flex flex-col space-y-3">
                     <h3 className="text-lg font-bold text-text-pri group-hover:text-text-acc transition-colors line-clamp-2 leading-tight">
-                        {title}
+                        {displayTitle}
                     </h3>
 
                     <div className="space-y-2 mt-auto pt-2">
@@ -110,7 +113,7 @@ export default function CertificateCard({ certificate, onClick }) {
                         </div>
                         <div className="flex items-center gap-2 text-text-muted text-xs">
                             <Calendar size={14} />
-                            <span>{i18n.language === 'fr' ? `Obtenu en ${formattedDate}` : `Issued on ${formattedDate}`}</span>
+                            <span>{t('certificates.issued_prefix')} {formattedDate}</span>
                         </div>
                     </div>
                 </div>

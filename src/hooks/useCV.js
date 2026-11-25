@@ -20,9 +20,9 @@ export const useCV = (language = 'fr') => {
                 .eq('is_active', true)
                 .order('updated_at', { ascending: false })
                 .limit(1)
-                .single();
+                .maybeSingle();
 
-            if (pbError && pbError.code !== 'PGRST116') {
+            if (pbError) {
                 throw pbError;
             }
 
@@ -47,20 +47,11 @@ export const useCV = (language = 'fr') => {
         if (!cvId) return;
 
         try {
-            // Use rpc for atomic increment if available, or simple update
-            // For now, simple update (subject to race conditions but easier to set up)
-            const { data: current } = await supabase
-                .from('cv')
-                .select('download_count')
-                .eq('id', cvId)
-                .single();
+            // Atomic increment via security-definer RPC (public UPDATE on cv is denied by RLS)
+            const { error: rpcError } = await supabase
+                .rpc('increment_cv_download', { cv_id: cvId });
 
-            const { error: upError } = await supabase
-                .from('cv')
-                .update({ download_count: (current?.download_count || 0) + 1 })
-                .eq('id', cvId);
-
-            if (upError) throw upError;
+            if (rpcError) throw rpcError;
 
             // Refresh local state to show updated count
             fetchActiveCV();

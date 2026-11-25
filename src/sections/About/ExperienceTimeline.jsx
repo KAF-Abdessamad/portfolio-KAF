@@ -47,16 +47,24 @@ const TimelineItem = ({ experience, index }) => {
                     className="bg-bg-card border border-border-def p-8 rounded-2xl shadow-theme-sm hover:border-accent/30 transition-colors group"
                 >
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-5">
-                        <div>
-                            {badge && (
-                                <span className="inline-block mb-2 px-3 py-0.5 text-[10px] font-mono uppercase tracking-widest bg-accent/10 text-text-acc rounded-full border border-accent/20">
-                                    {badge}
-                                </span>
+                        <div className="flex items-start gap-4">
+                            {/* Logo Entreprise */}
+                            {experience.logo_url && (
+                                <div className="w-12 h-12 rounded-xl border border-border-def bg-bg-surface p-1.5 flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                    <img src={experience.logo_url} alt={school || title} className="w-full h-full object-contain" />
+                                </div>
                             )}
-                            <h3 className="text-xl font-bold text-text-pri group-hover:text-text-acc transition-colors">
-                                {title}
-                            </h3>
-                            <p className="text-base text-text-sec font-medium mt-1">{school}</p>
+                            <div>
+                                {badge && (
+                                    <span className="inline-block mb-2 px-3 py-0.5 text-[10px] font-mono uppercase tracking-widest bg-accent/10 text-text-acc rounded-full border border-accent/20">
+                                        {badge}
+                                    </span>
+                                )}
+                                <h3 className="text-xl font-bold text-text-pri group-hover:text-text-acc transition-colors">
+                                    {title}
+                                </h3>
+                                <p className="text-base text-text-sec font-medium mt-1">{school}</p>
+                            </div>
                         </div>
                         {/* Mobile period */}
                         <span className="md:hidden text-sm font-mono text-text-acc bg-bg-surface px-3 py-1 rounded-lg border border-border-def shrink-0">
@@ -127,14 +135,13 @@ const SkeletonItem = ({ index }) => {
 };
 
 export default function ExperienceTimeline() {
-    const { getStages, loading } = useExperience();
-    const stages = getStages();
+    const { stages, loading } = useExperience();
 
     return (
         <div className="relative pt-10">
             {loading
                 ? [0, 1].map(i => <SkeletonItem key={i} index={i} />)
-                : stages.map((exp, index) => (
+                : (stages || []).map((exp, index) => (
                     <TimelineItem key={exp.id ?? index} experience={exp} index={index} />
                 ))
             }

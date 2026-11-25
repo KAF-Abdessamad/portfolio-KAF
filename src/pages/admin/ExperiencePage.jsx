@@ -42,14 +42,25 @@ export default function ExperiencePageAdmin() {
 
     const columns = [
         {
-            header: 'Diplôme',
+            header: 'Poste / Diplôme',
             accessor: 'degree',
             render: (row) => (
-                <div className="max-w-xs">
-                    <span className="inline-block px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-text-acc/10 text-text-acc rounded-full border border-text-acc/20 mb-1">
-                        {row.badge || '—'}
-                    </span>
-                    <p className="font-medium text-text-primary text-sm leading-snug truncate">{row.degree}</p>
+                <div className="flex items-center gap-3 max-w-xs">
+                    {row.logo_url ? (
+                        <div className="w-10 h-10 rounded-xl border border-border-def bg-bg-surface p-1 flex items-center justify-center shrink-0 overflow-hidden">
+                            <img src={row.logo_url} alt="" className="w-full h-full object-contain" />
+                        </div>
+                    ) : (
+                        <div className="w-10 h-10 rounded-xl border border-border-def bg-bg-surface flex items-center justify-center shrink-0 text-text-mut text-xs font-mono">
+                            {row.type === 'stage' ? 'PRO' : 'EDU'}
+                        </div>
+                    )}
+                    <div className="truncate">
+                        <span className="inline-block px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-accent/10 text-text-acc rounded-full border border-accent/20 mb-0.5">
+                            {row.badge || (row.type === 'stage' ? 'Stage' : 'Formation')}
+                        </span>
+                        <p className="font-medium text-text-pri text-sm leading-snug truncate">{row.degree}</p>
+                    </div>
                 </div>
             ),
         },

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Check, Loader2, FileText, Globe } from 'lucide-react';
+import { Download, Check, Loader2, FileText } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useCV } from '../../hooks/useCV';
 import Button from '../../components/ui/Button';
 
 export default function CVDownload() {
-    const [activeLang, setActiveLang] = useState('fr');
+    const { t, i18n } = useTranslation();
+    const currentSiteLang = (i18n.resolvedLanguage || i18n.language || 'fr').startsWith('en') ? 'en' : 'fr';
+    const [activeLang, setActiveLang] = useState(currentSiteLang);
     const { cvUrl, cvData, loading, trackDownload } = useCV(activeLang);
     const [downloading, setDownloading] = useState(false);
     const [showCheck, setShowCheck] = useState(false);
@@ -15,10 +18,8 @@ export default function CVDownload() {
 
         setDownloading(true);
         try {
-            // Track download in DB
             await trackDownload(cvData.id);
 
-            // Trigger file download
             const response = await fetch(cvUrl);
             const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
@@ -29,12 +30,11 @@ export default function CVDownload() {
             link.click();
             link.remove();
 
-            // Show success animation
             setShowCheck(true);
             setTimeout(() => setShowCheck(false), 2000);
         } catch (error) {
             console.error("Download failed:", error);
-            alert("Erreur lors du téléchargement. Veuillez réessayer.");
+            alert(t('cv.download_error'));
         } finally {
             setDownloading(false);
         }
@@ -54,21 +54,20 @@ export default function CVDownload() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-4 opacity-0 group-hover/preview:opacity-100 transition-opacity">
                         <FileText className="text-text-acc" size={24} />
                     </div>
-                    {/* Placeholder for real preview thumbnail */}
                     <div className="w-full h-full flex flex-col p-3 space-y-2 opacity-40">
-                        <div className="h-2 w-full bg-border rounded" />
-                        <div className="h-2 w-3/4 bg-border rounded" />
-                        <div className="h-2 w-1/2 bg-border rounded" />
+                        <div className="h-2 w-full bg-border-def rounded" />
+                        <div className="h-2 w-3/4 bg-border-def rounded" />
+                        <div className="h-2 w-1/2 bg-border-def rounded" />
                         <div className="h-20 w-full bg-bg-surface rounded" />
-                        <div className="h-2 w-full bg-border rounded" />
+                        <div className="h-2 w-full bg-border-def rounded" />
                     </div>
                 </motion.div>
 
                 <div className="flex-1 space-y-4">
                     <div>
-                        <h3 className="text-2xl font-bold text-text-pri mb-2">Curriculum Vitæ AAAA</h3>
+                        <h3 className="text-2xl font-bold text-text-pri mb-2">{t('cv.card_title')}</h3>
                         <p className="text-text-sec max-w-md">
-                            Téléchargez mon CV pour en savoir plus sur mon parcours et mes compétences techniques.
+                            {t('cv.card_description')}
                         </p>
                     </div>
 
@@ -77,13 +76,13 @@ export default function CVDownload() {
                         <div className="flex bg-bg-surface/40 p-1 rounded-xl border border-border-def">
                             <button
                                 onClick={() => setActiveLang('fr')}
-                                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeLang === 'fr' ? 'bg-secondary text-text-pri' : 'text-text-sec hover:text-text-pri'}`}
+                                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeLang === 'fr' ? 'bg-accent text-text-inv' : 'text-text-sec hover:text-text-pri'}`}
                             >
                                 FR
                             </button>
                             <button
                                 onClick={() => setActiveLang('en')}
-                                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeLang === 'en' ? 'bg-secondary text-text-pri' : 'text-text-sec hover:text-text-pri'}`}
+                                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${activeLang === 'en' ? 'bg-accent text-text-inv' : 'text-text-sec hover:text-text-pri'}`}
                             >
                                 EN
                             </button>
@@ -108,7 +107,7 @@ export default function CVDownload() {
                                 ) : (
                                     <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2">
                                         <Download size={18} />
-                                        <span>Download CV</span>
+                                        <span>{t('cv.download_btn')}</span>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
@@ -119,12 +118,14 @@ export default function CVDownload() {
                     <div className="flex items-center gap-6 text-xs font-mono text-text-mut uppercase tracking-widest pt-2">
                         <div className="flex items-center gap-2">
                             <Download size={12} className="text-text-acc" />
-                            <span>{cvData?.download_count || 0} téléchargements</span>
+                            <span>{cvData?.download_count || 0} {t('cv.downloads_count')}</span>
                         </div>
                         {cvData?.updated_at && (
                             <div className="flex items-center gap-2">
                                 <Check size={12} className="text-green-500" />
-                                <span>Mis à jour le {new Date(cvData.updated_at).toLocaleDateString()}</span>
+                                <span>
+                                    {t('cv.updated_on')} {new Date(cvData.updated_at).toLocaleDateString(currentSiteLang === 'fr' ? 'fr-FR' : 'en-US')}
+                                </span>
                             </div>
                         )}
                     </div>
@@ -133,5 +134,3 @@ export default function CVDownload() {
         </div>
     );
 }
-
-

@@ -18,7 +18,6 @@ import Container from '../components/layout/Container';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import { useActivities } from '../hooks/useActivities';
-import Chatbot from '../components/ui/Chatbot';
 
 const categoryIcons = {
     'Club': Users,
@@ -41,11 +40,15 @@ export default function ActivitiesPage() {
     const { activities, loading } = useActivities();
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const isEn = (i18n.resolvedLanguage || i18n.language || 'fr').startsWith('en');
+
+    const getActivityTitle = (act) => (isEn ? (act?.title_en || act?.title) : act?.title);
+    const getActivityDescription = (act) => (isEn ? (act?.description_en || act?.description) : act?.description);
 
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
         const date = new Date(dateStr);
-        return date.toLocaleDateString(i18n.language === 'fr' ? 'fr-FR' : 'en-US', { month: 'short', year: 'numeric' });
+        return date.toLocaleDateString(isEn ? 'en-US' : 'fr-FR', { month: 'short', year: 'numeric' });
     };
 
     const formatDateRange = (start, end) => {
@@ -209,7 +212,7 @@ export default function ActivitiesPage() {
                                             {/* Content */}
                                             <div className="p-6">
                                                 <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-text-accent transition-colors line-clamp-2">
-                                                    {activity.title}
+                                                    {getActivityTitle(activity)}
                                                 </h3>
 
                                                 <div className="flex items-center gap-4 text-xs text-text-muted mb-3">
@@ -228,7 +231,7 @@ export default function ActivitiesPage() {
                                                 </div>
 
                                                 <p className="text-text-secondary text-sm line-clamp-3">
-                                                    {activity.description}
+                                                    {getActivityDescription(activity)}
                                                 </p>
                                             </div>
                                         </motion.div>
@@ -325,7 +328,7 @@ export default function ActivitiesPage() {
                                     </div>
 
                                     <h2 className="text-xl sm:text-2xl font-bold text-text-primary mb-4">
-                                        {selectedActivity.title}
+                                        {getActivityTitle(selectedActivity)}
                                     </h2>
 
                                     <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted mb-6">
@@ -345,7 +348,7 @@ export default function ActivitiesPage() {
 
                                     <div className="prose prose-invert max-w-none">
                                         <p className="text-text-secondary leading-relaxed whitespace-pre-wrap">
-                                            {selectedActivity.description}
+                                            {getActivityDescription(selectedActivity)}
                                         </p>
                                     </div>
                                 </div>
@@ -356,7 +359,6 @@ export default function ActivitiesPage() {
             </AnimatePresence>
 
             <Footer />
-            <Chatbot />
         </div>
     );
 }

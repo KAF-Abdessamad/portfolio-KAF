@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import {
     ZoomIn,
@@ -6,9 +6,9 @@ import {
     RotateCw,
     AlertCircle
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-
 
 // Set up the worker for react-pdf
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -16,8 +16,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     import.meta.url,
 ).toString();
 
-
 export default function CVPreview({ fileUrl }) {
+    const { t } = useTranslation();
     const [numPages, setNumPages] = useState(null);
     const [scale, setScale] = useState(1.0);
     const [rotate, setRotate] = useState(0);
@@ -29,10 +29,10 @@ export default function CVPreview({ fileUrl }) {
     return (
         <div className="flex flex-col h-[85vh] sm:h-[90vh] bg-bg-card backdrop-blur-sm rounded-xl sm:rounded-3xl overflow-hidden border border-border-def">
             {/* Toolbar */}
-            <div className="p-2 sm:p-4 bg-bg-surface/50 border-b border flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+            <div className="p-2 sm:p-4 bg-bg-surface/50 border-b border-border-def flex flex-wrap items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-1 sm:gap-2">
                     <span className="text-xs sm:text-sm font-mono text-text-pri">
-                        {numPages || '?'} pages
+                        {numPages || '?'} {t('cv.pages_count')}
                     </span>
                 </div>
 
@@ -52,7 +52,7 @@ export default function CVPreview({ fileUrl }) {
                     >
                         <ZoomIn size={16} className="sm:w-[18px] sm:h-[18px]" />
                     </button>
-                    <div className="hidden sm:block w-px h-6 bg-border mx-2" />
+                    <div className="hidden sm:block w-px h-6 bg-border-def mx-2" />
                     <button
                         onClick={() => setRotate(prev => (prev + 90) % 360)}
                         className="p-1.5 sm:p-2 rounded-lg hover:bg-bg-surface text-text-pri transition-colors"
@@ -67,7 +67,7 @@ export default function CVPreview({ fileUrl }) {
                 {!fileUrl ? (
                     <div className="flex flex-col items-center justify-center h-full text-text-mut space-y-4">
                         <AlertCircle size={48} className="opacity-20" />
-                        <p className="font-mono text-sm">Veuillez sélectionner un CV pour prévisualiser</p>
+                        <p className="font-mono text-sm">{t('cv.select_prompt')}</p>
                     </div>
                 ) : (
                     <Document
@@ -76,13 +76,13 @@ export default function CVPreview({ fileUrl }) {
                         loading={
                             <div className="flex flex-col items-center justify-center py-20">
                                 <div className="w-12 h-12 border-2 border-text-accent border-t-transparent rounded-full animate-spin mb-4" />
-                                <p className="text-text-mut font-mono text-xs">Chargement du document...</p>
+                                <p className="text-text-mut font-mono text-xs">{t('cv.loading_doc')}</p>
                             </div>
                         }
                         error={
                             <div className="flex flex-col items-center justify-center py-20 text-red-400 space-y-4">
                                 <AlertCircle size={40} />
-                                <p className="font-mono text-xs">Erreur lors de l'affichage du PDF</p>
+                                <p className="font-mono text-xs">{t('cv.pdf_error')}</p>
                             </div>
                         }
                     >
@@ -105,5 +105,3 @@ export default function CVPreview({ fileUrl }) {
         </div>
     );
 }
-
-

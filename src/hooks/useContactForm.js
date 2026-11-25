@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'react';
 import emailjs from '@emailjs/browser';
+import { useTranslation } from 'react-i18next';
 import { CONTACT_CONFIG } from '../lib/constants/contact';
 
 export const useContactForm = () => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         user_name: '',
         user_email: '',
@@ -18,15 +20,15 @@ export const useContactForm = () => {
         return re.test(String(email).toLowerCase());
     };
 
-    const validateField = (name, value) => {
-        let error = '';
+    const validateField = useCallback((name, value) => {
         if (!value.trim()) {
-            error = 'Ce champ est requis';
-        } else if (name === 'user_email' && !validateEmail(value)) {
-            error = 'Adresse email invalide';
+            return 'contact.error_required';
         }
-        return error;
-    };
+        if (name === 'user_email' && !validateEmail(value)) {
+            return 'contact.error_email';
+        }
+        return '';
+    }, []);
 
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
@@ -34,15 +36,16 @@ export const useContactForm = () => {
 
         // Clear error inline as user types
         if (errors[name]) {
-            setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
+            const errKey = validateField(name, value);
+            setErrors(prev => ({ ...prev, [name]: errKey }));
         }
-    }, [errors]);
+    }, [errors, validateField]);
 
     const validateForm = () => {
         const newErrors = {};
         Object.keys(formData).forEach(key => {
-            const error = validateField(key, formData[key]);
-            if (error) newErrors[key] = error;
+            const errorKey = validateField(key, formData[key]);
+            if (errorKey) newErrors[key] = errorKey;
         });
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -55,11 +58,6 @@ export const useContactForm = () => {
         setStatus('loading');
 
         try {
-            // NOTE: En production, assurez-vous que CONTACT_CONFIG contient les vraies clés.
-            // Sans clés valides, EmailJS déclenchera une erreur qui sera capturée ici.
-            // On envoie formData mais on ajoute aussi 'name', 'nom', et 'email'
-            // car votre template EmailJS utilise probablement un de ces noms de variables
-            // au lieu de 'user_name' et 'user_email'.
             const payload = {
                 ...formData,
                 name: formData.user_name,
@@ -84,19 +82,22 @@ export const useContactForm = () => {
             }
         } catch (error) {
             console.error("EmailJS Error:", error);
-            // Forçage de l'erreur pour la démonstration si les clés ne sont pas configurées
             setStatus('error');
         }
 
-        // Réinitialiser le statut après quelques secondes dans tous les cas
         setTimeout(() => {
             setStatus('idle');
         }, 5000);
     };
 
+    // Translate error keys dynamically so switching language updates displayed errors immediately
+    const translatedErrors = Object.fromEntries(
+        Object.entries(errors).map(([k, v]) => [k, v ? t(v) : ''])
+    );
+
     return {
         formData,
-        errors,
+        errors: translatedErrors,
         status,
         handleChange,
         handleSubmit
